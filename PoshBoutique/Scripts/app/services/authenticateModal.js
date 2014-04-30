@@ -1,0 +1,66 @@
+﻿poshBoutiqueApp.factory("authenticateModal", function ($modal) {
+    return {
+        open: function (returnUrl) {
+            returnUrl = returnUrl || $window.location.href;
+
+            $modal.open({
+                templateUrl: "partials/authenticateModal.html",
+                resolve: {
+                    externalLogins: function (accountDataService, $window) {
+                        return accountDataService.getExternalLogins(returnUrl, true);
+                    }
+                },
+                controller: function ($scope, externalLogins, accountDataService, $window, authenticationStorage, currentUser) {
+                    $scope.login = {};
+                    $scope.register = {};
+
+                    $scope.externalLogins = externalLogins;
+
+                    var onUserAuthenticated = function (accessToken) {
+                        if (accessToken) {
+                            authenticationStorage.setAccesToken(accessToken, $scope.keepMeLoggedIn);
+                            currentUser.loadData();
+                            $window.location = returnUrl;
+                            $scope.close(true);
+                        }
+                    }
+
+                    $scope.registerUser = function () {
+                        accountDataService.register({
+                            email: $scope.register.user.email,
+                            firstName: $scope.register.user.firstName,
+                            lastName: $scope.register.user.lastName,
+                            password: $scope.register.user.password,
+                            confirmPassword: $scope.register.user.confirmPassword,
+                        })
+                        .success(function () {
+                            accountDataService.login({
+                                grant_type: "password",
+                                username: $scope.register.user.email,
+                                password: $scope.register.user.password
+                            })
+                            .success(function (data) {
+                                onUserAuthenticated(data.access_token);
+                            });
+                        });
+                    }
+
+                    $scope.loginUser = function () {
+                        accountDataService.login({
+                            grant_type: "password",
+                            username: $scope.login.user.email,
+                            password: $scope.login.user.password
+                        })
+                        .success(function (data) {
+                            onUserAuthenticated(data.access_token);
+                        });
+                    };
+
+                    $scope.loginWithProvider = function (publicProvider) {
+                        $window.location = publicProvider.url;
+                    };
+                }
+            });
+        }
+    }
+});

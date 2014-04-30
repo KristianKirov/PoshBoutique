@@ -1,0 +1,101 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" aria-hidden="true" ng-click='$close(false)'>&times;</button>
+    <h4 class="modal-title">Вход</h4>
+</div>
+<div class="modal-body">
+    <div class="row" ng-init="state='login'">
+        <div class="col-md-6">
+            <div ng-show="state == 'login'">
+                <h3>Влез с Posh профил</h3>
+                <form role="form" name="loginForm" novalidate>
+                    <div class="form-group" ng-class="{ 'has-error': loginForm.userEmail.$dirty && loginForm.userEmail.$invalid }">
+                        <label for="userEmail" class="control-label">Email</label>
+                        <input type="email" ng-model="login.user.email" required class="form-control input-lg" id="userEmail" name="userEmail" placeholder="Въведи email">
+                        <div ng-show="loginForm.userEmail.$dirty && loginForm.userEmail.$invalid" class="text-danger">
+                            <span ng-show="loginForm.userEmail.$error.required">Моля въведете email.</span>
+                            <span ng-show="loginForm.userEmail.$error.email">Моля въведете валиден email.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error': loginForm.userPassword.$dirty && loginForm.userPassword.$invalid }">
+                        <label for="userPassword" class="control-label">Парола</label>
+                        <input type="password" ng-model="login.user.password" required ng-minlength="6" class="form-control input-lg" id="userPassword" name="userPassword" placeholder="Парола">
+                        <div ng-show="loginForm.userPassword.$dirty && loginForm.userPassword.$invalid" class="text-danger">
+                            <span ng-show="loginForm.userPassword.$error.required">Моля въведете парола.</span>
+                            <span ng-show="loginForm.userPassword.$error.minlength">Паролата трябва да е поне 6 символа</span>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-init="login.keepMeLoggedIn = true" ng-checked="login.keepMeLoggedIn" ng-model="login.keepMeLoggedIn"> Дръж ме в профила ми
+                        </label>
+                    </div>
+                    <button type="button" ng-click="loginUser()" class="btn btn-default btn-lg btn-block" ng-disabled="!loginForm.$valid">Вход с Posh профил</button>
+                    <p class="form-control-static">
+                        <a href="javascript:void(0)" ng-click="state = 'register'">
+                            <i class="glyphicon glyphicon-user"></i>
+                            Създай Posh профил
+                        </a>
+                    </p>
+                </form>
+            </div>
+            <div ng-show="state == 'register'">
+                <h3>Създай Posh профил</h3>
+                <form role="form" name="registerForm" novalidate>
+                    <div class="form-group" ng-class="{ 'has-error': registerForm.userEmail.$dirty && registerForm.userEmail.$invalid }">
+                        <label for="userRegisterEmail" class="control-label">Email</label>
+                        <input type="email" ng-model="register.user.email" required class="form-control input-lg" id="userRegisterEmail" name="userEmail" placeholder="Въведи email">
+                        <div ng-show="registerForm.userEmail.$dirty && registerForm.userEmail.$invalid" class="text-danger">
+                            <span ng-show="registerForm.userEmail.$error.required">Моля въведете email.</span>
+                            <span ng-show="registerForm.userEmail.$error.email">Моля въведете валиден email.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error': registerForm.userFirstName.$dirty && registerForm.userFirstName.$invalid }">
+                        <label for="userFirstName" class="control-label">Име</label>
+                        <input type="text" ng-model="register.user.firstName" required class="form-control input-lg" id="userFirstName" name="userFirstName" placeholder="Име">
+                        <div ng-show="registerForm.userFirstName.$dirty && registerForm.userFirstName.$invalid" class="text-danger">
+                            <span ng-show="registerForm.userFirstName.$error.required">Моля въведете своето име.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error': registerForm.userLastName.$dirty && registerForm.userLastName.$invalid }">
+                        <label for="userLastName" class="control-label">Фамилия</label>
+                        <input type="text" ng-model="register.user.lastName" required class="form-control input-lg" id="userLastName" name="userLastName" placeholder="Фамилия">
+                        <div ng-show="registerForm.userLastName.$dirty && registerForm.userLastName.$invalid" class="text-danger">
+                            <span ng-show="registerForm.userLastName.$error.required">Моля въведете вашата фамилия.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error': registerForm.userPassword.$dirty && registerForm.userPassword.$invalid }">
+                        <label for="userPassword" class="control-label">Парола</label>
+                        <input type="password" ng-model="register.user.password" required ng-minlength="6" class="form-control input-lg" id="userPassword" name="userPassword" placeholder="Парола">
+                        <div ng-show="registerForm.userPassword.$dirty && registerForm.userPassword.$invalid" class="text-danger">
+                            <span ng-show="registerForm.userPassword.$error.required">Моля въведете парола.</span>
+                            <span ng-show="registerForm.userPassword.$error.minlength">Паролата трябва да е поне 6 символа</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error': registerForm.confirmPassword.$dirty && registerForm.confirmPassword.$invalid }">
+                        <label for="userPassword" class="control-label">Повторете паролата</label>
+                        <input type="password" ng-model="register.user.confirmPassword" repeat-password="userPassword" class="form-control input-lg" id="confirmPassword" name="confirmPassword" placeholder="Повторете паролата">
+                        <div ng-show="registerForm.confirmPassword.$dirty && registerForm.confirmPassword.$invalid" class="text-danger">
+                            <span ng-show="registerForm.confirmPassword.$error.repeat">Паролите не съвпадат</span>
+                        </div>
+                    </div>
+                    <button type="button" ng-disabled="!registerForm.$valid" class="btn btn-default btn-lg btn-block" ng-click="registerUser()">Създай Posh профил</button>
+                    <p class="form-control-static">
+                        <a href="javascript:void(0)" ng-click="state = 'login'">
+                            <i class="glyphicon glyphicon-circle-arrow-right"></i>
+                            Влез с Posh профил
+                        </a>
+                    </p>
+                </form>
+            </div>
+            <div class="DividerChoice Login-panel">&nbsp;</div>
+        </div>
+        <div class="col-md-6">
+            <h3>Влез с</h3>
+            <ul class="public-providers-list">
+                <li ng-repeat="externalLogin in externalLogins">
+                    <button type="button" class="btn btn-primary btn-lg btn-block public-provider public-provider-{{externalLogin.name}}" ng-click="loginWithProvider(externalLogin)">{{externalLogin.name}}</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

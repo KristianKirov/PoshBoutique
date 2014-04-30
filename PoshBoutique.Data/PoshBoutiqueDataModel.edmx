@@ -1,0 +1,577 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PoshBoutiqueModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ArticleCategories">
+          <Key>
+            <PropertyRef Name="AcrticleId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="AcrticleId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ArticleImages">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+            <PropertyRef Name="ImageUrl" />
+            <PropertyRef Name="IsDefault" />
+          </Key>
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Articles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrlName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ShortDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MaterialDescription" Type="nvarchar(max)" />
+          <Property Name="ThumbnailUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SizeTypeId" Type="int" Nullable="false" />
+          <Property Name="Visible" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrlName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentCategoryId" Type="int" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Colors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sizes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SizeTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Stocks">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+            <PropertyRef Name="SizeId" />
+            <PropertyRef Name="ColorId" />
+          </Key>
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="SizeId" Type="int" Nullable="false" />
+          <Property Name="ColorId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ArticleCategories_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
+          <End Role="ArticleCategories" Type="Self.ArticleCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArticleCategories">
+              <PropertyRef Name="AcrticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleCategories_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="ArticleCategories" Type="Self.ArticleCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArticleCategories">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArticleImages_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
+          <End Role="ArticleImages" Type="Self.ArticleImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArticleImages">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Articles_SizeTypes">
+          <End Role="SizeTypes" Type="Self.SizeTypes" Multiplicity="1" />
+          <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="SizeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Categories1" Type="Self.Categories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Categories1">
+              <PropertyRef Name="ParentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sizes_SizeTypes">
+          <End Role="SizeTypes" Type="Self.SizeTypes" Multiplicity="1" />
+          <End Role="Sizes" Type="Self.Sizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sizes">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Colors">
+          <End Role="Colors" Type="Self.Colors" Multiplicity="1" />
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Colors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="ColorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Sizes">
+          <End Role="Sizes" Type="Self.Sizes" Multiplicity="1" />
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sizes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PoshBoutiqueModelStoreContainer">
+          <EntitySet Name="ArticleCategories" EntityType="Self.ArticleCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SizeTypes" EntityType="Self.SizeTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArticleImages" EntityType="Self.ArticleImages" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ArticleImages].[ArticleId] AS [ArticleId], 
+    [ArticleImages].[ImageUrl] AS [ImageUrl], 
+    [ArticleImages].[IsDefault] AS [IsDefault]
+    FROM [dbo].[ArticleImages] AS [ArticleImages]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ArticleCategories_Articles" Association="Self.FK_ArticleCategories_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="ArticleCategories" EntitySet="ArticleCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleCategories_Categories" Association="Self.FK_ArticleCategories_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="ArticleCategories" EntitySet="ArticleCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArticleImages_Articles" Association="Self.FK_ArticleImages_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="ArticleImages" EntitySet="ArticleImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Articles_SizeTypes" Association="Self.FK_Articles_SizeTypes">
+            <End Role="SizeTypes" EntitySet="SizeTypes" />
+            <End Role="Articles" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Categories" Association="Self.FK_Categories_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Categories1" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sizes_SizeTypes" Association="Self.FK_Sizes_SizeTypes">
+            <End Role="SizeTypes" EntitySet="SizeTypes" />
+            <End Role="Sizes" EntitySet="Sizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Articles" Association="Self.FK_Stocks_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Colors" Association="Self.FK_Stocks_Colors">
+            <End Role="Colors" EntitySet="Colors" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Sizes" Association="Self.FK_Stocks_Sizes">
+            <End Role="Sizes" EntitySet="Sizes" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PoshBoutiqueModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrlName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaterialDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ThumbnailUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SizeTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArticleImages" Relationship="Self.FK_ArticleImages_Articles" FromRole="Articles" ToRole="ArticleImages" />
+          <NavigationProperty Name="SizeType" Relationship="Self.FK_Articles_SizeTypes" FromRole="Articles" ToRole="SizeTypes" />
+          <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Articles" FromRole="Articles" ToRole="Stocks" />
+          <NavigationProperty Name="Categories" Relationship="Self.ArticleCategories" FromRole="Articles" ToRole="Categories" />
+          <Property Name="Visible" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrlName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentCategoryId" Type="Int32" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ChildCategories" Relationship="Self.FK_Categories_Categories" FromRole="Categories" ToRole="Categories1" />
+          <NavigationProperty Name="ParentCategory" Relationship="Self.FK_Categories_Categories" FromRole="Categories1" ToRole="Categories" />
+          <NavigationProperty Name="Articles" Relationship="Self.ArticleCategories" FromRole="Categories" ToRole="Articles" />
+        </EntityType>
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Colors" FromRole="Colors" ToRole="Stocks" />
+        </EntityType>
+        <EntityType Name="Size">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SizeType" Relationship="Self.FK_Sizes_SizeTypes" FromRole="Sizes" ToRole="SizeTypes" />
+          <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Sizes" FromRole="Sizes" ToRole="Stocks" />
+        </EntityType>
+        <EntityType Name="SizeType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Articles" Relationship="Self.FK_Articles_SizeTypes" FromRole="SizeTypes" ToRole="Articles" />
+          <NavigationProperty Name="Sizes" Relationship="Self.FK_Sizes_SizeTypes" FromRole="SizeTypes" ToRole="Sizes" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+            <PropertyRef Name="SizeId" />
+            <PropertyRef Name="ColorId" />
+          </Key>
+          <Property Name="ArticleId" Type="Int32" Nullable="false" />
+          <Property Name="SizeId" Type="Int32" Nullable="false" />
+          <Property Name="ColorId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Stocks_Articles" FromRole="Stocks" ToRole="Articles" />
+          <NavigationProperty Name="Color" Relationship="Self.FK_Stocks_Colors" FromRole="Stocks" ToRole="Colors" />
+          <NavigationProperty Name="Size" Relationship="Self.FK_Stocks_Sizes" FromRole="Stocks" ToRole="Sizes" />
+        </EntityType>
+        <EntityType Name="ArticleImage">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+            <PropertyRef Name="ImageUrl" />
+            <PropertyRef Name="IsDefault" />
+          </Key>
+          <Property Name="ArticleId" Type="Int32" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_ArticleImages_Articles" FromRole="ArticleImages" ToRole="Articles" />
+        </EntityType>
+        <Association Name="FK_ArticleImages_Articles">
+          <End Role="Articles" Type="Self.Article" Multiplicity="1" />
+          <End Role="ArticleImages" Type="Self.ArticleImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ArticleImages">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Articles_SizeTypes">
+          <End Role="SizeTypes" Type="Self.SizeType" Multiplicity="1" />
+          <End Role="Articles" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="SizeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Articles">
+          <End Role="Articles" Type="Self.Article" Multiplicity="1" />
+          <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Categories">
+          <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Categories1" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Categories1">
+              <PropertyRef Name="ParentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Colors">
+          <End Role="Colors" Type="Self.Color" Multiplicity="1" />
+          <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Colors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="ColorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sizes_SizeTypes">
+          <End Role="SizeTypes" Type="Self.SizeType" Multiplicity="1" />
+          <End Role="Sizes" Type="Self.Size" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sizes">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Sizes">
+          <End Role="Sizes" Type="Self.Size" Multiplicity="1" />
+          <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sizes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ArticleCategories">
+          <End Role="Articles" Type="Self.Article" Multiplicity="*" />
+          <End Role="Categories" Type="Self.Category" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="PoshBoutiqueData" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Articles" EntityType="Self.Article" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Colors" EntityType="Self.Color" />
+          <EntitySet Name="Sizes" EntityType="Self.Size" />
+          <EntitySet Name="SizeTypes" EntityType="Self.SizeType" />
+          <EntitySet Name="Stocks" EntityType="Self.Stock" />
+          <EntitySet Name="ArticleImages" EntityType="Self.ArticleImage" />
+          <AssociationSet Name="FK_ArticleImages_Articles" Association="Self.FK_ArticleImages_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="ArticleImages" EntitySet="ArticleImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Articles_SizeTypes" Association="Self.FK_Articles_SizeTypes">
+            <End Role="SizeTypes" EntitySet="SizeTypes" />
+            <End Role="Articles" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Articles" Association="Self.FK_Stocks_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Categories" Association="Self.FK_Categories_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Categories1" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Colors" Association="Self.FK_Stocks_Colors">
+            <End Role="Colors" EntitySet="Colors" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sizes_SizeTypes" Association="Self.FK_Sizes_SizeTypes">
+            <End Role="SizeTypes" EntitySet="SizeTypes" />
+            <End Role="Sizes" EntitySet="Sizes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Sizes" Association="Self.FK_Stocks_Sizes">
+            <End Role="Sizes" EntitySet="Sizes" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+          <AssociationSet Name="ArticleCategories" Association="Self.ArticleCategories">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="Categories" EntitySet="Categories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PoshBoutiqueModelStoreContainer" CdmEntityContainer="PoshBoutiqueData">
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
+              <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UrlName" ColumnName="UrlName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+                <ScalarProperty Name="MaterialDescription" ColumnName="MaterialDescription" />
+                <ScalarProperty Name="ThumbnailUrl" ColumnName="ThumbnailUrl" />
+                <ScalarProperty Name="SizeTypeId" ColumnName="SizeTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UrlName" ColumnName="UrlName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ParentCategoryId" ColumnName="ParentCategoryId" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Colors">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Color">
+              <MappingFragment StoreEntitySet="Colors">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sizes">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Size">
+              <MappingFragment StoreEntitySet="Sizes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SizeTypes">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.SizeType">
+              <MappingFragment StoreEntitySet="SizeTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stocks">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Stock">
+              <MappingFragment StoreEntitySet="Stocks">
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="ColorId" ColumnName="ColorId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArticleImages">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.ArticleImage">
+              <MappingFragment StoreEntitySet="ArticleImages">
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ArticleCategories" TypeName="PoshBoutiqueModel.ArticleCategories" StoreEntitySet="ArticleCategories">
+            <EndProperty Name="Articles">
+              <ScalarProperty Name="Id" ColumnName="AcrticleId" />
+            </EndProperty>
+            <EndProperty Name="Categories">
+              <ScalarProperty Name="Id" ColumnName="CategoryId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,18 @@
+﻿<a class="product-thumbnail" ng-href="#/catalogue/{{categoryUrl}}/view/{{item.urlName}}">
+    <div class="product-thumbnail-image">
+        <strong>{{item.title}}</strong>
+        <img ng-src="{{item.thumbnailUrl}}" alt="{{item.title}}">
+    </div>
+    <div>
+        <p>
+            {{item.shortDescription}}
+        </p>
+        <div class="buy-panel">
+            <strong>123,99 лв.</strong>
+            <button class="btn btn-default btn-block" role="button">
+                <i class="glyphicon glyphicon-plus"></i>
+                Добави в количка
+            </button>
+        </div>
+    </div>
+</a>

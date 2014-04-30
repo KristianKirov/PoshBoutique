@@ -1,0 +1,26 @@
+﻿<div>
+    <div class="images-view-main-area" magnifyable m-width="600" m-height="900">
+        <div class="arrow arrow--left hide-magnfier" ng-click="selectPrevImage()">
+            <i class="glyphicon glyphicon-chevron-left hide-magnfier"></i>
+        </div>
+
+        <div class="arrow arrow--right hide-magnfier" ng-click="selectNextImage()">
+            <i class="glyphicon glyphicon-chevron-right hide-magnfier"></i>
+        </div>
+        <div class="large-image-view" ng-style="{'background-image':'url(' + selectedImage.largeUrl + ')'}" ng-click="openSelectedImage()"></div>
+        <img ng-src="{{selectedImage.mediumUrl}}" ng-click="openSelectedImage()" />
+    </div>
+    <div class="images-view-picker">
+        <div class="arrow arrow--left" ng-click="scrollPickerLeft()" ng-show="showLeftArrow">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+        </div>
+        <div class="arrow arrow--right" ng-click="scrollPickerRight()" ng-show="showRightArrow">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </div>
+        <ul>
+            <li ng-repeat="image in images" ng-class="{ 'selected': isImageSelected(image) }">
+                <img ng-src="{{image.smallUrl}}" ng-click="selectImage(image);" />
+            </li>
+        </ul>
+    </div>
+</div>

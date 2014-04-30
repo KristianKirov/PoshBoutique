@@ -1,0 +1,108 @@
+﻿@model PoshBoutique.Data.Article
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Article</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UrlName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UrlName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShortDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThumbnailUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThumbnailUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeType.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeType.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Visible)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Visible)
+        </dd>
+
+        <dt>
+            Categories
+        </dt>
+
+        <dd>
+            @foreach (PoshBoutique.Data.Category category in (IEnumerable<PoshBoutique.Data.Category>)ViewBag.Categories)
+            {
+                <span class="bg-info">@category.Title</span>
+            }
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

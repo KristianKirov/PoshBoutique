@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="poshBoutiqueApp">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" ui-sref="home">Posh</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a ng-href="#/catalogue/all">Каталог</a></li>
+                    <li><a ui-sref="home">Ново</a></li>
+                    <li><a ui-sref="home">Намаление</a></li>
+                    <li><a ui-sref="home">Препоръчани</a></li>
+                    <li><a ui-sref="home">Клуб лоялен клиент</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <form action="" class="navbar-form">
+                            <div class="navbar--search">
+                                <div class="pull-right">
+                                    <button class="btn btn-info highlighted-bg">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                                <input type="Search" placeholder="..." class="form-control pull-right" />
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                        <a ui-sref="home" tooltip-placement="bottom" tooltip="Любими" class="fav">
+                            <i class="glyphicon glyphicon-star-empty highlighted"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kristian <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a ui-sref="home"><i class="glyphicon glyphicon-user"></i> Профил</a></li>
+                            <li><a ui-sref="home"><i class="glyphicon glyphicon-send"></i> Поръчки</a></li>
+                            <li class="divider"></li>
+                            <li><a ui-sref="home"><i class="glyphicon glyphicon-off"></i> Изход</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-shopping-cart"></i>(120.00 лв)</a>
+                        <div class="dropdown-menu">
+                            <table class="table table-cart table-hover">
+                                <tr class="noborder"><td nowrap>1 x</td><td><a ui-sref="home">Рокля</a></td><td nowrap><i>70.00 лв</i> <a class="close" aria-hidden="true">&times;</a></td></tr>
+                                <tr class="noborder"><td nowrap>1 x</td><td><a ui-sref="home">Пола</a></td> <td nowrap><i>50.00 лв</i> <a class="close" aria-hidden="true">&times;</a></td></tr>
+                                <tr><td colspan="2"><b>Доставка:</b></td><td><i>0.00 лв</i></td></tr>
+                                <tr class="noborder"><td colspan="2"><b>Общо:</b></td><td><i>120.00 лв</i></td></tr>
+                            </table>
+                            <div class="btn-cart">
+                                <a ui-sref="home" class="btn btn-success btn-block">Поръчай</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container-fluid body-content">
+        @RenderBody()
+        
+        <aside class="aside-right colapsed" ng-class="{ 'expanded': expanded, 'colapsed': !expanded }">
+            <div>
+                <div class="aside--table">
+                    <div class="block-item block-item--header">
+                        <div class="block-item-cell expander" ng-click="expanded = !expanded">
+                            <div tooltip-placement="left" tooltip="Меню">
+                                <i class="glyphicon glyphicon-th"></i>
+                            </div>
+                        </div>
+                        <div class="block-item-cell">&nbsp;</div>
+                    </div>
+
+                    <div class="block-item block-item--header">
+                        <div class="block-item-cell expander" ng-click="expanded = !expanded">
+                            <div tooltip-placement="left" tooltip="Абонирай се">
+                                <i class="glyphicon glyphicon-envelope"></i>
+                            </div>
+                        </div>
+                        <div class="block-item-cell">Абонирай се</div>
+                    </div>
+                    <div class="block-item">
+                        <div class="block-item-cell">
+                            &nbsp;
+                        </div>
+                        <div class="block-item-cell">
+                            <div class="block-item-cell--content">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Вашият e-mail">
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-block">Абонирай се за новини</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block-item block-item--header">
+                        <div class="block-item-cell expander" ng-click="expanded = !expanded">
+                            <div tooltip-placement="left" tooltip="Информация">
+                                <i class="glyphicon glyphicon-info-sign"></i>
+                            </div>
+                        </div>
+                        <div class="block-item-cell">Информация</div>
+                    </div>
+                    <div class="block-item">
+                        <div class="block-item-cell">
+                            &nbsp;
+                        </div>
+                        <div class="block-item-cell">
+                            <div class="block-item-cell--content">
+                                <ul class="nav">
+                                    <li><a ui-sref="home">Провила за условия и ползване</a></li>
+                                    <li><a ui-sref="home">Таблица с размери</a></li>
+                                    <li><a ui-sref="home">Поръчка и доставка</a></li>
+                                    <li><a ui-sref="home">Замяна и връщане</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block-item block-item--header">
+                        <div class="block-item-cell expander" ng-click="expanded = !expanded">
+                            <div tooltip-placement="left" tooltip="Свържете се с нас">
+                                <i class="glyphicon glyphicon-phone-alt"></i>
+                            </div>
+                        </div>
+                        <div class="block-item-cell">Свържете се с нас</div>
+                    </div>
+                    <div class="block-item">
+                        <div class="block-item-cell">
+                            &nbsp;
+                        </div>
+                        <div class="block-item-cell">
+                            <div class="block-item-cell--content">
+                                <address>
+                                    <strong>Бутик Пош</strong><br>
+                                    Студентски град 18<br>
+                                    София, България<br>
+                                    <abbr title="Телефон">Тел:</abbr> 0888 88 88 88
+                                </address>
+                                <address>
+                                    <strong>Мая Иванова</strong><br>
+                                    <a href="mailto:posh.boutque@gmail.com">boutque@gmail.com</a>
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block-item block-item--header">
+                        <div class="block-item-cell expander" ng-click="expanded = !expanded">
+                            <div tooltip-placement="left" tooltip="За нас">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </div>
+                        </div>
+                        <div class="block-item-cell">За нас</div>
+                    </div>
+                    <div class="block-item">
+                        <div class="block-item-cell">
+                            &nbsp;
+                        </div>
+                        <div class="block-item-cell">
+                            <div class="block-item-cell--content">
+                                <a href="#">За бутик Posh</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        
+        
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/app")
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

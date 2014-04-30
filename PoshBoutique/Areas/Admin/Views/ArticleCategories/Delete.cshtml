@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Article category</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Article: @ViewBag.Article.Title
+        </dt>
+
+        <dd>
+            Category: @ViewBag.Category.Title
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to article", "Edit", "Articles", new RouteValueDictionary() { { "id", ViewBag.Article.Id } }, null)
+        </div>
+    }
+</div>

@@ -1,0 +1,16 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-danger">
+            <strong>Възникна грешка при автентикация</strong>
+            <div ng-if="code == 0">
+                {{data}}
+            </div>
+            <div ng-if="code == 1">
+                Профил с email <strong>{{data}}</strong> вече съществува. Ако този профил е ваш, моля влезте в него и асоциирайте профила, през който се опитахте да влезете тoку що.
+            </div>
+            <div ng-if="code != 0 && code != 1">
+                Възникна неизвестна грешка. Моля свържете се с нас!
+            </div>
+        </div>
+    </div>
+</div>

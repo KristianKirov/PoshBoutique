@@ -1,0 +1,41 @@
+﻿<form class="form-horizontal" role="form" name="orderForm">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Размер:</label>
+        <div class="col-sm-9">
+            <select ng-options="s.name for s in product.sizes" ng-model="selectedSize" class="form-control" ng-change="selectedSizeChanged()">
+                <option value="">-- Select --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-show="hasColors()">
+        <label class="col-sm-3 control-label">Цвят:</label>
+        <div class="col-sm-9">
+            <select ng-options="c.title for c in selectedSize.colors" ng-model="selectedColor" class="form-control" ng-disabled="hasSingleColor()" ng-change="selectedColorChanged()">
+                <option value="">-- Select --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-show="availableQuantity > 0">
+        <label class="col-sm-3 control-label">Брой:</label>
+        <div class="col-sm-9">
+            <input type="number" min="0" ng-model="quantity" class="form-control" />
+        </div>
+    </div>
+
+    <div class="alert alert-danger" style="margin-bottom: 15px;" ng-show="quantity > availableQuantity && selectedSize != null && (selectedColor != null || (selectedColor == null && !hasColors()))">
+        <strong>Недостатъчна наличност!</strong>
+        Не разполагаме с <strong>{{quantity}}</strong> на брой артикула с размер <strong>{{selectedSize.name}}</strong><span ng-show="selectedColor != null"> и цвят <strong>{{selectedColor.title}}</strong></span>.<br />
+    Моля опитайте с по-малко количество или се <a href="#" class="alert-link">свържете с нас</a>.
+</div>
+
+    <div class="form-group" ng-show="availableQuantity > 0 && quantity > 0 && quantity <= availableQuantity">
+        <div class="col-sm-6">
+            <button type="button" class="btn btn-info btn-block">Купи</button>
+        </div>
+        <div class="col-sm-6">
+            <button type="button" class="btn btn-info btn-block">Добави</button>
+        </div>
+    </div>
+</form>
