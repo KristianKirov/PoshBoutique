@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0b93e4d850dd49469fe3e41c3a60f773" Name="Diagram1">
-        <EntityTypeShape EntityType="PoshBoutiqueModel.Article" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PoshBoutiqueModel.Category" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
+      <Diagram DiagramId="cdf236c1b6f04336a0f9af746a0360f7" Name="Diagram1">
+        <EntityTypeShape EntityType="PoshBoutiqueModel.Article" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.Category" Width="2.125" PointX="5.25" PointY="3" IsExpanded="true" />
         <EntityTypeShape EntityType="PoshBoutiqueModel.Color" Width="1.5" PointX="6" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PoshBoutiqueModel.Size" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PoshBoutiqueModel.SizeType" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />

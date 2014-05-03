@@ -12,7 +12,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
 {
     public class ArticleImagesController : Controller
     {
-        private PoshBoutiqueData db = new PoshBoutiqueData();
+        private Entities db = new Entities();
 
         // GET: /Admin/ArticleImages/
         public ActionResult Index()

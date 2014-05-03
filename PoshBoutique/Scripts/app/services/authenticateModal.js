@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("authenticateModal", function ($modal) {
+﻿poshBoutiqueApp.factory("authenticateModal", function ($modal, $window) {
     return {
         open: function (returnUrl) {
             returnUrl = returnUrl || $window.location.href;
@@ -6,11 +6,11 @@
             $modal.open({
                 templateUrl: "partials/authenticateModal.html",
                 resolve: {
-                    externalLogins: function (accountDataService, $window) {
+                    externalLogins: function (accountDataService) {
                         return accountDataService.getExternalLogins(returnUrl, true);
                     }
                 },
-                controller: function ($scope, externalLogins, accountDataService, $window, authenticationStorage, currentUser) {
+                controller: function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser) {
                     $scope.login = {};
                     $scope.register = {};
 

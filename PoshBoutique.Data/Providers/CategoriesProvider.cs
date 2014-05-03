@@ -14,7 +14,7 @@ namespace PoshBoutique.Data.Providers
         {
             List<CategoryModel> categoriesTree = new List<CategoryModel>();
 
-            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            using (Entities dataContext = new Entities())
             {
                 CategoriesConverter converter = new CategoriesConverter();
                 List<CategoryModel> allCategories = dataContext.Categories.OrderBy(c => c.OrderIndex).

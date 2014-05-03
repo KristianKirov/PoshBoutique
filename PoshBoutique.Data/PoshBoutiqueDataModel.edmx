@@ -4,14 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PoshBoutiqueModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PoshBoutiqueModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ArticleCategories">
           <Key>
-            <PropertyRef Name="AcrticleId" />
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="Articles_Id" />
+            <PropertyRef Name="Categories_Id" />
           </Key>
-          <Property Name="AcrticleId" Type="int" Nullable="false" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Articles_Id" Type="int" Nullable="false" />
+          <Property Name="Categories_Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -33,7 +33,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
           <Property Name="UrlName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
-          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ShortDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MaterialDescription" Type="nvarchar(max)" />
@@ -93,7 +93,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ArticleCategories">
-              <PropertyRef Name="AcrticleId" />
+              <PropertyRef Name="Articles_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -105,7 +105,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ArticleCategories">
-              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="Categories_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -245,7 +245,8 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PoshBoutiqueModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -263,11 +264,11 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
           <Property Name="MaterialDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ThumbnailUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SizeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Visible" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ArticleImages" Relationship="Self.FK_ArticleImages_Articles" FromRole="Articles" ToRole="ArticleImages" />
           <NavigationProperty Name="SizeType" Relationship="Self.FK_Articles_SizeTypes" FromRole="Articles" ToRole="SizeTypes" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Articles" FromRole="Articles" ToRole="Stocks" />
           <NavigationProperty Name="Categories" Relationship="Self.ArticleCategories" FromRole="Articles" ToRole="Categories" />
-          <Property Name="Visible" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -423,7 +424,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
           <End Role="Articles" Type="Self.Article" Multiplicity="*" />
           <End Role="Categories" Type="Self.Category" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="PoshBoutiqueData" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Articles" EntityType="Self.Article" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Colors" EntityType="Self.Color" />
@@ -469,11 +470,10 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PoshBoutiqueModelStoreContainer" CdmEntityContainer="PoshBoutiqueData">
+        <EntityContainerMapping StorageEntityContainer="PoshBoutiqueModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
               <MappingFragment StoreEntitySet="Articles">
-                <ScalarProperty Name="Visible" ColumnName="Visible" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UrlName" ColumnName="UrlName" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -484,6 +484,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
                 <ScalarProperty Name="MaterialDescription" ColumnName="MaterialDescription" />
                 <ScalarProperty Name="ThumbnailUrl" ColumnName="ThumbnailUrl" />
                 <ScalarProperty Name="SizeTypeId" ColumnName="SizeTypeId" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -545,10 +546,10 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
           </EntitySetMapping>
           <AssociationSetMapping Name="ArticleCategories" TypeName="PoshBoutiqueModel.ArticleCategories" StoreEntitySet="ArticleCategories">
             <EndProperty Name="Articles">
-              <ScalarProperty Name="Id" ColumnName="AcrticleId" />
+              <ScalarProperty Name="Id" ColumnName="Articles_Id" />
             </EndProperty>
             <EndProperty Name="Categories">
-              <ScalarProperty Name="Id" ColumnName="CategoryId" />
+              <ScalarProperty Name="Id" ColumnName="Categories_Id" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
