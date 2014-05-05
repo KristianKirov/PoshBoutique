@@ -1,5 +1,3 @@
-﻿poshBoutiqueApp.controller('homeController', function ($scope, authenticateModal) {
+﻿poshBoutiqueApp.controller('homeController', function ($scope) {
     $scope.data = "works";
-
-    authenticateModal.open();
 });

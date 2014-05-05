@@ -17,7 +17,7 @@ namespace PoshBoutique.Data.Providers
         public ArticlesListModel GetArticlesInCategory(string categoryUrl, string filter, string orderBy, SortDirection sortDirection)
         {
             ArticlesListModel articlesListModel = null;
-            using (Entities dataContext = new Entities())
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
                 Category category = dataContext.Categories.FirstOrDefault(c => c.UrlName == categoryUrl);
                 if (category != null)
@@ -51,7 +51,7 @@ namespace PoshBoutique.Data.Providers
         public FullArticleModel GetFullArticleByUrlName(string urlName)
         {
             FullArticleModel articleModel = null;
-            using (Entities dataContext = new Entities())
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
                 string l = string.Empty;
 

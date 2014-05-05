@@ -18,10 +18,16 @@
 
                     var onUserAuthenticated = function (accessToken) {
                         if (accessToken) {
-                            authenticationStorage.setAccesToken(accessToken, $scope.keepMeLoggedIn);
+                            authenticationStorage.setAccesToken(accessToken, $scope.login.keepMeLoggedIn);
                             currentUser.loadData();
-                            $window.location = returnUrl;
-                            $scope.close(true);
+                            $scope.$close(true);
+
+                            if ($window.location.href == returnUrl) {
+                                $window.location.reload();
+                            }
+                            else {
+                                $window.location = returnUrl;
+                            }
                         }
                     }
 

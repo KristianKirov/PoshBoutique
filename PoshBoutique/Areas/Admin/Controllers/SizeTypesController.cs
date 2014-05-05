@@ -12,7 +12,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
 {
     public class SizeTypesController : Controller
     {
-        private Entities db = new Entities();
+        private PoshBoutiqueData db = new PoshBoutiqueData();
 
         // GET: /Admin/SizeTypes/
         public ActionResult Index()

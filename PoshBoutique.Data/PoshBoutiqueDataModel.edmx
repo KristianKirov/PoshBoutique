@@ -424,7 +424,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
           <End Role="Articles" Type="Self.Article" Multiplicity="*" />
           <End Role="Categories" Type="Self.Category" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="PoshBoutiqueData" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Articles" EntityType="Self.Article" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Colors" EntityType="Self.Color" />
@@ -470,7 +470,7 @@ warning 6002: The table/view 'PoshBoutique.dbo.ArticleImages' does not have a pr
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PoshBoutiqueModelStoreContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="PoshBoutiqueModelStoreContainer" CdmEntityContainer="PoshBoutiqueData">
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
               <MappingFragment StoreEntitySet="Articles">

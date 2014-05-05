@@ -13,9 +13,9 @@ namespace PoshBoutique.Data
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities : DbContext
+    public partial class PoshBoutiqueData : DbContext
     {
-        public Entities()
+        public PoshBoutiqueData()
             : base("name=PoshBoutiqueData")
         {
         }

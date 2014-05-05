@@ -1,0 +1,5 @@
+﻿Validate state during authentication
+move external-login-authenticated.html to state in the app
+handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url
+respect the ".expires" value returned by the /token endpoint and remove the token after that date
+handle expired tokens in smarter way

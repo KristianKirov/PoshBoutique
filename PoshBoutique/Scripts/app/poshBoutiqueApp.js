@@ -60,12 +60,15 @@ poshBoutiqueApp
                   categoriesTree: function (categoriesDataService) {
                       return categoriesDataService.getTree();
                   }
+              },
+              data: {
+                  authenticated: true
               }
           })
               .state('catalogue.category', {
                   url: "/*categoryUrl",
                   templateUrl: "partials/productsListPlaceholder.html",
-                  controller: function ($scope, $stateParams, listData) {
+                  controller: function ($scope, listData) {
                       console.log("2: HITTTTTTTTTTTTTTT!!!!!");
                       $scope.listData = listData;
                   },
@@ -83,6 +86,13 @@ poshBoutiqueApp
                 url: "/autherror",
                 templateUrl: "partials/autherror.html",
                 controller: 'autherrorController'
+            })
+            .state('login', {
+                url: "/login?returnUrl",
+                controller: function ($stateParams, authenticateModal) {
+                    debugger;
+                    authenticateModal.open($stateParams.returnUrl);
+                }
             });
         //.state('catalogue.category.viewItem', {
         //    url: "/view/:itemUrl",
@@ -104,7 +114,14 @@ poshBoutiqueApp
 
         articleListParamsProvider.setOrderDefaults(order);
 
-        $httpProvider.interceptors.push(function ($q, $window, authenticationStorage) {
+        $httpProvider.interceptors.push(function ($q, $window, authenticationStorage, $injector) {
+            function onUnauthorized() {
+                var returnUrl = $window.location.href;
+
+                var $state = $injector.get("$state");
+                $state.transitionTo("login", { returnUrl: returnUrl })
+            };
+
             return {
                 'request': function (config) {
                     var accessToken = authenticationStorage.getAccesToken();
@@ -120,9 +137,17 @@ poshBoutiqueApp
                     return $q.reject(rejection);
                 },
                 'response': function (response) {
+                    if (response.status === 401) {
+                        onUnauthorized();
+                    }
+
                     return response || $q.when(response);
                 },
                 'responseError': function (rejection) {
+                    if (rejection.status === 401) {
+                        onUnauthorized();
+                    }
+
                     return $q.reject(rejection);
                 }
             };
@@ -168,8 +193,8 @@ poshBoutiqueApp
             return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
         }];
     }).run([
-  '$rootScope', '$modalStack', 'ngProgressLite', 'currentUser',
-    function ($rootScope, $modalStack, ngProgressLite, currentUser) {
+  '$rootScope', '$modalStack', 'ngProgressLite', 'currentUser', 'authenticateModal', '$window',
+    function ($rootScope, $modalStack, ngProgressLite, currentUser, authenticateModal, $window) {
         currentUser.loadData();
 
         $rootScope.$on('$locationChangeStart', function () {
@@ -179,7 +204,19 @@ poshBoutiqueApp
             }
         });
 
-        $rootScope.$on('$stateChangeStart', function () {
+        $rootScope.$on('$stateChangeStart', function (event, nextState) {
+            debugger;
+            if (nextState.data) {
+                var authenticate = nextState.data.authenticated;
+                if (authenticate && !currentUser.isAuthenticated) {
+                    event.preventDefault();
+
+                    var returnUrl = $window.location.href;
+                    authenticateModal.open(returnUrl);
+                    return;
+                }
+            }
+            
             ngProgressLite.start();
         });
 
