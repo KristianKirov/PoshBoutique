@@ -1,0 +1,10 @@
+﻿<li>
+    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" ng-show="hasData()">{{currentUser.firstName}} <b class="caret"></b></a>
+    <ul class="dropdown-menu" ng-show="hasData()">
+        <li><a ui-sref="home"><i class="glyphicon glyphicon-user"></i> Профил</a></li>
+        <li><a ui-sref="home"><i class="glyphicon glyphicon-send"></i> Поръчки</a></li>
+        <li class="divider"></li>
+        <li><a href="javascript:void(0)" ng-click="logout()"><i class="glyphicon glyphicon-off"></i> Изход</a></li>
+    </ul>
+    <a href="javascript:void(0)" ng-click="login()" ng-hide="hasData()">Вход/Регистрация</a>
+</li>

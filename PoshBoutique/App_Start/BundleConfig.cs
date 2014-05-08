@@ -32,6 +32,7 @@ namespace PoshBoutique
                 "~/Scripts/app/directives/magnifyable.js",
                 "~/Scripts/app/directives/configurePurchaseForm.js",
                 "~/Scripts/app/directives/repeatPassword.js",
+                "~/Scripts/app/directives/currentUserNav.js",
                 "~/Scripts/app/services/singleProductModal.js",
                 "~/Scripts/app/services/detailsViewParentState.js",
                 "~/Scripts/app/services/dataServices.js",

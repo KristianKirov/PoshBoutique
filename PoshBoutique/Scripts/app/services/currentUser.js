@@ -26,7 +26,17 @@
         else {
             setDefaults(false);
         }
-    }
+    };
+
+    user.logout = function () {
+        authenticationStorage.removeAccesToken();
+        setDefaults(false);
+    };
+
+    user.login = function (accessToken, persistent) {
+        authenticationStorage.setAccesToken(accessToken, persistent);
+        user.loadData();
+    };
 
     return user;
 });

@@ -1,5 +1,14 @@
 ﻿Validate state during authentication
 move external-login-authenticated.html to state in the app
-handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url
+-- handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url
 respect the ".expires" value returned by the /token endpoint and remove the token after that date
 handle expired tokens in smarter way
+http to https redirect
+responsivenes of top nav bar
+set title and meta description of the pages
+Implement search
+-- Logout
+-- Fix js error after login
+Hendle the case when you navigate to protected page and close the login screen
+Show error messages on logon/register screen
+Submit login/register form on enter key

@@ -2,7 +2,7 @@
 <html lang="en" ng-app="poshBoutiqueApp">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Posh Boutique</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @Styles.Render("~/Content/css")
@@ -50,17 +50,10 @@
                             <i class="glyphicon glyphicon-star-empty highlighted"></i>
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kristian <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="home"><i class="glyphicon glyphicon-user"></i> Профил</a></li>
-                            <li><a ui-sref="home"><i class="glyphicon glyphicon-send"></i> Поръчки</a></li>
-                            <li class="divider"></li>
-                            <li><a ui-sref="home"><i class="glyphicon glyphicon-off"></i> Изход</a></li>
-                        </ul>
+                    <li current-user-nav>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-shopping-cart"></i>(120.00 лв)</a>
+                        <a href class="dropdown-toggle"><i class="glyphicon glyphicon-shopping-cart"></i>(120.00 лв)</a>
                         <div class="dropdown-menu">
                             <table class="table table-cart table-hover">
                                 <tr class="noborder"><td nowrap>1 x</td><td><a ui-sref="home">Рокля</a></td><td nowrap><i>70.00 лв</i> <a class="close" aria-hidden="true">&times;</a></td></tr>

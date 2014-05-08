@@ -269,6 +269,7 @@
     <Content Include="partials\autherror.html" />
     <Content Include="partials\catalogue.html" />
     <Content Include="partials\configurePurchaseForm.html" />
+    <Content Include="partials\currentUserNav.html" />
     <Content Include="partials\home.html" />
     <Content Include="partials\imagesView.html" />
     <Content Include="partials\productItem.html" />
@@ -303,6 +304,7 @@
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
     <Content Include="Scripts\app\directives\imagesView.js" />
     <Content Include="Scripts\app\directives\magnifyable.js" />
+    <Content Include="Scripts\app\directives\currentUserNav.js" />
     <Content Include="Scripts\app\directives\productItem.js" />
     <Content Include="Scripts\app\directives\productsList.js" />
     <Content Include="Scripts\app\directives\repeatPassword.js" />

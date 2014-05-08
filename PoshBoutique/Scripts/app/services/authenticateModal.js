@@ -10,7 +10,7 @@
                         return accountDataService.getExternalLogins(returnUrl, true);
                     }
                 },
-                controller: function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser) {
+                controller: function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser, $state) {
                     $scope.login = {};
                     $scope.register = {};
 
@@ -18,12 +18,13 @@
 
                     var onUserAuthenticated = function (accessToken) {
                         if (accessToken) {
-                            authenticationStorage.setAccesToken(accessToken, $scope.login.keepMeLoggedIn);
-                            currentUser.loadData();
-                            $scope.$close(true);
+                            var rememberMe = $scope.login.keepMeLoggedIn;
+                            currentUser.login(accessToken, rememberMe);
+                            $scope.$destroy();
+                            $scope.$close();
 
                             if ($window.location.href == returnUrl) {
-                                $window.location.reload();
+                                $state.reload();
                             }
                             else {
                                 $window.location = returnUrl;
