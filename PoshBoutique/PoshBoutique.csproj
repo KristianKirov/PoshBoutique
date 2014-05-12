@@ -280,6 +280,7 @@
     <Content Include="partials\productItem.html" />
     <Content Include="partials\productsListPlaceholder.html" />
     <Content Include="partials\productsList.html" />
+    <Content Include="partials\shoppingCartSummary.html" />
     <Content Include="partials\singleProductModal.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
@@ -314,6 +315,7 @@
     <Content Include="Scripts\app\directives\productItem.js" />
     <Content Include="Scripts\app\directives\productsList.js" />
     <Content Include="Scripts\app\directives\repeatPassword.js" />
+    <Content Include="Scripts\app\directives\shoppingCartSummary.js" />
     <Content Include="Scripts\app\poshBoutiqueApp.js" />
     <Content Include="Scripts\app\services\accountDataService.js" />
     <Content Include="Scripts\app\services\articleListParams.js" />

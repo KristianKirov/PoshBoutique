@@ -16,4 +16,4 @@ Remove asp session from web.config
 Single product view screen - connect to real service
 Add shopping cart states
 Add shopping cart navigation
-Add localization
+Add localization (internationalization)

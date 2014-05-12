@@ -15,6 +15,7 @@ namespace PoshBoutique
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                 "~/Scripts/angular.min.js",
+                "~/Scripts/i18n/angular-locale_bg-bg.js",
                 "~/Scripts/angular-ui-router.js",
                 "~/Scripts/angular-tree.js",
                 "~/Scripts/ngprogress-lite.min.js"
@@ -34,6 +35,7 @@ namespace PoshBoutique
                 "~/Scripts/app/directives/configurePurchaseForm.js",
                 "~/Scripts/app/directives/repeatPassword.js",
                 "~/Scripts/app/directives/currentUserNav.js",
+                "~/Scripts/app/directives/shoppingCartSummary.js",
                 "~/Scripts/app/services/singleProductModal.js",
                 "~/Scripts/app/services/detailsViewParentState.js",
                 "~/Scripts/app/services/dataServices.js",
