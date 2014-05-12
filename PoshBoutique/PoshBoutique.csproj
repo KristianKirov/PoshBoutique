@@ -267,6 +267,11 @@
     <Content Include="Global.asax" />
     <Content Include="partials\authenticateModal.html" />
     <Content Include="partials\autherror.html" />
+    <Content Include="partials\cart\cart.html" />
+    <Content Include="partials\cart\payment.html" />
+    <Content Include="partials\cart\confirmation.html" />
+    <Content Include="partials\cart\address.html" />
+    <Content Include="partials\cart\order.html" />
     <Content Include="partials\catalogue.html" />
     <Content Include="partials\configurePurchaseForm.html" />
     <Content Include="partials\currentUserNav.html" />
@@ -299,6 +304,7 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\controllers\autherrorController.js" />
+    <Content Include="Scripts\app\controllers\cartControllers.js" />
     <Content Include="Scripts\app\controllers\catalogueController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
@@ -316,6 +322,7 @@
     <Content Include="Scripts\app\services\currentUser.js" />
     <Content Include="Scripts\app\services\dataServices.js" />
     <Content Include="Scripts\app\services\detailsViewParentState.js" />
+    <Content Include="Scripts\app\services\shoppingCart.js" />
     <Content Include="Scripts\app\services\singleProductModal.js" />
     <Content Include="Scripts\app\utils.js" />
     <Content Include="Scripts\bootstrap.js" />

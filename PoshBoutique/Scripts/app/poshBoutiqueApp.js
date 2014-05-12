@@ -60,9 +60,6 @@ poshBoutiqueApp
                   categoriesTree: function (categoriesDataService) {
                       return categoriesDataService.getTree();
                   }
-              },
-              data: {
-                  authenticated: true
               }
           })
               .state('catalogue.category', {
@@ -93,7 +90,42 @@ poshBoutiqueApp
                     debugger;
                     authenticateModal.open($stateParams.returnUrl);
                 }
-            });
+            })
+            .state('cart', {
+                abstract: true,
+                url: "/cart",
+                templateUrl: "partials/cart/cart.html",
+                controller: 'cartController'
+            })
+                .state('cart.order', {
+                    url: "/order",
+                    templateUrl: "partials/cart/order.html",
+                    controller: 'cartOrderController'
+                })
+                .state('cart.address', {
+                    url: "/address",
+                    templateUrl: "partials/cart/address.html",
+                    controller: 'cartAddressController',
+                    data: {
+                        authenticated: true
+                    }
+                })
+                .state('cart.payment', {
+                    url: "/address",
+                    templateUrl: "partials/cart/payment.html",
+                    controller: 'cartPaymentController',
+                    data: {
+                        authenticated: true
+                    }
+                })
+                .state('cart.confirmation', {
+                    url: "/address",
+                    templateUrl: "partials/cart/confirmation.html",
+                    controller: 'cartConfirmationController',
+                    data: {
+                        authenticated: true
+                    }
+                });
         //.state('catalogue.category.viewItem', {
         //    url: "/view/:itemUrl",
         //    onEnter: function ($stateParams, singleProductModal) {

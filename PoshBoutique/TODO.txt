@@ -12,3 +12,8 @@ Implement search
 Hendle the case when you navigate to protected page and close the login screen
 Show error messages on logon/register screen
 Submit login/register form on enter key
+Remove asp session from web.config
+Single product view screen - connect to real service
+Add shopping cart states
+Add shopping cart navigation
+Add localization

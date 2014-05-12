@@ -26,6 +26,7 @@ namespace PoshBoutique
                 "~/Scripts/app/controllers/homeController.js",
                 "~/Scripts/app/controllers/catalogueController.js",
                 "~/Scripts/app/controllers/autherrorController.js",
+                "~/Scripts/app/controllers/cartControllers.js",
                 "~/Scripts/app/directives/productsList.js",
                 "~/Scripts/app/directives/productItem.js",
                 "~/Scripts/app/directives/imagesView.js",
@@ -40,7 +41,8 @@ namespace PoshBoutique
                 "~/Scripts/app/services/accountDataService.js",
                 "~/Scripts/app/services/authenticateModal.js",
                 "~/Scripts/app/services/authenticationStorage.js",
-                "~/Scripts/app/services/currentUser.js"
+                "~/Scripts/app/services/currentUser.js",
+                "~/Scripts/app/services/shoppingCart.js"
                 ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
