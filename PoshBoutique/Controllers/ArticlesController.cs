@@ -15,7 +15,13 @@ namespace PoshBoutique.Controllers
         {
             ArticlesProvider articlesProvider = new ArticlesProvider();
 
-            return this.Ok(articlesProvider.GetArticlesInCategory(categoryUrl, filter, orderBy, sortDirection));
+            ArticlesListModel articlesList = articlesProvider.GetArticlesInCategory(categoryUrl, filter, orderBy, sortDirection);
+            if (articlesList == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(articlesList);
         }
 
         public IHttpActionResult Get(string urlName)

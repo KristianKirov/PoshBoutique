@@ -11,6 +11,18 @@ namespace PoshBoutique.Data.Converters
     {
         public CategoryModel ToModel(Category category)
         {
+            if (category == null)
+            {
+                return new CategoryModel()
+                {
+                    Id = -1,
+                    OrderIndex = -1,
+                    ParentCategoryId = null,
+                    Title = "Всички",
+                    UrlName = "all"
+                };
+            }
+
             return new CategoryModel()
             {
                 Id = category.Id,

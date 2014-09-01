@@ -12,8 +12,8 @@ Implement search
 Hendle the case when you navigate to protected page and close the login screen
 Show error messages on logon/register screen
 Submit login/register form on enter key
-Remove asp session from web.config
-Single product view screen - connect to real service
+-- Remove asp session from web.config
+-- Single product view screen - connect to real service
 Add shopping cart states
 Add shopping cart navigation
 Add localization (internationalization)
@@ -25,3 +25,5 @@ https redirect + www redirect
 Add items to shopping cart
 Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
 Related products
+details window remove details url on close when directly navigated to the detail view
+categories tree autoexpand and select the node depending on the selected category on first request

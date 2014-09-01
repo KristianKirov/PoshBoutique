@@ -14,6 +14,32 @@ namespace PoshBoutique.Data.Models
 
         public int Quantity { get; set; }
 
-        public IEnumerable<ColorModel> Colors { get; set; }
+        public int OrderIndex { get; set; }
+
+        private List<ColorModel> colors;
+
+        public IEnumerable<ColorModel> Colors
+        {
+            get
+            {
+                return colors;
+            }
+        }
+
+        public void AddColor(Color color, int quantity)
+        {
+            if (this.colors == null)
+            {
+                this.colors = new List<ColorModel>();
+            }
+
+            this.Quantity += quantity;
+            this.colors.Add(new ColorModel()
+                {
+                    Id = color.Id,
+                    Title = color.Title,
+                    Quantity = quantity
+                });
+        }
     }
 }

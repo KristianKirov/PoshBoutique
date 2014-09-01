@@ -33,6 +33,19 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
 
                     return listData;
                 });
+        },
+        getArticleByUrlName: function(articleUrlName) {
+            return $http({
+                method: 'GET',
+                url: '/api/articles',
+                params: {
+                    urlName: articleUrlName
+                }
+            }).then(function (response) {
+                var listData = response.data;
+
+                return listData;
+            });
         }
     };
 });
