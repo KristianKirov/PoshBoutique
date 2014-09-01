@@ -17,3 +17,11 @@ Single product view screen - connect to real service
 Add shopping cart states
 Add shopping cart navigation
 Add localization (internationalization)
+home page with banners
+favourites
+subscriptions
+discounts
+https redirect + www redirect
+Add items to shopping cart
+Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
+Related products

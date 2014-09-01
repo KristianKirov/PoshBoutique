@@ -48,7 +48,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ArticleId,ImageUrl,IsDefault")] ArticleImage articleimage)
+        public ActionResult Create([Bind(Include="ArticleId,SmallImageUrl,MediumImageUrl,LargelImageUrl,OrderIndex,Id")] ArticleImage articleimage)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ArticleId,ImageUrl,IsDefault")] ArticleImage articleimage)
+        public ActionResult Edit([Bind(Include="ArticleId,SmallImageUrl,MediumImageUrl,LargelImageUrl,OrderIndex,Id")] ArticleImage articleimage)
         {
             if (ModelState.IsValid)
             {

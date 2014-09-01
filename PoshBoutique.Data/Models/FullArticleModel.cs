@@ -8,5 +8,16 @@ namespace PoshBoutique.Data.Models
 {
     public class FullArticleModel
     {
+        public string Title { get; set; }
+
+        public decimal Price { get; set; }
+
+        public string Decription { get; set; }
+
+        public string MaterialDescription { get; set; }
+
+        public IEnumerable<SizeModel> Sizes { get; set; }
+
+        public IEnumerable<ImageModel> Images { get; set; }
     }
 }

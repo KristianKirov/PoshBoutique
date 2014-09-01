@@ -15,8 +15,11 @@ namespace PoshBoutique.Data
     public partial class ArticleImage
     {
         public int ArticleId { get; set; }
-        public string ImageUrl { get; set; }
-        public bool IsDefault { get; set; }
+        public string SmallImageUrl { get; set; }
+        public string MediumImageUrl { get; set; }
+        public string LargelImageUrl { get; set; }
+        public int OrderIndex { get; set; }
+        public int Id { get; set; }
     
         public virtual Article Article { get; set; }
     }

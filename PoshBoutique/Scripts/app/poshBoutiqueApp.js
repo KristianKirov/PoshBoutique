@@ -111,7 +111,7 @@ poshBoutiqueApp
                     }
                 })
                 .state('cart.payment', {
-                    url: "/address",
+                    url: "/payment",
                     templateUrl: "partials/cart/payment.html",
                     controller: 'cartPaymentController',
                     data: {
@@ -119,7 +119,7 @@ poshBoutiqueApp
                     }
                 })
                 .state('cart.confirmation', {
-                    url: "/address",
+                    url: "/confirmation",
                     templateUrl: "partials/cart/confirmation.html",
                     controller: 'cartConfirmationController',
                     data: {

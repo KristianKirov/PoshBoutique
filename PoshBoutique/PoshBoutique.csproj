@@ -607,11 +607,6 @@
     <Content Include="Areas\Admin\Views\Stocks\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Stocks\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Stocks\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\ArticleImages\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\ArticleImages\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\ArticleImages\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\ArticleImages\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\ArticleImages\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ArticleCategories\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ArticleCategories\Delete.cshtml" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -634,6 +629,11 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\ArticleImages\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\ArticleImages\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\ArticleImages\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\ArticleImages\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ArticleImages\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
