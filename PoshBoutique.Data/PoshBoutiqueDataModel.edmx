@@ -32,13 +32,15 @@
           <Property Name="UrlName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
-          <Property Name="Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ShortDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MaterialDescription" Type="nvarchar(max)" />
           <Property Name="ThumbnailUrl" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SizeTypeId" Type="int" Nullable="false" />
           <Property Name="Visible" Type="bit" Nullable="false" />
+          <Property Name="OriginalPrice" Type="money" />
+          <Property Name="DiscountDescription" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -261,6 +263,8 @@
           <NavigationProperty Name="SizeType" Relationship="Self.FK_Articles_SizeTypes" FromRole="Articles" ToRole="SizeTypes" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Articles" FromRole="Articles" ToRole="Stocks" />
           <NavigationProperty Name="Categories" Relationship="Self.ArticleCategories" FromRole="Articles" ToRole="Categories" />
+          <Property Name="OriginalPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DiscountDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -467,6 +471,8 @@
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
               <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="DiscountDescription" ColumnName="DiscountDescription" />
+                <ScalarProperty Name="OriginalPrice" ColumnName="OriginalPrice" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UrlName" ColumnName="UrlName" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

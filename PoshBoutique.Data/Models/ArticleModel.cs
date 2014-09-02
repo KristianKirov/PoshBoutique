@@ -19,5 +19,7 @@ namespace PoshBoutique.Data.Models
         public string ThumbnailUrl { get; set; }
         public int SizeTypeId { get; set; }
         public bool Visible { get; set; }
+        public decimal? OriginalPrice { get; set; }
+        public string DiscountDescription { get; set; }
     }
 }

@@ -32,6 +32,8 @@ namespace PoshBoutique.Data
         public string ThumbnailUrl { get; set; }
         public int SizeTypeId { get; set; }
         public bool Visible { get; set; }
+        public Nullable<decimal> OriginalPrice { get; set; }
+        public string DiscountDescription { get; set; }
     
         public virtual ICollection<ArticleImage> ArticleImages { get; set; }
         public virtual SizeType SizeType { get; set; }
