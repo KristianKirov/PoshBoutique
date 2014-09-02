@@ -1,6 +1,50 @@
 ﻿poshBoutiqueApp.factory("categoriesDataService", function ($http) {
+    var cachedCategoriesTree = null;
+    var initialCategoryId = null;
+
+    var selectCategory = function (categoryId, categories) {
+        debugger;
+        if (!categories) {
+            return false;
+        }
+
+        var result = false;
+        for (var categoryIndex in categories) {
+            var category = categories[categoryIndex];
+            if (category.id == categoryId) {
+                category.isSelected = true;
+                category.isExpanded = true;
+
+                result = true;
+            }
+            else {
+                category.isSelected = false;    
+            }
+
+            var isChildSelected = selectCategory(categoryId, category.childCategories);
+            if (!category.isExpanded && isChildSelected) {
+                category.isExpanded = true;
+            }
+        }
+
+        return result;
+    };
+
     return {
+        setSelectedCategory: function (categoryId) {            
+            if (cachedCategoriesTree) {
+                initialCategorySet = true;
+                selectCategory(categoryId, cachedCategoriesTree);
+            }
+            else {
+                initialCategoryId = categoryId;
+            }
+        },
         getTree: function () {
+            if (cachedCategoriesTree) {
+                return cachedCategoriesTree;
+            }
+
             return $http({ method: 'GET', url: '/api/categories/tree' })
                 .then(function (response) {
                     var categoriesTree = response.data;
@@ -9,6 +53,12 @@
                     //        category.isExpanded = true;
                     //    }
                     //}
+                    debugger;
+                    cachedCategoriesTree = categoriesTree;
+                    if (initialCategoryId) {
+                        selectCategory(initialCategoryId, cachedCategoriesTree);
+                        initialCategoryId = null;
+                    }
 
                     return categoriesTree;
                 });

@@ -9,7 +9,7 @@
                     <h3>Католог</h3>
                     <nav class="nav-categories">
                         <ul ng-tree="categories" class="categories-list">
-                            <li each="category in childCategories" select="categorySelected()" ng-class="{ 'selected': category.isSelected, 'expanded': category.isExpanded, 'colapsed': !category.isExpanded, 'leaf': (!category.childCategories || category.childCategories.length == 0) }">
+                            <li each="category in childCategories" ng-class="{ 'selected': category.isSelected, 'expanded': category.isExpanded, 'colapsed': !category.isExpanded, 'leaf': (!category.childCategories || category.childCategories.length == 0) }">
                                 <a ng-href="#/catalogue/{{category.urlName}}" ng-click="toggleExpand($event, category)">
                                     <i class="glyphicon category-expand-colapse"></i>
                                     {{category.title}}

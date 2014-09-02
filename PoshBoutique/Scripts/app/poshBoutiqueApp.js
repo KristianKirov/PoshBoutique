@@ -65,9 +65,10 @@ poshBoutiqueApp
               .state('catalogue.category', {
                   url: "/*categoryUrl",
                   templateUrl: "partials/productsListPlaceholder.html",
-                  controller: function ($scope, listData) {
+                  controller: function ($scope, listData, categoriesDataService) {
                       console.log("2: HITTTTTTTTTTTTTTT!!!!!");
                       $scope.listData = listData;
+                      categoriesDataService.setSelectedCategory(listData.category.id);
                   },
                   resolve: {
                       listData: function (articlesDataService, $stateParams, articleListParams) {
