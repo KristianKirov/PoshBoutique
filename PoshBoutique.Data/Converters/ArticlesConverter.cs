@@ -25,7 +25,8 @@ namespace PoshBoutique.Data.Converters
                 SizeTypeId = article.SizeTypeId,
                 Visible = article.Visible,
                 OriginalPrice = article.OriginalPrice,
-                DiscountDescription = article.DiscountDescription
+                DiscountDescription = article.DiscountDescription,
+                HasDiscount = article.OriginalPrice != null
             };
         }
 

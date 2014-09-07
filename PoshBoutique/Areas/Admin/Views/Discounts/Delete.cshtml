@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<div>
+    Продукт: <strong>@ViewBag.ArticleTitle</strong>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Премахни отстъпката" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

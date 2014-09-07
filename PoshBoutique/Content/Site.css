@@ -356,35 +356,50 @@ h3 {
 
 .product-thumbnail > .product-thumbnail-image {
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
     box-shadow: 2px 2px 3px 0px black;
 }
 
-    .product-thumbnail > .product-thumbnail-image > strong {
+    .product-thumbnail > .product-thumbnail-image > div.image-info {
         position: absolute;
         bottom: 0;
-        padding: 0 5px 5px 5px;
-        font-weight: bold;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.33);
         width: 100%;
-        font-size: 17px;
-        box-shadow: 0px -6px 18px 6px rgba(0, 0, 0, 0.33);
         opacity: 0.6;
-        text-align: center;
         -webkit-transition: opacity 0.3s ease-in-out;
         -moz-transition: opacity 0.3s ease-in-out;
         -o-transition: opacity 0.3s ease-in-out;
         transition: opacity 0.3s ease-in-out;
     }
 
-.product-thumbnail:hover > .product-thumbnail-image > strong {
+    .product-thumbnail > .product-thumbnail-image > div.image-info > strong {
+        display: block;
+        padding: 0 5px 5px 5px;
+        font-weight: bold;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.33);
+        font-size: 17px;
+        text-align: center;
+    }
+
+    .product-thumbnail > .product-thumbnail-image > div.image-info > div.shadow {
+        height: 20px;
+        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMC4zMyIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(0,0,0,0.33) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(0,0,0,0.33)));
+        background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(0,0,0,0.33) 100%);
+        background: -o-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(0,0,0,0.33) 100%);
+        background: -ms-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(0,0,0,0.33) 100%);
+        background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(0,0,0,0.33) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#54000000',GradientType=0 );
+    }
+
+.product-thumbnail:hover > .product-thumbnail-image > div.image-info {
     opacity: 1;
 }
 
 .product-thumbnail > .product-thumbnail-image > img {
     width: 100%;
-    box-shadow: 10px 10px 10px black;
+    /*box-shadow: 10px 10px 10px black;*/
 }
 
 .product-thumbnail p {
@@ -406,6 +421,11 @@ h3 {
     opacity: 1;
 }
 
+.product-thumbnail .buy-panel > span {
+    color: #000000;
+    text-decoration: line-through;
+}
+
 .product-thumbnail .buy-panel > button {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -414,7 +434,7 @@ h3 {
 .product-thumbnail .buy-panel > strong {
     color: #000000;
     font-weight: 900;
-    display: block;
+    display: inline-block;
 }
 
 .product-thumbnail:hover .buy-panel > strong {
@@ -997,3 +1017,72 @@ ul.public-providers-list > li {
 }
 
 /*--- end shopping cart ---*/
+
+/*--- discounts ---*/
+
+/*--- end discounts ---*/
+.prom {
+    right: 128px;
+    overflow: hidden;
+    padding: 12px 0 0 0;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+}
+
+.prom140 {
+    top: -5px;
+    left: -5px;
+    width: 103px;
+    height: 89px;
+}
+
+.prom140 span.gspr.prr {
+    background-image: none!important;
+    background-color: #dd1e31;
+    height: 19px;
+    top: 13px;
+}
+
+.prom140 span.gspr {
+    top: 12px;
+    left: -30px;
+    margin: 1px 0 0 1px;
+    padding-top: 1px;
+    height: 24px;
+    width: 142px;
+}
+
+.prom span.gspr {
+    background-position: -42px -240px;
+    font-weight: bold;
+    font-size: 13px;
+    -webkit-transform: rotate(-40deg);
+    -moz-transform: rotate(-40deg);
+    -ms-transform: rotate(-40deg);
+    -o-transform: rotate(-40deg);
+    transform: rotate(-40deg);
+    position: relative;
+    backface-visibility: hidden;
+}
+
+.gspr {
+    display: block;
+    background-image: url(/content/img/sprite.png)!important;
+}
+
+.prom140 i {
+    position: absolute;
+    bottom: 0;
+    width: 5px;
+    height: 16px;
+    background-position: 0px -6px;
+}
+
+.prom140 i.folw {
+    top: -5px;
+    right: 0;
+    width: 10px;
+    height: 11px;
+    background-position: -9px 5px;
+}

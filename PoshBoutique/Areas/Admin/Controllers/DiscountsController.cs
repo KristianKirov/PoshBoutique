@@ -1,7 +1,9 @@
 ﻿using PoshBoutique.Areas.Admin.Models;
+using PoshBoutique.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -9,95 +11,91 @@ namespace PoshBoutique.Areas.Admin.Controllers
 {
     public class DiscountsController : Controller
     {
+        private PoshBoutiqueData db = new PoshBoutiqueData();
+
         [HttpGet]
-        public ActionResult Apply(int articleId)
+        public ActionResult Apply(int id)
         {
+            Article article = db.Articles.Find(id);
+            if (article == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.ArticleTitle = article.Title;
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult Apply(int articleId, DiscountModel discount)
+        [ValidateAntiForgeryToken]
+        public ActionResult Apply(int id, DiscountModel discount)
         {
-            return View();
-        }
-
-        //
-        // GET: /Admin/Discounts/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /Admin/Discounts/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Admin/Discounts/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
+            Article article = db.Articles.Find(id);
+            if (article == null)
             {
-                // TODO: Add insert logic here
+                return HttpNotFound();
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (article.OriginalPrice != null)
             {
-                return View();
+                article.Price = article.OriginalPrice.Value;
             }
+
+            article.OriginalPrice = article.Price;
+            article.DiscountDescription = discount.Description;
+            if (discount.Type == 1)
+            {
+                article.Price = (article.Price * (100 - discount.Value)) / 100;
+            }
+            else if (discount.Type == 2)
+            {
+                article.Price = article.Price - discount.Value;
+            }
+
+            article.DiscountDescription = discount.Description;
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Articles");
         }
 
-        //
-        // GET: /Admin/Discounts/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Admin/Discounts/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Admin/Discounts/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
+            Article article = db.Articles.Find(id);
+            if (article == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (article.OriginalPrice == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ViewBag.ArticleTitle = article.Title;
+
             return View();
         }
 
-        //
-        // POST: /Admin/Discounts/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
+            Article article = db.Articles.Find(id);
+            if (article == null)
             {
-                // TODO: Add delete logic here
+                return HttpNotFound();
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            article.Price = article.OriginalPrice.Value;
+            article.OriginalPrice = null;
+            article.DiscountDescription = null;
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Articles");
         }
     }
 }

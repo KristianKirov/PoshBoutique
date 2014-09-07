@@ -261,6 +261,8 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\banner.jpg" />
+    <Content Include="Content\img\sprite.png" />
     <Content Include="Content\ngprogress-lite.css" />
     <Content Include="Content\Site.css" />
     <Content Include="external-login-authenticated.html" />
@@ -636,6 +638,8 @@
     <Content Include="Areas\Admin\Views\ArticleImages\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ArticleImages\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ArticleImages\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Discounts\Apply.cshtml" />
+    <Content Include="Areas\Admin\Views\Discounts\Delete.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -669,7 +673,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Views\Discounts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

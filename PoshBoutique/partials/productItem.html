@@ -1,13 +1,22 @@
 ﻿<a class="product-thumbnail" ng-href="#/catalogue/{{categoryUrl}}/view/{{item.urlName}}">
     <div class="product-thumbnail-image">
-        <strong>{{item.title}}</strong>
+        <div class="image-info">
+            <div class="shadow"></div>
+            <strong>{{item.title}}</strong>
+        </div>
         <img ng-src="{{item.thumbnailUrl}}" alt="{{item.title}}">
+        <div class="prom prom140" ng-if="item.hasDiscount">
+            <span class="gspr prr">{{item.discountDescription}}</span>
+            <i class="gspr"></i>
+            <i class="gspr folw"></i>
+        </div>
     </div>
     <div>
         <p>
             {{item.shortDescription}}
         </p>
         <div class="buy-panel">
+            <span ng-if="item.hasDiscount">{{item.originalPrice | currency}}</span>
             <strong>{{item.price | currency}}</strong>
             <button class="btn btn-default btn-block" role="button">
                 <i class="glyphicon glyphicon-plus"></i>

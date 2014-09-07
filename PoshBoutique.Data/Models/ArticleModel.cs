@@ -21,5 +21,6 @@ namespace PoshBoutique.Data.Models
         public bool Visible { get; set; }
         public decimal? OriginalPrice { get; set; }
         public string DiscountDescription { get; set; }
+        public bool HasDiscount { get; set; }
     }
 }
