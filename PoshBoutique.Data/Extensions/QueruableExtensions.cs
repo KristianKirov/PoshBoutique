@@ -14,7 +14,7 @@ namespace PoshBoutique.Data.Extensions
             orderBy = orderBy.ToUpperInvariant();
             switch (orderBy)
             {
-                case "DATE":
+                case "DATECREATED":
                     if (sortDirection == SortDirection.ASC)
                     {
                         articleQuery = articleQuery.OrderBy(a => a.DateCreated);
@@ -44,9 +44,25 @@ namespace PoshBoutique.Data.Extensions
                         articleQuery = articleQuery.OrderByDescending(a => a.Price);
                     }
                     break;
-                case "LIKES":
+                case "LIKESCOUNT":
+                    if (sortDirection == SortDirection.ASC)
+                    {
+                        articleQuery = articleQuery.OrderBy(a => a.LikesCount);
+                    }
+                    else
+                    {
+                        articleQuery = articleQuery.OrderByDescending(a => a.LikesCount);
+                    }
                     break;
-                case "ORDERS":
+                case "ORDERSCOUNT":
+                    if (sortDirection == SortDirection.ASC)
+                    {
+                        articleQuery = articleQuery.OrderBy(a => a.OrdersCount);
+                    }
+                    else
+                    {
+                        articleQuery = articleQuery.OrderByDescending(a => a.OrdersCount);
+                    }
                     break;
             }
 

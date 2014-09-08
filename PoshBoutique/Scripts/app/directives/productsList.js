@@ -2,7 +2,8 @@
     return {
         restrict: 'E',
         scope: {
-            listData: '='
+            listData: '=',
+            articleListParams: '='
         },
         templateUrl: 'partials/productsList.html',
         controller: function ($scope) {

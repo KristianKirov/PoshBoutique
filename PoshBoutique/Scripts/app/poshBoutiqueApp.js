@@ -7,7 +7,7 @@ poshBoutiqueApp
         var orderDefaults = {
             options: [],
             by: null,
-            asc: true
+            asc: false
         };
 
         this.setFilterDefaults = function (filter) {
@@ -65,18 +65,25 @@ poshBoutiqueApp
               .state('catalogue.category', {
                   url: "/*categoryUrl",
                   templateUrl: "partials/productsListPlaceholder.html",
-                  controller: function ($scope, listData, categoriesDataService) {
+                  controller: function ($scope, listData, categoriesDataService, articleListParams) {
                       console.log("2: HITTTTTTTTTTTTTTT!!!!!");
+                      $scope.articleListParams = articleListParams;
                       $scope.listData = listData;
                       categoriesDataService.setSelectedCategory(listData.category.id);
                   },
                   resolve: {
-                      listData: function (articlesDataService, $stateParams, articleListParams) {
+                      listData: function (articlesDataService, $stateParams/*, articleListParams*/) {
+                          //return articlesDataService.getArticlesInCategory(
+                          //    $stateParams.categoryUrl,
+                          //    articleListParams.filter.text,
+                          //    articleListParams.order.by.value,
+                          //    articleListParams.order.asc ? 1 : 2);
+
                           return articlesDataService.getArticlesInCategory(
                               $stateParams.categoryUrl,
-                              articleListParams.filter.text,
-                              articleListParams.order.by.value,
-                              articleListParams.order.asc ? 1 : 2);
+                              "",
+                              "",
+                              1);
                       }
                   }
               })
@@ -136,11 +143,11 @@ poshBoutiqueApp
 
         var order = {
             options: [
-                { title: "Дата", value: "date" },
+                { title: "Дата", value: "dateCreated" },
                 { title: "Име", value: "title" },
                 { title: "Цена", value: "price" },
-                { title: "Харесвания", value: "likes" },
-                { title: "Поръчвания", value: "orders" }
+                { title: "Харесвания", value: "likesCount" },
+                { title: "Поръчвания", value: "ordersCount" }
             ]
         };
         order.by = order.options[0];

@@ -100,7 +100,23 @@
             @Html.LabelFor(model => model.Visible, "Visible", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Visible)
-                @Html.ValidationMessageFor(model => model.SizeTypeId)
+                @Html.ValidationMessageFor(model => model.Visible)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrdersCount, "OrdersCount", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OrdersCount)
+                @Html.ValidationMessageFor(model => model.OrdersCount)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LikesCount, "LikesCount", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LikesCount)
+                @Html.ValidationMessageFor(model => model.LikesCount)
             </div>
         </div>
 

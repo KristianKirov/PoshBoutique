@@ -41,7 +41,10 @@ namespace PoshBoutique.Data.Providers
                         .Where(article => article.Title.Contains(filter) || article.Description.Contains(filter) || article.MaterialDescription.Contains(filter));
                 }
 
-                articlesQuery = articlesQuery.Sort(orderBy, sortDirection);
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    articlesQuery = articlesQuery.Sort(orderBy, sortDirection);
+                }
 
                 ArticlesConverter converter = new ArticlesConverter();
                 articlesListModel.Articles = articlesQuery.ToList().Select(a => converter.ToModel(a)).ToList();

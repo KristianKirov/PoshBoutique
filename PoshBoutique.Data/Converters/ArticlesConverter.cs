@@ -26,7 +26,9 @@ namespace PoshBoutique.Data.Converters
                 Visible = article.Visible,
                 OriginalPrice = article.OriginalPrice,
                 DiscountDescription = article.DiscountDescription,
-                HasDiscount = article.OriginalPrice != null
+                HasDiscount = article.OriginalPrice != null,
+                LikesCount = article.LikesCount,
+                OrdersCount = article.OrdersCount
             };
         }
 

@@ -41,6 +41,8 @@
           <Property Name="Visible" Type="bit" Nullable="false" />
           <Property Name="OriginalPrice" Type="money" />
           <Property Name="DiscountDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="LikesCount" Type="int" Nullable="false" />
+          <Property Name="OrdersCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -265,6 +267,8 @@
           <NavigationProperty Name="Categories" Relationship="Self.ArticleCategories" FromRole="Articles" ToRole="Categories" />
           <Property Name="OriginalPrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="DiscountDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LikesCount" Type="Int32" Nullable="false" />
+          <Property Name="OrdersCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -471,6 +475,8 @@
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
               <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="OrdersCount" ColumnName="OrdersCount" />
+                <ScalarProperty Name="LikesCount" ColumnName="LikesCount" />
                 <ScalarProperty Name="DiscountDescription" ColumnName="DiscountDescription" />
                 <ScalarProperty Name="OriginalPrice" ColumnName="OriginalPrice" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

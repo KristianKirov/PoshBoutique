@@ -20,10 +20,11 @@ Add localization (internationalization)
 home page with banners
 favourites
 subscriptions
-discounts
+-- discounts
 https redirect + www redirect
 Add items to shopping cart
 Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
 Related products
 -- details window remove details url on close when directly navigated to the detail view
 -- categories tree autoexpand and select the node depending on the selected category on first request
+-- search and filter list page
