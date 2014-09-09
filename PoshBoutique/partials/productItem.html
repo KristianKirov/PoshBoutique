@@ -10,7 +10,7 @@
             <i class="gspr"></i>
             <i class="gspr folw"></i>
         </div>
-        <div class="item-like" title="Харесай!">
+        <div class="item-like" title="Харесай!" ng-click="toggleLike(item, $event)">
             <span class="glyphicon" ng-class="{ 'glyphicon-star': item.isLiked, 'glyphicon-star-empty': !item.isLiked }"></span>
         </div>
     </div>

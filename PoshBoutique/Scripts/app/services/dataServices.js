@@ -99,3 +99,20 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
         }
     };
 });
+
+poshBoutiqueApp.factory("likesDataService", function ($http) {
+    return {
+        likeArticle: function (articleId) {
+            return $http({
+                method: 'PUT',
+                url: '/api/likes/' + articleId
+            });
+        },
+        unlikeArticle: function (articleId) {
+            return $http({
+                method: 'DELETE',
+                url: '/api/likes/' + articleId
+            });
+        }
+    };
+});
