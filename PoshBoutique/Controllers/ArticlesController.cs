@@ -5,17 +5,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace PoshBoutique.Controllers
 {
     public class ArticlesController : ApiController
     {
-        public IHttpActionResult Get(string categoryUrl, string orderBy, SortDirection sortDirection, string filter = null)
+        public async Task<IHttpActionResult> Get(string categoryUrl, string orderBy, SortDirection sortDirection, string filter = null)
         {
-            ArticlesProvider articlesProvider = new ArticlesProvider();
+            Guid? currentUserId = null;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                currentUserId = new Guid(this.User.Identity.GetUserId());
+            }
 
-            ArticlesListModel articlesList = articlesProvider.GetArticlesInCategory(categoryUrl, filter, orderBy, sortDirection);
+            ArticlesProvider articlesProvider = new ArticlesProvider();
+            ArticlesListModel articlesList = await articlesProvider.GetArticlesInCategory(categoryUrl, filter, orderBy, sortDirection, currentUserId);
             if (articlesList == null)
             {
                 return this.NotFound();

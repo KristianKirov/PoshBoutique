@@ -24,5 +24,6 @@ namespace PoshBoutique.Data.Models
         public bool HasDiscount { get; set; }
         public int LikesCount { get; set; }
         public int OrdersCount { get; set; }
+        public bool IsLiked { get; set; }
     }
 }

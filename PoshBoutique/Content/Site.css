@@ -1086,3 +1086,27 @@ ul.public-providers-list > li {
     height: 11px;
     background-position: -9px 5px;
 }
+
+.item-like {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 25px;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 39px;
+    height: 39px;
+    border-radius: 39px;
+}
+
+    .item-like > .glyphicon {
+        top: 5px;
+        left: 8px;
+    }
+
+        .item-like > .glyphicon-star-empty {
+            color: #fff;
+        }
+
+        .item-like > .glyphicon-star {
+            color: #f0ad4e;
+        }

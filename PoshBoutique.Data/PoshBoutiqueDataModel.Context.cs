@@ -32,5 +32,6 @@ namespace PoshBoutique.Data
         public virtual DbSet<SizeType> SizeTypes { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<ArticleImage> ArticleImages { get; set; }
+        public virtual DbSet<UserLike> UserLikes { get; set; }
     }
 }

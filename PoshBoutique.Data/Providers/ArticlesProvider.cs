@@ -14,12 +14,12 @@ namespace PoshBoutique.Data.Providers
     {
         private const string ALL_CATEGORIES_URL_NAME = "all";
 
-        public ArticlesListModel GetArticlesInCategory(string categoryUrl, string filter, string orderBy, SortDirection sortDirection)
+        public async Task<ArticlesListModel> GetArticlesInCategory(string categoryUrl, string filter, string orderBy, SortDirection sortDirection, Guid? currentUserId)
         {
             ArticlesListModel articlesListModel = null;
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
-                Category category = dataContext.Categories.FirstOrDefault(c => c.UrlName == categoryUrl);
+                Category category = await dataContext.Categories.FirstOrDefaultAsync(c => c.UrlName == categoryUrl);
                 if (category == null && !categoryUrl.Equals(ArticlesProvider.ALL_CATEGORIES_URL_NAME, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return null;
@@ -46,8 +46,16 @@ namespace PoshBoutique.Data.Providers
                     articlesQuery = articlesQuery.Sort(orderBy, sortDirection);
                 }
 
+                List<Article> articlesList = await articlesQuery.ToListAsync();
+                HashSet<int> userLikes = null;
+                if (currentUserId != null)
+                {
+                    UserLikesProvider userLikesProvider = new UserLikesProvider();
+                    userLikes = await userLikesProvider.GetLikedArticlesByUser(currentUserId.Value);
+                }
+
                 ArticlesConverter converter = new ArticlesConverter();
-                articlesListModel.Articles = articlesQuery.ToList().Select(a => converter.ToModel(a)).ToList();
+                articlesListModel.Articles = articlesList.Select(a => converter.ToModel(a, userLikes)).ToList();
             }
 
             return articlesListModel;
@@ -101,6 +109,32 @@ namespace PoshBoutique.Data.Providers
             }
 
             return articleModel;
+        }
+
+        public async Task<bool> LikeArticle(int articleId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article likedArticle = await dataContext.Articles.FindAsync(articleId);
+                if (likedArticle == null)
+                {
+                    return false;
+                }
+
+                likedArticle.LikesCount++;
+
+                await dataContext.SaveChangesAsync();
+            }
+
+            return true;
+        }
+
+        public async Task<bool> ArticleExists(int articleId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                return await dataContext.Articles.AnyAsync(a => a.Id == articleId);
+            }
         }
     }
 }

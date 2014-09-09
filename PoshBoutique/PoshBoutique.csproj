@@ -241,6 +241,7 @@
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Factories\FacebookAuthenticationFactory.cs" />
     <Compile Include="Factories\IFacebookAuthenticationFactory.cs" />

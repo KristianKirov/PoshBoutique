@@ -9,7 +9,7 @@ namespace PoshBoutique.Data.Converters
 {
     public class ArticlesConverter
     {
-        public ArticleModel ToModel(Article article)
+        public ArticleModel ToModel(Article article, HashSet<int> currentUserLikesSet)
         {
             return new ArticleModel()
             {
@@ -28,13 +28,24 @@ namespace PoshBoutique.Data.Converters
                 DiscountDescription = article.DiscountDescription,
                 HasDiscount = article.OriginalPrice != null,
                 LikesCount = article.LikesCount,
-                OrdersCount = article.OrdersCount
+                OrdersCount = article.OrdersCount,
+                IsLiked = this.IsArticleLikedByCurrentUser(currentUserLikesSet, article.Id)
             };
         }
 
         public FullArticleModel ToFullModel(Article article)
         {
             return new FullArticleModel();
+        }
+
+        public bool IsArticleLikedByCurrentUser(HashSet<int> currentUserLikesSet, int articleId)
+        {
+            if (currentUserLikesSet == null)
+            {
+                return false;
+            }
+
+            return currentUserLikesSet.Contains(articleId);
         }
     }
 }
