@@ -116,3 +116,15 @@ poshBoutiqueApp.factory("likesDataService", function ($http) {
         }
     };
 });
+
+poshBoutiqueApp.factory("subscriptionsService", function ($http) {
+    return {
+        subscribe: function (email) {
+            return $http({
+                method: 'POST',
+                url: '/api/subscriptions',
+                data: { email: email }
+            });
+        }
+    };
+});

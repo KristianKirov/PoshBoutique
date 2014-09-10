@@ -49,7 +49,7 @@ namespace PoshBoutique.Data.Providers
             return true;
         }
 
-        public async Task<HashSet<int>> GetLikedArticlesByUser(Guid userId)
+        public HashSet<int> GetLikedArticlesByUser(Guid userId)
         {
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {

@@ -21,6 +21,7 @@
         <AssociationConnector Association="PoshBoutiqueModel.FK_Stocks_Sizes" ManuallyRouted="false" />
         <AssociationConnector Association="PoshBoutiqueModel.ArticleCategories" ManuallyRouted="false" />
         <EntityTypeShape EntityType="PoshBoutiqueModel.UserLike" Width="1.5" PointX="0.75" PointY="3.5" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.EmailSubscription" Width="1.5" PointX="8.25" PointY="3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

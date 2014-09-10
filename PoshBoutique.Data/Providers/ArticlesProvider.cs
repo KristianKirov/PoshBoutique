@@ -51,7 +51,7 @@ namespace PoshBoutique.Data.Providers
                 if (currentUserId != null)
                 {
                     UserLikesProvider userLikesProvider = new UserLikesProvider();
-                    userLikes = await userLikesProvider.GetLikedArticlesByUser(currentUserId.Value);
+                    userLikes = userLikesProvider.GetLikedArticlesByUser(currentUserId.Value);
                 }
 
                 ArticlesConverter converter = new ArticlesConverter();

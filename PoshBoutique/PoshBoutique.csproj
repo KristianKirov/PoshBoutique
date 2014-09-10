@@ -242,6 +242,7 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
+    <Compile Include="Controllers\SubscribtionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Factories\FacebookAuthenticationFactory.cs" />
     <Compile Include="Factories\IFacebookAuthenticationFactory.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EmailSubscriptionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -280,6 +282,7 @@
     <Content Include="partials\catalogue.html" />
     <Content Include="partials\configurePurchaseForm.html" />
     <Content Include="partials\currentUserNav.html" />
+    <Content Include="partials\emailSubscriptionForm.html" />
     <Content Include="partials\home.html" />
     <Content Include="partials\imagesView.html" />
     <Content Include="partials\productItem.html" />
@@ -314,6 +317,7 @@
     <Content Include="Scripts\app\controllers\catalogueController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
+    <Content Include="Scripts\app\directives\emailSubscriptionForm.js" />
     <Content Include="Scripts\app\directives\imagesView.js" />
     <Content Include="Scripts\app\directives\magnifyable.js" />
     <Content Include="Scripts\app\directives\currentUserNav.js" />

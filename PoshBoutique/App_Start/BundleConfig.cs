@@ -36,6 +36,7 @@ namespace PoshBoutique
                 "~/Scripts/app/directives/repeatPassword.js",
                 "~/Scripts/app/directives/currentUserNav.js",
                 "~/Scripts/app/directives/shoppingCartSummary.js",
+                "~/Scripts/app/directives/emailSubscriptionForm.js",
                 "~/Scripts/app/services/singleProductModal.js",
                 "~/Scripts/app/services/detailsViewParentState.js",
                 "~/Scripts/app/services/dataServices.js",
