@@ -66,6 +66,9 @@
       <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\QueruableExtensions.cs" />
+    <Compile Include="FeedbackSubmission.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Mediators\LikesMediator.cs" />
     <Compile Include="Models\ArticleModel.cs" />
     <Compile Include="Models\ArticlesListModel.cs" />
@@ -98,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\EmailSubscriptionsProvider.cs" />
+    <Compile Include="Providers\FeedbackSubmissionsProvider.cs" />
     <Compile Include="Providers\UserLikesProvider.cs" />
     <Compile Include="Size.cs">
       <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>

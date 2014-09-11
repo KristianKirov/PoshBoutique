@@ -27,7 +27,7 @@
     <div class="alert alert-danger" style="margin-bottom: 15px;" ng-show="quantity > availableQuantity && selectedSize != null && (selectedColor != null || (selectedColor == null && !hasColors()))">
         <strong>Недостатъчна наличност!</strong>
         Не разполагаме с <strong>{{quantity}}</strong> на брой артикула с размер <strong>{{selectedSize.name}}</strong><span ng-show="selectedColor != null"> и цвят <strong>{{selectedColor.title}}</strong></span>.<br />
-    Моля опитайте с по-малко количество или се <a href="#" class="alert-link">свържете с нас</a>.
+    Моля опитайте с по-малко количество или се <a href="#/contact-us" class="alert-link">свържете с нас</a>.
 </div>
 
     <div class="form-group" ng-show="availableQuantity > 0 && quantity > 0 && quantity <= availableQuantity">

@@ -1,0 +1,50 @@
+﻿<div class="row">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-md-6">
+        <h3>
+            Свържете се с нас
+        </h3>
+        <form id="feedbackForm" name="feedbackForm" role="form" ng-hide="submitted" novalidate>
+            <div class="form-group" ng-class="{ 'has-error': feedbackForm.email.$dirty && feedbackForm.email.$invalid }">
+                <label for="email" class="control-label">Email</label>
+                <input type="email" ng-model="email" required class="form-control input-lg" id="email" name="email" placeholder="Вашият email">
+                <div ng-show="feedbackForm.email.$dirty && feedbackForm.email.$invalid" class="text-danger">
+                    <span ng-show="feedbackForm.email.$error.required">Моля въведете email.</span>
+                    <span ng-show="feedbackForm.email.$error.email">Моля въведете валиден email.</span>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': feedbackForm.fullName.$dirty && feedbackForm.fullName.$invalid }">
+                <label for="fullName" class="control-label">Име</label>
+                <input type="text" ng-model="fullName" required class="form-control input-lg" id="fullName" name="fullName" placeholder="Вашето име">
+                <div ng-show="feedbackForm.fullName.$dirty && feedbackForm.fullName.$invalid" class="text-danger">
+                    <span ng-show="feedbackForm.fullName.$error.required">Моля въведете вашето име.</span>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': feedbackForm.message.$dirty && feedbackForm.message.$invalid }">
+                <label for="message" class="control-label">Съобщение</label>
+                <textarea ng-model="message" required class="form-control input-lg" id="message" name="message" placeholder="Вашето съобщение" rows="5"></textarea>
+                <div ng-show="feedbackForm.message.$dirty && feedbackForm.message.$invalid" class="text-danger">
+                    <span ng-show="feedbackForm.message.$error.required">Моля въведете съобщение.</span>
+                </div>
+            </div>
+
+            <button type="button" ng-click="submitContactForm()" class="btn btn-default btn-lg btn-block" ng-disabled="!feedbackForm.$valid">Изпрати</button>
+
+            <div class="alert alert-danger" role="alert" ng-show="error">
+                Възникна грешка при изпращане на съобщението Ви. <br />
+                Моля опитайте по-късно.
+            </div>
+        </form>
+        <div class="alert alert-success" ng-show="submitted">
+            Съобщението Ви е записано.<br />
+            Благодаря Ви, че се свързахте с нас!
+        </div>
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>

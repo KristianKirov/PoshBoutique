@@ -240,6 +240,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\SubscribtionsController.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EmailSubscriptionModel.cs" />
+    <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -281,6 +283,7 @@
     <Content Include="partials\cart\order.html" />
     <Content Include="partials\catalogue.html" />
     <Content Include="partials\configurePurchaseForm.html" />
+    <Content Include="partials\contactUs.html" />
     <Content Include="partials\currentUserNav.html" />
     <Content Include="partials\emailSubscriptionForm.html" />
     <Content Include="partials\home.html" />
@@ -315,6 +318,7 @@
     <Content Include="Scripts\app\controllers\autherrorController.js" />
     <Content Include="Scripts\app\controllers\cartControllers.js" />
     <Content Include="Scripts\app\controllers\catalogueController.js" />
+    <Content Include="Scripts\app\controllers\contactUsController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
     <Content Include="Scripts\app\directives\emailSubscriptionForm.js" />

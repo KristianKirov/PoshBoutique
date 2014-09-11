@@ -28,6 +28,7 @@ namespace PoshBoutique
                 "~/Scripts/app/controllers/catalogueController.js",
                 "~/Scripts/app/controllers/autherrorController.js",
                 "~/Scripts/app/controllers/cartControllers.js",
+                "~/Scripts/app/controllers/contactUsController.js",
                 "~/Scripts/app/directives/productsList.js",
                 "~/Scripts/app/directives/productItem.js",
                 "~/Scripts/app/directives/imagesView.js",

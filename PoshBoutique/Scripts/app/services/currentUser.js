@@ -5,6 +5,7 @@
         user.isAuthenticated = isAuthenticated;
         user.firstName = null;
         user.lastName = null;
+        user.email = null;
     };
 
     setDefaults(!!authenticationStorage.getAccesToken());
@@ -18,6 +19,7 @@
                     user.isAuthenticated = true;
                     user.firstName = data.firstName;
                     user.lastName = data.lastName;
+                    user.email = data.email;
                 })
                 .error(function () {
                     setDefaults(false);

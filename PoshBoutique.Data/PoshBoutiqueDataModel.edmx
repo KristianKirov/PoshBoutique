@@ -67,6 +67,15 @@
           </Key>
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="FeedbackSubmissions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Sizes">
           <Key>
             <PropertyRef Name="Id" />
@@ -217,6 +226,7 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailSubscriptions" EntityType="Self.EmailSubscriptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FeedbackSubmissions" EntityType="Self.FeedbackSubmissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SizeTypes" EntityType="Self.SizeTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
@@ -483,6 +493,7 @@
           </AssociationSet>
           <EntitySet Name="UserLikes" EntityType="PoshBoutiqueModel.UserLike" />
           <EntitySet Name="EmailSubscriptions" EntityType="PoshBoutiqueModel.EmailSubscription" />
+          <EntitySet Name="FeedbackSubmissions" EntityType="PoshBoutiqueModel.FeedbackSubmission" />
         </EntityContainer>
         <EntityType Name="UserLike">
           <Key>
@@ -497,6 +508,15 @@
             <PropertyRef Name="Email" />
           </Key>
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="FeedbackSubmission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -604,6 +624,16 @@
             <EntityTypeMapping TypeName="PoshBoutiqueModel.EmailSubscription">
               <MappingFragment StoreEntitySet="EmailSubscriptions">
                 <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeedbackSubmissions">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.FeedbackSubmission">
+              <MappingFragment StoreEntitySet="FeedbackSubmissions">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

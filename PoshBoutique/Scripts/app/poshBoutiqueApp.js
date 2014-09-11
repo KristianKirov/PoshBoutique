@@ -133,7 +133,12 @@ poshBoutiqueApp
                     data: {
                         authenticated: true
                     }
-                });
+                })
+            .state('contact-us', {
+                url: "/contact-us",
+                templateUrl: "partials/contactUs.html",
+                controller: 'contactUsController',
+            });
         //.state('catalogue.category.viewItem', {
         //    url: "/view/:itemUrl",
         //    onEnter: function ($stateParams, singleProductModal) {

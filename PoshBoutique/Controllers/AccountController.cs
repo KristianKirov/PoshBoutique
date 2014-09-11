@@ -52,7 +52,8 @@ namespace PoshBoutique.Controllers
             return new UserInfoViewModel()
             {
                 FirstName = currentUser.FirstName,
-                LastName = currentUser.LastName
+                LastName = currentUser.LastName,
+                Email = currentUser.Email
             };
         }
 

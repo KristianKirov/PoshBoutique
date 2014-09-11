@@ -128,3 +128,15 @@ poshBoutiqueApp.factory("subscriptionsService", function ($http) {
         }
     };
 });
+
+poshBoutiqueApp.factory("feedbackService", function ($http) {
+    return {
+        submit: function (feedbackData) {
+            return $http({
+                method: 'POST',
+                url: '/api/feedback',
+                data: feedbackData
+            });
+        }
+    };
+});
