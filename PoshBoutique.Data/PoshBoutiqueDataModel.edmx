@@ -76,6 +76,14 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="RelatedArticles">
+          <Key>
+            <PropertyRef Name="ArticleId" />
+            <PropertyRef Name="RelatedArticleId" />
+          </Key>
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="RelatedArticleId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Sizes">
           <Key>
             <PropertyRef Name="Id" />
@@ -171,6 +179,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RelatedArticles_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
+          <End Role="RelatedArticles" Type="Self.RelatedArticles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RelatedArticles">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelatedArticles_Articles1">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
+          <End Role="RelatedArticles" Type="Self.RelatedArticles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RelatedArticles">
+              <PropertyRef Name="RelatedArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Sizes_SizeTypes">
           <End Role="SizeTypes" Type="Self.SizeTypes" Multiplicity="1" />
           <End Role="Sizes" Type="Self.Sizes" Multiplicity="*" />
@@ -227,6 +259,7 @@
           <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailSubscriptions" EntityType="Self.EmailSubscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FeedbackSubmissions" EntityType="Self.FeedbackSubmissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelatedArticles" EntityType="Self.RelatedArticles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SizeTypes" EntityType="Self.SizeTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
@@ -250,6 +283,14 @@
           <AssociationSet Name="FK_Categories_Categories" Association="Self.FK_Categories_Categories">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Categories1" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedArticles_Articles" Association="Self.FK_RelatedArticles_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="RelatedArticles" EntitySet="RelatedArticles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelatedArticles_Articles1" Association="Self.FK_RelatedArticles_Articles1">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="RelatedArticles" EntitySet="RelatedArticles" />
           </AssociationSet>
           <AssociationSet Name="FK_Sizes_SizeTypes" Association="Self.FK_Sizes_SizeTypes">
             <End Role="SizeTypes" EntitySet="SizeTypes" />
@@ -295,6 +336,8 @@
           <Property Name="DiscountDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LikesCount" Type="Int32" Nullable="false" />
           <Property Name="OrdersCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RelatedArticles" Relationship="PoshBoutiqueModel.RelatedArticles" FromRole="Article" ToRole="Article1" />
+          <NavigationProperty Name="ParentRelatedArticles" Relationship="PoshBoutiqueModel.RelatedArticles" FromRole="Article1" ToRole="Article" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -494,6 +537,10 @@
           <EntitySet Name="UserLikes" EntityType="PoshBoutiqueModel.UserLike" />
           <EntitySet Name="EmailSubscriptions" EntityType="PoshBoutiqueModel.EmailSubscription" />
           <EntitySet Name="FeedbackSubmissions" EntityType="PoshBoutiqueModel.FeedbackSubmission" />
+          <AssociationSet Name="RelatedArticles" Association="PoshBoutiqueModel.RelatedArticles">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="Article1" EntitySet="Articles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserLike">
           <Key>
@@ -518,6 +565,10 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="RelatedArticles">
+          <End Type="PoshBoutiqueModel.Article" Role="Article" Multiplicity="*" />
+          <End Type="PoshBoutiqueModel.Article" Role="Article1" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -637,6 +688,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="RelatedArticles" TypeName="PoshBoutiqueModel.RelatedArticles" StoreEntitySet="RelatedArticles">
+            <EndProperty Name="Article1">
+              <ScalarProperty Name="Id" ColumnName="RelatedArticleId" />
+            </EndProperty>
+            <EndProperty Name="Article">
+              <ScalarProperty Name="Id" ColumnName="ArticleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -243,6 +243,7 @@
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
+    <Compile Include="Controllers\RelatedArticlesController.cs" />
     <Compile Include="Controllers\SubscribtionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Factories\FacebookAuthenticationFactory.cs" />
@@ -286,6 +287,9 @@
     <Content Include="partials\contactUs.html" />
     <Content Include="partials\currentUserNav.html" />
     <Content Include="partials\emailSubscriptionForm.html" />
+    <Content Include="partials\homeSliderFeedItem.html" />
+    <Content Include="partials\homeSlider.html" />
+    <Content Include="partials\relatedProductsList.html" />
     <Content Include="partials\home.html" />
     <Content Include="partials\imagesView.html" />
     <Content Include="partials\productItem.html" />
@@ -321,6 +325,9 @@
     <Content Include="Scripts\app\controllers\contactUsController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
+    <Content Include="Scripts\app\directives\homeSliderFeedItem.js" />
+    <Content Include="Scripts\app\directives\homeSlider.js" />
+    <Content Include="Scripts\app\directives\relatedProductsList.js" />
     <Content Include="Scripts\app\directives\emailSubscriptionForm.js" />
     <Content Include="Scripts\app\directives\imagesView.js" />
     <Content Include="Scripts\app\directives\magnifyable.js" />
@@ -649,6 +656,7 @@
     <Content Include="Areas\Admin\Views\ArticleImages\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Discounts\Apply.cshtml" />
     <Content Include="Areas\Admin\Views\Discounts\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Articles\AddRelatedArticle.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

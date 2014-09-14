@@ -1,0 +1,7 @@
+﻿<carousel interval="changeInterval" no-pause="true">
+    <slide ng-repeat="slide in slides" active="slide.active">
+        <div class="fill" style="background-image: url('{{slide.image}}');"></div>
+
+        <home-slider-feed-item ng-repeat="displayOptions in slide.feedItems" display-options="displayOptions"></home-slider-feed-item>
+    </slide>
+</carousel>

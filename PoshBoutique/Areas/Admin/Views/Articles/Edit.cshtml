@@ -137,12 +137,12 @@
 
         <div class="form-group">
             <label class="">Categories</label>
-            <div class="col-md-10">
+            <div class="col-md-offset-2 col-md-10">
                 @foreach (PoshBoutique.Data.Category category in (IEnumerable<PoshBoutique.Data.Category>)ViewBag.Categories)
                 {
                     <span class="bg-info">
                         @category.Title
-                        @Html.ActionLink("Delete Category", "Delete", "ArticleCategories", new { ArticleId = Model.Id, CategoryId = category.Id }, null) |
+                        @Html.ActionLink("Премахни", "Delete", "ArticleCategories", new { ArticleId = Model.Id, CategoryId = category.Id }, null) |
                     </span>
                 }
                 @Html.ActionLink("Add Category", "Create", "ArticleCategories", new { ArticleId = Model.Id }, null)
@@ -150,6 +150,34 @@
         </div>
     </div>
 }
+
+<h3>
+    Подобни артикули
+</h3>
+<div>
+    @Html.ActionLink("Добави подобен артикул", "AddRelatedArticle", "Articles", new { ArticleId = Model.Id }, null)
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Тъмбнейл</th>
+            <th>Име</th>
+            <th>Кратко описание</th>
+            <th>Опции</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (PoshBoutique.Data.Article relatedArticle in (IEnumerable<PoshBoutique.Data.Article>)ViewBag.RelatedArticles)
+    {
+        <tr>
+            <td><img src="@relatedArticle.ThumbnailUrl" width="100" /></td>
+            <td>@relatedArticle.Title</td>
+            <td>@relatedArticle.ShortDescription</td>
+            <td>@Html.ActionLink("Премахни", "DeleteRelatedArticle", "Articles", new { ArticleId = Model.Id, RelatedArticleId = relatedArticle.Id }, null)</td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

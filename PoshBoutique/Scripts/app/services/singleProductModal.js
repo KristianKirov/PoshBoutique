@@ -2,6 +2,7 @@
     return {
         open: function (itemUrlName) {
             var setPreviousUrl = function () {
+                debugger;
                 var currentLocation = $state.href($state.current, $stateParams).substring(1);
                 if ($location.url() !== currentLocation) {
                     $location.url(currentLocation);

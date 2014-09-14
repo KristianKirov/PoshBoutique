@@ -96,6 +96,12 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
 
                 return listData;
             });
+        },
+        getRelatedArticles: function (articleId) {
+            return $http({
+                method: 'GET',
+                url: '/api/relatedarticles/' + articleId
+            });
         }
     };
 });

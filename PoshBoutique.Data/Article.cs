@@ -19,6 +19,8 @@ namespace PoshBoutique.Data
             this.ArticleImages = new HashSet<ArticleImage>();
             this.Stocks = new HashSet<Stock>();
             this.Categories = new HashSet<Category>();
+            this.RelatedArticles = new HashSet<Article>();
+            this.ParentRelatedArticles = new HashSet<Article>();
         }
     
         public int Id { get; set; }
@@ -41,5 +43,7 @@ namespace PoshBoutique.Data
         public virtual SizeType SizeType { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
         public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Article> RelatedArticles { get; set; }
+        public virtual ICollection<Article> ParentRelatedArticles { get; set; }
     }
 }

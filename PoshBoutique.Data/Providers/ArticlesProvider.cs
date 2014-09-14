@@ -79,6 +79,7 @@ namespace PoshBoutique.Data.Providers
 
                 articleModel = new FullArticleModel()
                 {
+                    Id = article.Id,
                     Title = article.Title,
                     Description = article.Description,
                     MaterialDescription = article.MaterialDescription,
@@ -134,6 +135,29 @@ namespace PoshBoutique.Data.Providers
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
                 return await dataContext.Articles.AnyAsync(a => a.Id == articleId);
+            }
+        }
+
+        public async Task<IEnumerable<ArticleModel>> GetRelatedArticles(int articleId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article parentArticle = await dataContext.Articles.FindAsync(articleId);
+                if (parentArticle == null)
+                {
+                    return null;
+                }
+
+                Article[] relatedArticles = parentArticle.RelatedArticles.OrderByDescending(a => a.DateCreated).ToArray();
+                if (relatedArticles.Length == 0)
+                {
+                    return null;
+                }
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] relatedArticlesModels = relatedArticles.Select(a => converter.ToModel(a, null)).ToArray();
+
+                return relatedArticlesModels;
             }
         }
     }

@@ -77,6 +77,8 @@ namespace PoshBoutique.Areas.Admin.Controllers
             }
             ViewBag.SizeTypeId = new SelectList(db.SizeTypes, "Id", "Title", article.SizeTypeId);
             ViewBag.Categories = article.Categories.ToList();
+            ViewBag.RelatedArticles = article.RelatedArticles.OrderByDescending(a => a.DateCreated).ToList();
+
             return View(article);
         }
 
@@ -95,8 +97,45 @@ namespace PoshBoutique.Areas.Admin.Controllers
             }
             ViewBag.SizeTypeId = new SelectList(db.SizeTypes, "Id", "Title", article.SizeTypeId);
             ViewBag.Categories = article.Categories.ToList();
+            ViewBag.RelatedArticles = article.RelatedArticles.OrderByDescending(a => a.DateCreated).ToList();
 
             return View(article);
+        }
+
+        public ActionResult DeleteRelatedArticle(int articleId, int relatedArticleId)
+        {
+            Article article = db.Articles.Find(articleId);
+            Article relatedArticle = article.RelatedArticles.First(a => a.Id == relatedArticleId);
+            article.RelatedArticles.Remove(relatedArticle);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Edit", new { id = articleId });
+        }
+
+        [HttpGet]
+        public ActionResult AddRelatedArticle(int articleId)
+        {
+            Article article = db.Articles.Find(articleId);
+            ViewBag.RelatedArticleId = new SelectList(db.Articles, "Id", "Title");
+
+            return View(article);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddRelatedArticle(int articleId, int relatedArticleId)
+        {
+            Article article = db.Articles.Find(articleId);
+            Article relatedArticle = db.Articles.Find(relatedArticleId);
+            if (!article.RelatedArticles.Contains(relatedArticle))
+            {
+                article.RelatedArticles.Add(relatedArticle);
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Edit", new { id = articleId });
         }
 
         // GET: /Admin/Articles/Delete/5
