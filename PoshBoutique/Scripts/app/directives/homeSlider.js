@@ -37,6 +37,30 @@
                         changeInterval: $scope.changeInterval,
                         title: "POSH boutique"
                     }]
+                },
+                {
+                    image: "http://lorempixel.com/1700/900/fashion/?q=2",
+                    feedItems: [{
+                        color: "green",
+                        width: 300,
+                        showAfter: 1000,
+                        hideBefore: 1000,
+                        left: 40,
+                        top: 15,
+                        changeInterval: $scope.changeInterval,
+                        title: "Горе",
+                        description: "Кйс кйкй хр осиеху ру ее иеухеуи шиеу."
+                    },
+                    {
+                        color: "blue",
+                        width: 300,
+                        showAfter: 1500,
+                        hideBefore: 1500,
+                        left: 10,
+                        top: 30,
+                        changeInterval: $scope.changeInterval,
+                        title: "Ляво"
+                    }]
                 }
             ];
         }

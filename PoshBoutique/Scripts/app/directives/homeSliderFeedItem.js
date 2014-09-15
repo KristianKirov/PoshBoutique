@@ -3,10 +3,14 @@
         restrict: 'E',
         replace: true,
         scope: {
-            displayOptions: '='
+            displayOptions: '=',
+            visible: '='
         },
         templateUrl: 'partials/homeSliderFeedItem.html',
         link: function (scope, element, attrs) {
+            var showPromise = null;
+            var hidePromise = null;
+
             var verticalValue = null;
             var verticalName = null;
             var horizontalValue = null;
@@ -59,14 +63,44 @@
             };
 
             hideFeedItem();
+            var startShowPromise = function () {
+                showPromise = $timeout(function () {
+                    showFeedItem();
+                }, scope.displayOptions.showAfter);
+            };
 
-            $timeout(function () {
-                showFeedItem();
-            }, scope.displayOptions.showAfter);
+            var startHidePromise = function () {
+                hidePromise = $timeout(function () {
+                    hideFeedItem();
+                }, scope.displayOptions.changeInterval - scope.displayOptions.hideBefore);
+            }
 
-            $timeout(function () {
-                hideFeedItem();
-            }, scope.displayOptions.changeInterval - scope.displayOptions.hideBefore);
+            var stopTimeouts = function () {
+                if (showPromise) {
+                    $timeout.cancel(showPromise)
+                }
+
+                if (hidePromise) {
+                    $timeout.cancel(hidePromise)
+                }
+            };
+
+            startShowPromise();
+            startHidePromise();
+
+            scope.$watch('visible', function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    stopTimeouts();
+
+                    if (newValue) {
+                        startShowPromise();
+                        startHidePromise();
+                    }
+                    else {
+                        hideFeedItem();
+                    }
+                }
+            });
         }
     };
 });

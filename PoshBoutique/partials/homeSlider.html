@@ -2,6 +2,6 @@
     <slide ng-repeat="slide in slides" active="slide.active">
         <div class="fill" style="background-image: url('{{slide.image}}');"></div>
 
-        <home-slider-feed-item ng-repeat="displayOptions in slide.feedItems" display-options="displayOptions"></home-slider-feed-item>
+        <home-slider-feed-item ng-repeat="displayOptions in slide.feedItems" display-options="displayOptions" visible="slide.active"></home-slider-feed-item>
     </slide>
 </carousel>
