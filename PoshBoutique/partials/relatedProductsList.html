@@ -6,7 +6,6 @@
         </div>
     </div>
     <div class="row">
-        asd {{onItemSelected}}
         <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="relatedArticle in relatedArticles">
             <a class="related-product" ng-href="#/catalogue/all/view/{{relatedArticle.urlName}}" ng-click="invokeOnItemSelected()">
                 <img ng-src="{{relatedArticle.thumbnailUrl}}" alt="{{relatedArticle.title}}" />

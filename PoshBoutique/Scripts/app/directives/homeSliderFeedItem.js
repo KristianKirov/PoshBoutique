@@ -65,12 +65,14 @@
             hideFeedItem();
             var startShowPromise = function () {
                 showPromise = $timeout(function () {
+                    showPromise = null;
                     showFeedItem();
                 }, scope.displayOptions.showAfter);
             };
 
             var startHidePromise = function () {
                 hidePromise = $timeout(function () {
+                    hidePromise = null;
                     hideFeedItem();
                 }, scope.displayOptions.changeInterval - scope.displayOptions.hideBefore);
             }
@@ -85,8 +87,10 @@
                 }
             };
 
-            startShowPromise();
-            startHidePromise();
+            if (scope.visible) {
+                startShowPromise();
+                startHidePromise();
+            }
 
             scope.$watch('visible', function (newValue, oldValue) {
                 if (newValue !== oldValue) {
@@ -100,6 +104,10 @@
                         hideFeedItem();
                     }
                 }
+            });
+
+            scope.$on("$destroy", function () {
+                stopTimeouts();
             });
         }
     };

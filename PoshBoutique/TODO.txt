@@ -12,6 +12,7 @@ Implement search
 Hendle the case when you navigate to protected page and close the login screen
 Show error messages on logon/register screen
 Submit login/register form on enter key
+Forgotten password
 -- Remove asp session from web.config
 -- Single product view screen - connect to real service
 Add shopping cart states
@@ -30,3 +31,4 @@ Shopping cart bugs: login window wrong state, navigate to state from url does no
 -- search and filter list page
 Add like button in single window
 Add discount in single window
+Refresh articles list after login (Likes list)

@@ -137,7 +137,11 @@ poshBoutiqueApp
             .state('contact-us', {
                 url: "/contact-us",
                 templateUrl: "partials/contactUs.html",
-                controller: 'contactUsController',
+                controller: 'contactUsController'
+            })
+            .state('loyal-customer', {
+                url: "/loyal-customer",
+                templateUrl: "partials/loyalCustomer.html"
             });
         //.state('catalogue.category.viewItem', {
         //    url: "/view/:itemUrl",
