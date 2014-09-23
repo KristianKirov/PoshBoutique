@@ -35,5 +35,6 @@ namespace PoshBoutique.Data
         public virtual DbSet<UserLike> UserLikes { get; set; }
         public virtual DbSet<EmailSubscription> EmailSubscriptions { get; set; }
         public virtual DbSet<FeedbackSubmission> FeedbackSubmissions { get; set; }
+        public virtual DbSet<Collection> Collections { get; set; }
     }
 }

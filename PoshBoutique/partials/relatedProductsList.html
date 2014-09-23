@@ -7,7 +7,7 @@
     </div>
     <div class="row">
         <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="relatedArticle in relatedArticles">
-            <a class="related-product" ng-href="#/catalogue/all/view/{{relatedArticle.urlName}}" ng-click="invokeOnItemSelected()">
+            <a class="related-product" ui-sref=".({ itemUrl: relatedArticle.urlName })" ng-click="invokeOnItemSelected()">
                 <img ng-src="{{relatedArticle.thumbnailUrl}}" alt="{{relatedArticle.title}}" />
                 <div class="curtain center-container">
                     <span class="centered">{{relatedArticle.title}}</span>

@@ -57,6 +57,9 @@
     <Compile Include="Category.cs">
       <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Collection.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Color.cs">
       <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
     </Compile>
@@ -73,6 +76,7 @@
     <Compile Include="Models\ArticleModel.cs" />
     <Compile Include="Models\ArticlesListModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\ColorModel.cs" />
     <Compile Include="Models\FullArticleModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
@@ -100,6 +104,7 @@
     <Compile Include="Providers\CategoriesProvider.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Providers\CollectionsProvider.cs" />
     <Compile Include="Providers\EmailSubscriptionsProvider.cs" />
     <Compile Include="Providers\FeedbackSubmissionsProvider.cs" />
     <Compile Include="Providers\UserLikesProvider.cs" />

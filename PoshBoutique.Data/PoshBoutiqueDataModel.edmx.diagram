@@ -24,6 +24,8 @@
         <EntityTypeShape EntityType="PoshBoutiqueModel.EmailSubscription" Width="1.5" PointX="8.25" PointY="3" />
         <EntityTypeShape EntityType="PoshBoutiqueModel.FeedbackSubmission" Width="1.5" PointX="3" PointY="1.5" />
         <AssociationConnector Association="PoshBoutiqueModel.RelatedArticles" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.Collection" Width="1.5" PointX="7.375" PointY="9.875" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_Articles_Collections" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1204,3 +1204,29 @@ html.fullPage, html.fullPage body, html.fullPage .body-content, html.fullPage #v
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
+
+.collection-image {
+    width: 100%;
+    height: auto;
+}
+
+.collections-dropdown .dropdown-toggle {
+    text-align: center;
+    background-color: #ccc;
+    margin: 0;
+    padding: 10px;
+    border: 2px solid rgb(185, 185, 185);
+    color: gray;
+    cursor: pointer;
+}
+
+.collections-dropdown .dropdown-menu {
+    width: 100%;
+    font-size: 22px;
+    background-color: #EBEBEB;
+    text-align: center;
+}
+
+.collections-dropdown .glyphicon {
+    font-size: 22px;
+}

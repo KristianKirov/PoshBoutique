@@ -3,8 +3,7 @@
         restrict: 'E',
         replace: true,
         scope: {
-            item: '=',
-            categoryUrl: '@'
+            item: '='
         },
         templateUrl: 'partials/productItem.html',
         controller: function ($scope, likesDataService, currentUser, authenticateModal) {

@@ -38,6 +38,7 @@ namespace PoshBoutique.Data
         public string DiscountDescription { get; set; }
         public int LikesCount { get; set; }
         public int OrdersCount { get; set; }
+        public int CollectionId { get; set; }
     
         public virtual ICollection<ArticleImage> ArticleImages { get; set; }
         public virtual SizeType SizeType { get; set; }
@@ -45,5 +46,6 @@ namespace PoshBoutique.Data
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Article> RelatedArticles { get; set; }
         public virtual ICollection<Article> ParentRelatedArticles { get; set; }
+        public virtual Collection Collection { get; set; }
     }
 }

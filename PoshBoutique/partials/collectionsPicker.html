@@ -1,0 +1,19 @@
+﻿<div>
+    <img ng-src="{{selectedCollection.imageUrl}}" class="collection-image" />
+    <div class="dropdown collections-dropdown" is-open="dropdownExpanded">
+        <h1 class="dropdown-toggle">{{selectedCollection.name}} <span class="glyphicon glyphicon-chevron-down"></span></h1>
+        <ul class="dropdown-menu">
+            <li ng-repeat="collection in collections" ng-click="selectCollection(collection)" ng-class="{ 'disabled': selectedCollection.id ==  collection.id }">
+                <a href>{{collection.name}}</a>
+            </li>
+        </ul>
+    </div>
+    <div style="border: 1px solid gray;background-color:#F5F5F5; text-align: justify;">
+        <div style="max-width: 960px;margin: 0 auto;padding:20px;">
+            {{selectedCollection.description}}
+        </div>
+        <div style="text-align:center;padding:10px;background-color:#ccc;border-top:1px solid gray;">
+            {{selectedCollection.dateCreated | date:'d MMMM yyyy'}}
+        </div>
+    </div>
+</div>

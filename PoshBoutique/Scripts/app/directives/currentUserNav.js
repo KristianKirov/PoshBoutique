@@ -10,7 +10,7 @@
 
             $scope.logout = function () {
                 currentUser.logout();
-                debugger;
+                
                 if ($state.$current && $state.$current.data && $state.$current.data.authenticated) {
                     $state.go("home");
                 }

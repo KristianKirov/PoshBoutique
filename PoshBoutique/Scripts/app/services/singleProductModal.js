@@ -1,13 +1,15 @@
-﻿poshBoutiqueApp.factory("singleProductModal", function ($modal, $state, $stateParams, $location) {
+﻿poshBoutiqueApp.factory("singleProductModal", function ($modal, $state) {
     return {
         open: function (itemUrlName) {
             var setPreviousUrl = function () {
-                debugger;
-                var currentLocation = $state.href($state.current, $stateParams).substring(1);
-                if ($location.url() !== currentLocation) {
-                    $location.url(currentLocation);
-                    $location.replace();
-                }
+                //var listUrl = articleUrlProvider.getListUrl();
+
+                //if ($location.url() !== listUrl) {
+                //    $location.url(listUrl);
+                //    $location.replace();
+                //}
+
+                $state.go('^')
             };
 
             $modal.open({

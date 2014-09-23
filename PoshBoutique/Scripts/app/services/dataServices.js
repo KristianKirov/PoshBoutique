@@ -3,7 +3,6 @@
     var initialCategoryId = null;
 
     var selectCategory = function (categoryId, categories) {
-        debugger;
         if (!categories) {
             return false;
         }
@@ -53,7 +52,7 @@
                     //        category.isExpanded = true;
                     //    }
                     //}
-                    debugger;
+                    
                     cachedCategoriesTree = categoriesTree;
                     if (initialCategoryId) {
                         selectCategory(initialCategoryId, cachedCategoriesTree);
@@ -142,6 +141,17 @@ poshBoutiqueApp.factory("feedbackService", function ($http) {
                 method: 'POST',
                 url: '/api/feedback',
                 data: feedbackData
+            });
+        }
+    };
+});
+
+poshBoutiqueApp.factory("collectionsDataService", function ($http) {
+    return {
+        getAll: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/collections'
             });
         }
     };

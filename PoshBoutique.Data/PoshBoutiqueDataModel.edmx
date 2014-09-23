@@ -31,7 +31,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UrlName" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateCreated" Type="date" Nullable="false" />
           <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ShortDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -43,6 +43,7 @@
           <Property Name="DiscountDescription" Type="nvarchar" MaxLength="50" />
           <Property Name="LikesCount" Type="int" Nullable="false" />
           <Property Name="OrdersCount" Type="int" Nullable="false" />
+          <Property Name="CollectionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -53,6 +54,16 @@
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ParentCategoryId" Type="int" />
           <Property Name="OrderIndex" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Collections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateCreated" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Colors">
           <Key>
@@ -152,6 +163,18 @@
             </Principal>
             <Dependent Role="ArticleImages">
               <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Articles_Collections">
+          <End Role="Collections" Type="Self.Collections" Multiplicity="1" />
+          <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Collections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Articles">
+              <PropertyRef Name="CollectionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -256,6 +279,7 @@
           <EntitySet Name="ArticleImages" EntityType="Self.ArticleImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Collections" EntityType="Self.Collections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailSubscriptions" EntityType="Self.EmailSubscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FeedbackSubmissions" EntityType="Self.FeedbackSubmissions" Schema="dbo" store:Type="Tables" />
@@ -275,6 +299,10 @@
           <AssociationSet Name="FK_ArticleImages_Articles" Association="Self.FK_ArticleImages_Articles">
             <End Role="Articles" EntitySet="Articles" />
             <End Role="ArticleImages" EntitySet="ArticleImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Articles_Collections" Association="Self.FK_Articles_Collections">
+            <End Role="Collections" EntitySet="Collections" />
+            <End Role="Articles" EntitySet="Articles" />
           </AssociationSet>
           <AssociationSet Name="FK_Articles_SizeTypes" Association="Self.FK_Articles_SizeTypes">
             <End Role="SizeTypes" EntitySet="SizeTypes" />
@@ -320,7 +348,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UrlName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ShortDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
@@ -338,6 +366,8 @@
           <Property Name="OrdersCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RelatedArticles" Relationship="PoshBoutiqueModel.RelatedArticles" FromRole="Article" ToRole="Article1" />
           <NavigationProperty Name="ParentRelatedArticles" Relationship="PoshBoutiqueModel.RelatedArticles" FromRole="Article1" ToRole="Article" />
+          <Property Name="CollectionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Collection" Relationship="PoshBoutiqueModel.FK_Articles_Collections" FromRole="Article" ToRole="Collection" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -541,6 +571,11 @@
             <End Role="Article" EntitySet="Articles" />
             <End Role="Article1" EntitySet="Articles" />
           </AssociationSet>
+          <EntitySet Name="Collections" EntityType="PoshBoutiqueModel.Collection" />
+          <AssociationSet Name="FK_Articles_Collections" Association="PoshBoutiqueModel.FK_Articles_Collections">
+            <End Role="Collection" EntitySet="Collections" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserLike">
           <Key>
@@ -569,6 +604,29 @@
           <End Type="PoshBoutiqueModel.Article" Role="Article" Multiplicity="*" />
           <End Type="PoshBoutiqueModel.Article" Role="Article1" Multiplicity="*" />
         </Association>
+        <EntityType Name="Collection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Articles" Relationship="PoshBoutiqueModel.FK_Articles_Collections" FromRole="Collection" ToRole="Article" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Articles_Collections">
+          <End Type="PoshBoutiqueModel.Collection" Role="Collection" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.Article" Role="Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Collection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -578,6 +636,7 @@
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
               <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
                 <ScalarProperty Name="OrdersCount" ColumnName="OrdersCount" />
                 <ScalarProperty Name="LikesCount" ColumnName="LikesCount" />
                 <ScalarProperty Name="DiscountDescription" ColumnName="DiscountDescription" />
@@ -696,6 +755,17 @@
               <ScalarProperty Name="Id" ColumnName="ArticleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Collections">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Collection">
+              <MappingFragment StoreEntitySet="Collections">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

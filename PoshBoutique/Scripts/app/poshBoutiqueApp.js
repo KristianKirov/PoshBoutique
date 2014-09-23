@@ -29,21 +29,27 @@ poshBoutiqueApp
     .config(function ($stateProvider, $urlRouterProvider, articleListParamsProvider, $httpProvider) {
 
         $urlRouterProvider.otherwise('/');
-        $urlRouterProvider.when(/(.*)\/view\/(.*)/i, ['$match', '$stateParams', '$state', 'detailsViewParentState', 'singleProductModal',
-            function ($match, $stateParams, $state, detailsViewParentState, singleProductModal) {
-                var stateData = detailsViewParentState.getStateData($match);
-                if (!stateData) {
-                    return false;
-                }
+        //$urlRouterProvider.when(/(.*)\/view\/(.*)/i, ['$match', '$stateParams', '$state', 'articleUrlProvider', 'singleProductModal', '$location',
+        //    function ($match, $stateParams, $state, articleUrlProvider, singleProductModal, $location) {
+        //        debugger;
+        //        var urlData = articleUrlProvider.getUrlSegments();
+        //        if (!urlData.itemUrl) {
+        //            return false;
+        //        }
 
-                if ($state.$current.name != stateData.stateName || !equalForKeys(stateData.stateParams, $stateParams)) {
-                    $state.transitionTo(stateData.stateName, stateData.stateParams, { location: false });
-                }
+        //        //var stateData = detailsViewParentState.getStateData($match);
+        //        //if (!stateData) {
+        //        //    return false;
+        //        //}
 
-                singleProductModal.open(stateData.itemUrl);
+        //        //if ($state.$current.name != stateData.stateName || !equalForKeys(stateData.stateParams, $stateParams)) {
+        //        //    $state.transitionTo(stateData.stateName, stateData.stateParams, { location: false });
+        //        //}
 
-                return true;
-            }]);
+        //        singleProductModal.open(urlData.itemUrl);
+
+        //        return true;
+        //    }]);
 
         $stateProvider
           .state('home', {
@@ -63,21 +69,27 @@ poshBoutiqueApp
               }
           })
               .state('catalogue.category', {
-                  url: "/*categoryUrl",
+                  url: "/:categoryUrl",
                   templateUrl: "partials/productsListPlaceholder.html",
                   controller: function ($scope, listData, categoriesDataService, articleListParams) {
+                      debugger;
                       console.log("2: HITTTTTTTTTTTTTTT!!!!!");
                       $scope.articleListParams = articleListParams;
                       $scope.listData = listData;
                       categoriesDataService.setSelectedCategory(listData.category.id);
                   },
                   resolve: {
-                      listData: function (articlesDataService, $stateParams/*, articleListParams*/) {
+                      listData: function (articlesDataService, $stateParams/*, articleListParams, articleUrlProvider, singleProductModal*/) {
                           //return articlesDataService.getArticlesInCategory(
                           //    $stateParams.categoryUrl,
                           //    articleListParams.filter.text,
                           //    articleListParams.order.by.value,
                           //    articleListParams.order.asc ? 1 : 2);
+                          //var urlData = articleUrlProvider.getUrlSegments($stateParams.categoryUrl);
+
+                          //if (urlData.itemUrl) {
+                          //    singleProductModal.open(urlData.itemUrl);
+                          //}
 
                           return articlesDataService.getArticlesInCategory(
                               $stateParams.categoryUrl,
@@ -87,6 +99,13 @@ poshBoutiqueApp
                       }
                   }
               })
+                .state('catalogue.category.view', {
+                    url: "/view/:itemUrl",
+                    onEnter: function ($stateParams, singleProductModal) {
+                        console.log("3: HITTTTTTTTTTTTTTT!!!!!");
+                        singleProductModal.open($stateParams.itemUrl);
+                    }
+                })
             .state('autherror', {
                 url: "/autherror",
                 templateUrl: "partials/autherror.html",
@@ -95,7 +114,6 @@ poshBoutiqueApp
             .state('login', {
                 url: "/login?returnUrl",
                 controller: function ($stateParams, authenticateModal) {
-                    debugger;
                     authenticateModal.open($stateParams.returnUrl);
                 }
             })
@@ -142,13 +160,16 @@ poshBoutiqueApp
             .state('loyal-customer', {
                 url: "/loyal-customer",
                 templateUrl: "partials/loyalCustomer.html"
+            })
+            .state('new', {
+                url: "/new",
+                templateUrl: "partials/new.html",
+                controller: function ($scope) {
+                    $scope.cb = function (collection) {
+                        $scope.name = collection.name;
+                    }
+                }
             });
-        //.state('catalogue.category.viewItem', {
-        //    url: "/view/:itemUrl",
-        //    onEnter: function ($stateParams, singleProductModal) {
-        //        singleProductModal.open($stateParams.itemUrl);
-        //    }
-        //});
 
         var order = {
             options: [
@@ -254,7 +275,6 @@ poshBoutiqueApp
         });
 
         $rootScope.$on('$stateChangeStart', function (event, nextState) {
-            debugger;
             if (nextState.data) {
                 var authenticate = nextState.data.authenticated;
                 if (authenticate && !currentUser.isAuthenticated) {

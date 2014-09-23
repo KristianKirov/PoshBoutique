@@ -240,6 +240,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\CollectionsController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
@@ -268,7 +269,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\banner.jpg" />
+    <Content Include="Content\img\discount10.png" />
+    <Content Include="Content\img\door.png" />
     <Content Include="Content\img\handshake.png" />
+    <Content Include="Content\img\shipping.png" />
     <Content Include="Content\img\sky.png" />
     <Content Include="Content\img\sprite.png" />
     <Content Include="Content\ngprogress-lite.css" />
@@ -285,6 +289,7 @@
     <Content Include="partials\cart\address.html" />
     <Content Include="partials\cart\order.html" />
     <Content Include="partials\catalogue.html" />
+    <Content Include="partials\collectionsPicker.html" />
     <Content Include="partials\configurePurchaseForm.html" />
     <Content Include="partials\contactUs.html" />
     <Content Include="partials\currentUserNav.html" />
@@ -292,6 +297,7 @@
     <Content Include="partials\homeSliderFeedItem.html" />
     <Content Include="partials\homeSlider.html" />
     <Content Include="partials\loyalCustomer.html" />
+    <Content Include="partials\new.html" />
     <Content Include="partials\relatedProductsList.html" />
     <Content Include="partials\home.html" />
     <Content Include="partials\imagesView.html" />
@@ -327,6 +333,7 @@
     <Content Include="Scripts\app\controllers\catalogueController.js" />
     <Content Include="Scripts\app\controllers\contactUsController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
+    <Content Include="Scripts\app\directives\collectionsPicker.js" />
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
     <Content Include="Scripts\app\directives\homeSliderFeedItem.js" />
     <Content Include="Scripts\app\directives\homeSlider.js" />
@@ -346,7 +353,7 @@
     <Content Include="Scripts\app\services\authenticationStorage.js" />
     <Content Include="Scripts\app\services\currentUser.js" />
     <Content Include="Scripts\app\services\dataServices.js" />
-    <Content Include="Scripts\app\services\detailsViewParentState.js" />
+    <Content Include="Scripts\app\services\articleUrlProvider.js" />
     <Content Include="Scripts\app\services\shoppingCart.js" />
     <Content Include="Scripts\app\services\singleProductModal.js" />
     <Content Include="Scripts\app\utils.js" />
