@@ -43,5 +43,24 @@ namespace PoshBoutique.Controllers
 
             return this.Ok(articleModel);
         }
+
+        public async Task<IHttpActionResult> Get(int collectionId)
+        {
+            Guid? currentUserId = null;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                currentUserId = new Guid(this.User.Identity.GetUserId());
+            }
+
+            ArticlesProvider articlesProvider = new ArticlesProvider();
+            IEnumerable<ArticleModel> articlesInCollection = await articlesProvider.GetArticlesInCollection(collectionId, currentUserId);
+
+            if (articlesInCollection == null) 
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(articlesInCollection);
+        }
     }
 }

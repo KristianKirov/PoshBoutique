@@ -1,4 +1,4 @@
 ﻿<div class="col-md-12"><h3>{{listData.category.title}}</h3></div>
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="item in listData.articles | filter:articleListParams.filter.text | orderBy:articleListParams.order.by.value:articleListParams.order.asc">
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="item in listData.articles | filter:articleListParams.filter.text | orderBy:articleListParams.order.by.value:!articleListParams.order.asc">
     <product-item item="item" />
 </div>

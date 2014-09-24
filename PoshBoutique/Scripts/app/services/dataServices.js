@@ -83,7 +83,7 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
                     return listData;
                 });
         },
-        getArticleByUrlName: function(articleUrlName) {
+        getArticleByUrlName: function (articleUrlName) {
             return $http({
                 method: 'GET',
                 url: '/api/articles',
@@ -100,6 +100,15 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
             return $http({
                 method: 'GET',
                 url: '/api/relatedarticles/' + articleId
+            });
+        },
+        getArticlesInCollection: function (collectionId) {
+            return $http({
+                method: 'GET',
+                url: '/api/articles',
+                params: {
+                    collectionId: collectionId
+                }
             });
         }
     };

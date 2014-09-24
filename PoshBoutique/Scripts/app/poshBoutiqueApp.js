@@ -106,70 +106,91 @@ poshBoutiqueApp
                         singleProductModal.open($stateParams.itemUrl);
                     }
                 })
-            .state('autherror', {
-                url: "/autherror",
-                templateUrl: "partials/autherror.html",
-                controller: 'autherrorController'
+        .state('autherror', {
+            url: "/autherror",
+            templateUrl: "partials/autherror.html",
+            controller: 'autherrorController'
+        })
+        .state('login', {
+            url: "/login?returnUrl",
+            controller: function ($stateParams, authenticateModal) {
+                authenticateModal.open($stateParams.returnUrl);
+            }
+        })
+        .state('cart', {
+            abstract: true,
+            url: "/cart",
+            templateUrl: "partials/cart/cart.html",
+            controller: 'cartController'
+        })
+            .state('cart.order', {
+                url: "/order",
+                templateUrl: "partials/cart/order.html",
+                controller: 'cartOrderController'
             })
-            .state('login', {
-                url: "/login?returnUrl",
-                controller: function ($stateParams, authenticateModal) {
-                    authenticateModal.open($stateParams.returnUrl);
+            .state('cart.address', {
+                url: "/address",
+                templateUrl: "partials/cart/address.html",
+                controller: 'cartAddressController',
+                data: {
+                    authenticated: true
                 }
             })
-            .state('cart', {
-                abstract: true,
-                url: "/cart",
-                templateUrl: "partials/cart/cart.html",
-                controller: 'cartController'
-            })
-                .state('cart.order', {
-                    url: "/order",
-                    templateUrl: "partials/cart/order.html",
-                    controller: 'cartOrderController'
-                })
-                .state('cart.address', {
-                    url: "/address",
-                    templateUrl: "partials/cart/address.html",
-                    controller: 'cartAddressController',
-                    data: {
-                        authenticated: true
-                    }
-                })
-                .state('cart.payment', {
-                    url: "/payment",
-                    templateUrl: "partials/cart/payment.html",
-                    controller: 'cartPaymentController',
-                    data: {
-                        authenticated: true
-                    }
-                })
-                .state('cart.confirmation', {
-                    url: "/confirmation",
-                    templateUrl: "partials/cart/confirmation.html",
-                    controller: 'cartConfirmationController',
-                    data: {
-                        authenticated: true
-                    }
-                })
-            .state('contact-us', {
-                url: "/contact-us",
-                templateUrl: "partials/contactUs.html",
-                controller: 'contactUsController'
-            })
-            .state('loyal-customer', {
-                url: "/loyal-customer",
-                templateUrl: "partials/loyalCustomer.html"
-            })
-            .state('new', {
-                url: "/new",
-                templateUrl: "partials/new.html",
-                controller: function ($scope) {
-                    $scope.cb = function (collection) {
-                        $scope.name = collection.name;
-                    }
+            .state('cart.payment', {
+                url: "/payment",
+                templateUrl: "partials/cart/payment.html",
+                controller: 'cartPaymentController',
+                data: {
+                    authenticated: true
                 }
-            });
+            })
+            .state('cart.confirmation', {
+                url: "/confirmation",
+                templateUrl: "partials/cart/confirmation.html",
+                controller: 'cartConfirmationController',
+                data: {
+                    authenticated: true
+                }
+            })
+        .state('contact-us', {
+            url: "/contact-us",
+            templateUrl: "partials/contactUs.html",
+            controller: 'contactUsController'
+        })
+        .state('loyal-customer', {
+            url: "/loyal-customer",
+            templateUrl: "partials/loyalCustomer.html"
+        })
+        .state('new', {
+            url: "/new",
+            templateUrl: "partials/new.html",
+            controller: function ($scope, articlesDataService) {
+                $scope.onCollectionSelected = function (collection) {
+                    articlesDataService.getArticlesInCollection(collection.id)
+                        .success(function (articlesInCollection) {
+                            $scope.productsInCollection = articlesInCollection;
+                        })
+                    .error(function () {
+                        $scope.productsInCollection = null;
+                    });
+                }
+            }
+        })
+            .state('new.view', {
+                url: "/view/:itemUrl",
+                onEnter: function ($stateParams, singleProductModal) {
+                    console.log("3: HITTTTTTTTTTTTTTT!!!!!");
+                    singleProductModal.open($stateParams.itemUrl);
+                }
+            })
+        .state('discount', {
+            url: "/discount",
+            templateUrl: "partials/discount.html"
+        })
+        .state('featured', {
+            url: "/featured",
+            templateUrl: "partials/featured.html"
+        });
 
         var order = {
             options: [

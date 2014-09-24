@@ -49,7 +49,7 @@
                         <select ng-model="listParams.order.by" ng-options="o.title for o in listParams.order.options" class="form-control"></select>
                         <span class="input-group-btn">
                             <button class="btn btn-default" ng-click="listParams.order.asc = !listParams.order.asc" type="button">
-                                <i class="glyphicon" ng-class="{ 'glyphicon-sort-by-attributes': !listParams.order.asc, 'glyphicon-sort-by-attributes-alt': listParams.order.asc}"></i>
+                                <i class="glyphicon" ng-class="{ 'glyphicon-sort-by-attributes': listParams.order.asc, 'glyphicon-sort-by-attributes-alt': !listParams.order.asc}"></i>
                             </button>
                         </span>
                     </div>

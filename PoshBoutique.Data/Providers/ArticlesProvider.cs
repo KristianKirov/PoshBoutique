@@ -47,18 +47,25 @@ namespace PoshBoutique.Data.Providers
                 }
 
                 List<Article> articlesList = await articlesQuery.ToListAsync();
-                HashSet<int> userLikes = null;
-                if (currentUserId != null)
-                {
-                    UserLikesProvider userLikesProvider = new UserLikesProvider();
-                    userLikes = userLikesProvider.GetLikedArticlesByUser(currentUserId.Value);
-                }
+                HashSet<int> userLikes = this.GetUserLikes(currentUserId);
 
                 ArticlesConverter converter = new ArticlesConverter();
                 articlesListModel.Articles = articlesList.Select(a => converter.ToModel(a, userLikes)).ToList();
             }
 
             return articlesListModel;
+        }
+
+        private HashSet<int> GetUserLikes(Guid? currentUserId)
+        {
+            HashSet<int> userLikes = null;
+            if (currentUserId != null)
+            {
+                UserLikesProvider userLikesProvider = new UserLikesProvider();
+                userLikes = userLikesProvider.GetLikedArticlesByUser(currentUserId.Value);
+            }
+
+            return userLikes;
         }
 
         public FullArticleModel GetFullArticleByUrlName(string urlName)
@@ -158,6 +165,25 @@ namespace PoshBoutique.Data.Providers
                 ArticleModel[] relatedArticlesModels = relatedArticles.Select(a => converter.ToModel(a, null)).ToArray();
 
                 return relatedArticlesModels;
+            }
+        }
+
+        public async Task<IEnumerable<ArticleModel>> GetArticlesInCollection(int collectionId, Guid? currentUserId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article[] articlesInCollection = await dataContext.Articles.Where(a => a.CollectionId == collectionId && a.Visible).OrderByDescending(a => a.DateCreated).ToArrayAsync();
+                if (articlesInCollection.Length == 0)
+                {
+                    return null;
+                }
+
+                HashSet<int> userLikes = this.GetUserLikes(currentUserId);
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] articlesInCollectionModels = articlesInCollection.Select(a => converter.ToModel(a, userLikes)).ToArray();
+
+                return articlesInCollectionModels;
             }
         }
     }
