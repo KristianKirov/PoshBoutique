@@ -42,6 +42,8 @@ namespace PoshBoutique.Areas.Admin.Controllers
         public ActionResult Create()
         {
             ViewBag.SizeTypeId = new SelectList(db.SizeTypes, "Id", "Title");
+            ViewBag.CollectionId = new SelectList(db.Collections, "Id", "Name");
+
             return View();
         }
 
@@ -50,7 +52,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,LikesCount,OrdersCount")] Article article)
+        public ActionResult Create([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,LikesCount,OrdersCount,CollectionId,IsFeatured")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +62,8 @@ namespace PoshBoutique.Areas.Admin.Controllers
             }
 
             ViewBag.SizeTypeId = new SelectList(db.SizeTypes, "Id", "Title", article.SizeTypeId);
+            ViewBag.CollectionId = new SelectList(db.Collections, "Id", "Name", article.CollectionId);
+
             return View(article);
         }
 
@@ -78,6 +82,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
             ViewBag.SizeTypeId = new SelectList(db.SizeTypes, "Id", "Title", article.SizeTypeId);
             ViewBag.Categories = article.Categories.ToList();
             ViewBag.RelatedArticles = article.RelatedArticles.OrderByDescending(a => a.DateCreated).ToList();
+            ViewBag.CollectionId = new SelectList(db.Collections, "Id", "Name", article.CollectionId);
 
             return View(article);
         }
@@ -87,7 +92,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,OriginalPrice,DiscountDescription,LikesCount,OrdersCount")] Article article)
+        public ActionResult Edit([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,OriginalPrice,DiscountDescription,LikesCount,OrdersCount,CollectionId,IsFeatured")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -95,9 +100,11 @@ namespace PoshBoutique.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             ViewBag.SizeTypeId = new SelectList(db.SizeTypes, "Id", "Title", article.SizeTypeId);
             ViewBag.Categories = article.Categories.ToList();
             ViewBag.RelatedArticles = article.RelatedArticles.OrderByDescending(a => a.DateCreated).ToList();
+            ViewBag.CollectionId = new SelectList(db.Collections, "Id", "Name", article.CollectionId);
 
             return View(article);
         }

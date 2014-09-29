@@ -44,6 +44,7 @@
           <Property Name="LikesCount" Type="int" Nullable="false" />
           <Property Name="OrdersCount" Type="int" Nullable="false" />
           <Property Name="CollectionId" Type="int" Nullable="false" />
+          <Property Name="IsFeatured" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -368,6 +369,7 @@
           <NavigationProperty Name="ParentRelatedArticles" Relationship="PoshBoutiqueModel.RelatedArticles" FromRole="Article1" ToRole="Article" />
           <Property Name="CollectionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Collection" Relationship="PoshBoutiqueModel.FK_Articles_Collections" FromRole="Article" ToRole="Collection" />
+          <Property Name="IsFeatured" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -636,6 +638,7 @@
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="PoshBoutiqueModel.Article">
               <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="IsFeatured" ColumnName="IsFeatured" />
                 <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
                 <ScalarProperty Name="OrdersCount" ColumnName="OrdersCount" />
                 <ScalarProperty Name="LikesCount" ColumnName="LikesCount" />

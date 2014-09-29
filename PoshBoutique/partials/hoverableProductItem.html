@@ -1,0 +1,11 @@
+﻿<a ui-sref=".view({ itemUrl: item.urlName })" class="hover-view hover-view-magnify">
+    <img ng-src="{{item.thumbnailUrl}}" alt="{{item.title}}" />
+    <div class="mask">
+        <h2>{{item.title}}</h2>
+        <p>{{item.shortDescription}}</p>
+        <button class="info">Добави в количка</button>
+    </div>
+    <div class="price-panel">
+        {{item.price | currency}}
+    </div>
+</a>

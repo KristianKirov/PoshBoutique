@@ -110,6 +110,26 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
                     collectionId: collectionId
                 }
             });
+        },
+        getDiscountedArticles: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/articles/discounts'
+            }).then(function (response) {
+                var discountedItems = response.data;
+
+                return discountedItems;
+            });
+        },
+        getFeaturedArticles: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/articles/featured'
+            }).then(function (response) {
+                var featuredItems = response.data;
+
+                return featuredItems;
+            });
         }
     };
 });

@@ -42,6 +42,7 @@ namespace PoshBoutique
                 "~/Scripts/app/directives/homeSlider.js",
                 "~/Scripts/app/directives/homeSliderFeedItem.js",
                 "~/Scripts/app/directives/collectionsPicker.js",
+                "~/Scripts/app/directives/hoverableProductItem.js",
                 "~/Scripts/app/services/singleProductModal.js",
                 "~/Scripts/app/services/articleUrlProvider.js",
                 "~/Scripts/app/services/dataServices.js",

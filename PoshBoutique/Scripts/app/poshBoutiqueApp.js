@@ -185,7 +185,15 @@ poshBoutiqueApp
             })
         .state('discount', {
             url: "/discount",
-            templateUrl: "partials/discount.html"
+            templateUrl: "partials/discount.html",
+            resolve: {
+                discountedArticles: function (articlesDataService) {
+                    return articlesDataService.getDiscountedArticles();
+                }
+            },
+            controller: function ($scope, discountedArticles) {
+                $scope.articles = discountedArticles;
+            }
         })
         .state('featured', {
             url: "/featured",

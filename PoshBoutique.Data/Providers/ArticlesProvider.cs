@@ -186,5 +186,43 @@ namespace PoshBoutique.Data.Providers
                 return articlesInCollectionModels;
             }
         }
+
+        public async Task<IEnumerable<ArticleModel>> GetDiscountedArticles(Guid? currentUserId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article[] discountedArticles = await dataContext.Articles.Where(a => a.OriginalPrice != null && a.Visible).OrderByDescending(a => a.DateCreated).ToArrayAsync();
+                if (discountedArticles.Length == 0)
+                {
+                    return null;
+                }
+
+                HashSet<int> userLikes = this.GetUserLikes(currentUserId);
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] discountedArticlesModels = discountedArticles.Select(a => converter.ToModel(a, userLikes)).ToArray();
+
+                return discountedArticlesModels;
+            }
+        }
+
+        public async Task<IEnumerable<ArticleModel>> GetFeaturedArticles(Guid? currentUserId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article[] featuredArticles = await dataContext.Articles.Where(a => a.IsFeatured && a.Visible).OrderByDescending(a => a.DateCreated).ToArrayAsync();
+                if (featuredArticles.Length == 0)
+                {
+                    return null;
+                }
+
+                HashSet<int> userLikes = this.GetUserLikes(currentUserId);
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] featuredArticlesModels = featuredArticles.Select(a => converter.ToModel(a, userLikes)).ToArray();
+
+                return featuredArticlesModels;
+            }
+        }
     }
 }
