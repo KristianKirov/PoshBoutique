@@ -195,9 +195,46 @@ poshBoutiqueApp
                 $scope.articles = discountedArticles;
             }
         })
+            .state('discount.view', {
+                url: "/view/:itemUrl",
+                onEnter: function ($stateParams, singleProductModal) {
+                    console.log("3: HITTTTTTTTTTTTTTT!!!!!");
+                    singleProductModal.open($stateParams.itemUrl);
+                }
+            })
         .state('featured', {
             url: "/featured",
-            templateUrl: "partials/featured.html"
+            templateUrl: "partials/featured.html",
+            resolve: {
+                featuredArticles: function (articlesDataService) {
+                    return articlesDataService.getFeaturedArticles();
+                }
+            },
+            controller: function ($scope, featuredArticles) {
+                $scope.articles = featuredArticles;
+            }
+        })
+            .state('featured.view', {
+                url: "/view/:itemUrl",
+                onEnter: function ($stateParams, singleProductModal) {
+                    console.log("3: HITTTTTTTTTTTTTTT!!!!!");
+                    singleProductModal.open($stateParams.itemUrl);
+                }
+            })
+        .state('favourites', {
+            url: "/favourites",
+            templateUrl: "partials/favourites.html",
+            resolve: {
+                likedArticles: function (articlesDataService) {
+                    return articlesDataService.getLikedArticles();
+                }
+            },
+            controller: function ($scope, likedArticles) {
+                $scope.likedArticles = likedArticles;
+            },
+            data: {
+                authenticated: true
+            }
         });
 
         var order = {

@@ -1,0 +1,20 @@
+﻿<div class="row" ng-repeat="likedArticle in likedArticles">
+    <div class="col-md-3">
+        <img ng-src="{{likedArticle.thumbnailUrl}}" alt="{{likedArticle.title}}" />
+    </div>
+    <div class="col-md-9">
+        <div>
+            {{likedArticle.title}}
+        </div>
+        <div>
+            {{likedArticle.description}}
+        </div>
+        <div>
+            {{likedArticle.materialDescription}}
+        </div>
+        <div>
+            <strong>{{likedArticle.price | currency}}</strong>
+        </div>
+        <div>Remove</div>
+    </div>
+</div>

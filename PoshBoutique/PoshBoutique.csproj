@@ -294,6 +294,7 @@
     <Content Include="partials\configurePurchaseForm.html" />
     <Content Include="partials\contactUs.html" />
     <Content Include="partials\currentUserNav.html" />
+    <Content Include="partials\favourites.html" />
     <Content Include="partials\featured.html" />
     <Content Include="partials\discount.html" />
     <Content Include="partials\emailSubscriptionForm.html" />

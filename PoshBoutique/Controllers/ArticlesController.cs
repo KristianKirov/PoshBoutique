@@ -105,5 +105,21 @@ namespace PoshBoutique.Controllers
 
             return this.Ok(featuredArticles);
         }
+
+        [HttpGet]
+        [Authorize]
+        [Route("Liked")]
+        public async Task<IHttpActionResult> GetLikedArticles()
+        {
+            ArticlesProvider articlesProvider = new ArticlesProvider();
+            IEnumerable<ArticleModel> likedArticles = await articlesProvider.GetLikedArticles(new Guid(this.User.Identity.GetUserId()));
+
+            if (likedArticles == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(likedArticles);
+        }
     }
 }

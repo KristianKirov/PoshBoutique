@@ -1232,16 +1232,23 @@ html.fullPage, html.fullPage body, html.fullPage .body-content, html.fullPage #v
 }
 
 /* ///////////////////////////////////////// */
+a.hoverable {
+    display:block;
+    position: relative;
+}
+
+a.hoverable .item-like {
+    top: 15px;
+    right: 15px;
+}
 
 .hover-view {
     /*margin: 10px;*/
     /*float: left;*/
     border: 10px solid #fff;
     overflow: hidden;
-    position: relative;
     text-align: center;
     box-shadow: 1px 1px 2px #e6e6e6;
-    display: block;
     /*cursor: default;*/
     /*background: #fff url(../images/bgimg.jpg) no-repeat center center*/
 }
@@ -1353,14 +1360,37 @@ html.fullPage, html.fullPage body, html.fullPage .body-content, html.fullPage #v
     opacity: 1;
 }
 
-.hover-view .price-panel {
+.price-panel {
     position: absolute;
     bottom: 0;
-    padding: 10px;
     text-decoration:none;
     font-weight:bold;
     color:black;
     font-size:16px;
+    width: 100%;
+}
+
+.price-panel .original-price {
+    float: left;
+    text-decoration: line-through;
+    color: rgb(253, 127, 127);
+    margin: 20px;
+    position: absolute;
+    bottom: 0px;
+}
+
+.price-panel .current-price {
+    font-size:26px;
+    margin: 20px;
+}
+
+.price-panel.discounted .current-price {
+    float:right;
+    color:rgb(0, 189, 0);
 }
 
 /* ///////////////////////////////////// */
+
+.view-content {
+    margin:20px;
+}

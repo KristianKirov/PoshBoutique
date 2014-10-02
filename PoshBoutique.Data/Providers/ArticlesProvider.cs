@@ -224,5 +224,30 @@ namespace PoshBoutique.Data.Providers
                 return featuredArticlesModels;
             }
         }
+
+        public async Task<IEnumerable<ArticleModel>> GetLikedArticles(Guid userId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                IQueryable<UserLike> userLikesQuery = dataContext.UserLikes.Where(ul => ul.UserId == userId);
+                Article[] likedArticles = await dataContext.Articles.Join(userLikesQuery, a => a.Id, ul => ul.ArticleId, (a, ul) => a).OrderBy(a => a.Title).ToArrayAsync();
+
+                if (likedArticles.Length == 0)
+                {
+                    return null;
+                }
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] likedArticlesModels = likedArticles.Select(a => 
+                    {
+                        ArticleModel likedArticleModel = converter.ToModel(a, null);
+                        likedArticleModel.IsLiked = true;
+
+                        return likedArticleModel;
+                    }).ToArray();
+
+                return likedArticlesModels;
+            }
+        }
     }
 }
