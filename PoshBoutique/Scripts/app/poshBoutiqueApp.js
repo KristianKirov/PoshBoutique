@@ -229,8 +229,14 @@ poshBoutiqueApp
                     return articlesDataService.getLikedArticles();
                 }
             },
-            controller: function ($scope, likedArticles) {
+            controller: function ($scope, likedArticles, likesDataService) {
                 $scope.likedArticles = likedArticles;
+
+                $scope.unlikeArticle = function (articleIndex, unlikedArticle) {
+                    $scope.likedArticles.splice(articleIndex, 1);
+
+                    likesDataService.unlikeArticle(unlikedArticle.id);
+                };
             },
             data: {
                 authenticated: true

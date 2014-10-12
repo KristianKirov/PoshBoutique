@@ -46,14 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\Bulgarian\BulgarianAnalyzer.cs" />
+    <Compile Include="Analysis\Bulgarian\BulgarianStemFilter.cs" />
+    <Compile Include="Analysis\Bulgarian\BulgarianStemmer.cs" />
     <Compile Include="ISearchEntry.cs" />
-    <Compile Include="ISearchEntryFactory.cs" />
-    <Compile Include="SearchFieldData.cs" />
+    <Compile Include="ISearchEntryAdapter.cs" />
+    <Compile Include="IndexField.cs" />
     <Compile Include="SearchFileSystemStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Analysis\Bulgarian\stopwords.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

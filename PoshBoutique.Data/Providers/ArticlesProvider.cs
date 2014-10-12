@@ -249,5 +249,22 @@ namespace PoshBoutique.Data.Providers
                 return likedArticlesModels;
             }
         }
+
+        public async Task<IEnumerable<ArticleModel>> GetArticlesByIds(IEnumerable<int> articleIds)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article[] articlesInCollection = await dataContext.Articles.Where(a => articleIds.Contains(a.Id) && a.Visible).OrderByDescending(a => a.DateCreated).ToArrayAsync();
+                if (articlesInCollection.Length == 0)
+                {
+                    return null;
+                }
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] articlesInCollectionModels = articlesInCollection.Select(a => converter.ToModel(a, null)).ToArray();
+
+                return articlesInCollectionModels;
+            }
+        }
     }
 }

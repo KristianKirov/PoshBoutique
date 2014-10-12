@@ -1,20 +1,27 @@
-﻿<div class="row" ng-repeat="likedArticle in likedArticles">
-    <div class="col-md-3">
-        <img ng-src="{{likedArticle.thumbnailUrl}}" alt="{{likedArticle.title}}" />
+﻿<div class="row row--animated" ng-repeat="likedArticle in likedArticles">
+    <div class="col-sm-4 col-md-3">
+        <div class="view-content" style="text-align: center;">
+            <img ng-src="{{likedArticle.thumbnailUrl}}" alt="{{likedArticle.title}}" style="max-width:100%" />
+        </div>
     </div>
-    <div class="col-md-9">
-        <div>
-            {{likedArticle.title}}
+    <div class="col-sm-8 col-md-9">
+        <div class="view-content" style="position:relative;">
+            <h2>
+                <a ui-sref="catalogue.category.view({ categoryUrl: 'all', itemUrl: likedArticle.urlName })">{{likedArticle.title}}</a>
+            </h2>
+
+            <p>
+                {{likedArticle.description}}
+            </p>
+            <p>
+                {{likedArticle.materialDescription}}
+            </p>
+            <div>
+                <strong>{{likedArticle.price | currency}}</strong>
+            </div>
+            <div style="position:absolute;top:0;right:0;font-size:32px;cursor:pointer;" ng-click="unlikeArticle($index,likedArticle)">
+                <i class="glyphicon glyphicon-remove-circle"></i>
+            </div>
         </div>
-        <div>
-            {{likedArticle.description}}
-        </div>
-        <div>
-            {{likedArticle.materialDescription}}
-        </div>
-        <div>
-            <strong>{{likedArticle.price | currency}}</strong>
-        </div>
-        <div>Remove</div>
     </div>
 </div>

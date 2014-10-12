@@ -1,9 +1,11 @@
-﻿using Lucene.Net.Analysis.Standard;
+﻿using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
+using PoshBoutique.Search.Analysis.Bulgarian;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,67 +13,110 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 
 namespace PoshBoutique.Search
 {
-    internal class SearchFileSystemStorage
+    public class SearchFileSystemStorage<T>
     {
-        public static ISearchEntryFactory SearchEntryFactory { get; set; }
+        private ISearchEntryAdapter<T> searchEntryAdapter;
+        private FSDirectory indexDirectory;
 
-        private static string _luceneDir = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "lucene_index");
-        private static FSDirectory _directoryTemp;
-        private static FSDirectory _directory
+        public SearchFileSystemStorage(ISearchEntryAdapter<T> searchEntryAdapter)
         {
-            get
-            {
-                if (_directoryTemp == null)
-                {
-                    _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
-                }
-
-                if (IndexWriter.IsLocked(_directoryTemp))
-                {
-                    IndexWriter.Unlock(_directoryTemp);
-                }
-
-                var lockFilePath = Path.Combine(_luceneDir, "write.lock");
-                if (File.Exists(lockFilePath))
-                {
-                    File.Delete(lockFilePath);
-                }
-
-                return _directoryTemp;
-            }
+            this.searchEntryAdapter = searchEntryAdapter;
+            this.indexDirectory = this.GetIndexDirectory(searchEntryAdapter.UniqueKey);
         }
 
-        private static void _addToLuceneIndex(ISearchEntry searchEntry, IndexWriter writer)
+        private FSDirectory GetIndexDirectory(string uniqueIndex)
+        {
+            string indexDir = HostingEnvironment.MapPath(string.Concat("~/", uniqueIndex));
+            FSDirectory indexDyrectory = FSDirectory.Open(new DirectoryInfo(indexDir));
+
+            if (IndexWriter.IsLocked(indexDyrectory))
+            {
+                IndexWriter.Unlock(indexDyrectory);
+            }
+
+            string lockFilePath = Path.Combine(indexDir, "write.lock");
+            if (File.Exists(lockFilePath))
+            {
+                File.Delete(lockFilePath);
+            }
+
+            return indexDyrectory;
+        }
+
+        //private static string _luceneDir = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "lucene_index");
+        //private static FSDirectory _directoryTemp;
+        //private static FSDirectory _directory
+        //{
+        //    get
+        //    {
+        //        if (_directoryTemp == null)
+        //        {
+        //            _directoryTemp = FSDirectory.Open(new DirectoryInfo(_luceneDir));
+        //        }
+
+        //        if (IndexWriter.IsLocked(_directoryTemp))
+        //        {
+        //            IndexWriter.Unlock(_directoryTemp);
+        //        }
+
+        //        var lockFilePath = Path.Combine(_luceneDir, "write.lock");
+        //        if (File.Exists(lockFilePath))
+        //        {
+        //            File.Delete(lockFilePath);
+        //        }
+
+        //        return _directoryTemp;
+        //    }
+        //}
+
+        private Document BuildIndexDocument(ISearchEntry searchEntry)
+        {
+            Document indexDocument = new Document();
+            indexDocument.Add(new Field(searchEntry.Key.FieldName, searchEntry.Key.FieldValue, Field.Store.YES, Field.Index.NOT_ANALYZED));
+
+            foreach (IndexField field in searchEntry.SearchFieldsData)
+            {
+                indexDocument.Add(
+                    new Field(
+                        field.FieldName,
+                        field.FieldValue,
+                        field.Store ? Field.Store.YES : Field.Store.NO,
+                        field.Analyze ? Field.Index.NOT_ANALYZED : Field.Index.NOT_ANALYZED));
+            }
+
+            return indexDocument;
+        }
+
+        private void AddToLuceneIndex(ISearchEntry searchEntry, IndexWriter writer)
         {
             // remove older index entry
-            TermQuery searchQuery = new TermQuery(new Term(searchEntry.KeyField, searchEntry.KeyValue));
+            TermQuery searchQuery = new TermQuery(new Term(searchEntry.Key.FieldName, searchEntry.Key.FieldValue));
             writer.DeleteDocuments(searchQuery);
 
             // add new index entry
-            Document doc = new Document();
-
-            doc.Add(new Field(searchEntry.KeyField, searchEntry.KeyValue, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            foreach (SearchFieldData searchFieldData in searchEntry.SearchFieldsData)
-            {
-                doc.Add(new Field(searchFieldData.FieldName, searchFieldData.FieldValue, Field.Store.YES, Field.Index.ANALYZED));
-            }
-
-            writer.AddDocument(doc);
+            Document indexDocument = this.BuildIndexDocument(searchEntry);
+            writer.AddDocument(indexDocument);
         }
 
-        public static void AddUpdateLuceneIndex(IEnumerable<ISearchEntry> searchEntries)
+        private Analyzer GetAnalyzer()
+        {
+            return new BulgarianAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
+        }
+
+        public void AddUpdateLuceneIndex(IEnumerable<ISearchEntry> searchEntries)
         {
             // init lucene
-            var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-            using (IndexWriter writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            Analyzer analyzer = this.GetAnalyzer();
+            using (IndexWriter writer = new IndexWriter(indexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 // add data to lucene search index (replaces older entry if any)
                 foreach (var sampleData in searchEntries)
                 {
-                    _addToLuceneIndex(sampleData, writer);
+                    this.AddToLuceneIndex(sampleData, writer);
                 }
 
                 // close handles
@@ -80,19 +125,19 @@ namespace PoshBoutique.Search
             }
         }
 
-        public static void AddUpdateLuceneIndex(ISearchEntry searchEntry)
+        public void AddUpdateLuceneIndex(ISearchEntry searchEntry)
         {
-            AddUpdateLuceneIndex(new ISearchEntry[1] { searchEntry });
+            this.AddUpdateLuceneIndex(new ISearchEntry[1] { searchEntry });
         }
 
-        public static void ClearLuceneIndexRecord(int record_id)
+        public void ClearLuceneIndexRecord(IndexField keyField)
         {
             // init lucene
-            var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-            using (var writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            Analyzer analyzer = this.GetAnalyzer();
+            using (var writer = new IndexWriter(this.indexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 // remove older index entry
-                var searchQuery = new TermQuery(new Term("Id", record_id.ToString()));
+                var searchQuery = new TermQuery(new Term(keyField.FieldName, keyField.FieldValue));
                 writer.DeleteDocuments(searchQuery);
 
                 // close handles
@@ -101,12 +146,12 @@ namespace PoshBoutique.Search
             }
         }
 
-        public static bool ClearLuceneIndex()
+        public bool ClearLuceneIndex()
         {
             try
             {
-                var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-                using (var writer = new IndexWriter(_directory, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED))
+                Analyzer analyzer = this.GetAnalyzer();
+                using (var writer = new IndexWriter(this.indexDirectory, analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED))
                 {
                     // remove older index entries
                     writer.DeleteAll();
@@ -120,50 +165,30 @@ namespace PoshBoutique.Search
             {
                 return false;
             }
+
             return true;
         }
 
-        public static void Optimize()
+        public void Optimize()
         {
-            var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-            using (var writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            Analyzer analyzer = this.GetAnalyzer();
+            using (IndexWriter writer = new IndexWriter(this.indexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 analyzer.Close();
+
                 writer.Optimize();
+
                 writer.Dispose();
             }
         }
 
-        private static ISearchEntry _mapLuceneDocumentToData(Document doc)
-        {
-            IList<IFieldable> fields = doc.GetFields();
-            SearchFieldData[] searchFieldsData = new SearchFieldData[fields.Count];
-            int i = 0;
-            foreach (IFieldable field in fields)
-            {
-                searchFieldsData[i] = new SearchFieldData()
-                {
-                    FieldName = field.Name,
-                    FieldValue = field.StringValue
-                };
-                ++i;
-            }
-
-            return SearchEntryFactory.AssembleSearchEntry(searchFieldsData);
-        }
-
-        private static IEnumerable<ISearchEntry> _mapLuceneToDataList(IEnumerable<Document> hits)
-        {
-            return hits.Select(_mapLuceneDocumentToData).ToList();
-        }
-
-        private static IEnumerable<ISearchEntry> _mapLuceneToDataList(IEnumerable<ScoreDoc> hits,
+        private IEnumerable<T> MapSearchHitsToItems(IEnumerable<ScoreDoc> hits,
             IndexSearcher searcher)
         {
-            return hits.Select(hit => _mapLuceneDocumentToData(searcher.Doc(hit.Doc))).ToList();
+            return searchEntryAdapter.AssembleItems(hits.Select(hit => searcher.Doc(hit.Doc)));
         }
 
-        private static Query parseQuery(string searchQuery, QueryParser parser)
+        private Query ParseQuery(string searchQuery, QueryParser parser)
         {
             Query query;
             try
@@ -178,27 +203,28 @@ namespace PoshBoutique.Search
             return query;
         }
 
-        private static IEnumerable<ISearchEntry> _search(string searchQuery, string searchField = "")
+        private IEnumerable<T> SearchInternal(string searchQuery, string searchField = "")
         {
             // validation
             if (string.IsNullOrEmpty(searchQuery.Replace("*", "").Replace("?", "")))
             {
-                return new List<ISearchEntry>();
+                return new List<T>();
             }
 
             // set up lucene searcher
-            using (var searcher = new IndexSearcher(_directory, false))
+            using (IndexSearcher searcher = new IndexSearcher(this.indexDirectory, true))
             {
-                var hits_limit = 1000;
-                var analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
+                int hits_limit = 1000;
+                Analyzer analyzer = this.GetAnalyzer();
 
                 // search by single field
                 if (!string.IsNullOrEmpty(searchField))
                 {
-                    var parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, searchField, analyzer);
-                    var query = parseQuery(searchQuery, parser);
-                    var hits = searcher.Search(query, hits_limit).ScoreDocs;
-                    var results = _mapLuceneToDataList(hits, searcher);
+                    QueryParser parser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, searchField, analyzer);
+                    Query query = this.ParseQuery(searchQuery, parser);
+                    ScoreDoc[] hits = searcher.Search(query, hits_limit).ScoreDocs;
+                    IEnumerable<T> results = this.MapSearchHitsToItems(hits, searcher);
+
                     analyzer.Close();
                     searcher.Dispose();
 
@@ -207,10 +233,11 @@ namespace PoshBoutique.Search
                 // search by multiple fields (ordered by RELEVANCE)
                 else
                 {
-                    var parser = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, SearchEntryFactory.GetSearchFieldNames(), analyzer);
-                    var query = parseQuery(searchQuery, parser);
-                    var hits = searcher.Search(query, null, hits_limit, Sort.RELEVANCE).ScoreDocs;
-                    var results = _mapLuceneToDataList(hits, searcher);
+                    QueryParser parser = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, searchEntryAdapter.GetSearchFieldNames(), analyzer);
+                    Query query = this.ParseQuery(searchQuery, parser);
+                    ScoreDoc[] hits = searcher.Search(query, null, hits_limit, Sort.RELEVANCE).ScoreDocs;
+                    IEnumerable<T> results = this.MapSearchHitsToItems(hits, searcher);
+
                     analyzer.Close();
                     searcher.Dispose();
 
@@ -219,18 +246,18 @@ namespace PoshBoutique.Search
             }
         }
 
-        public static IEnumerable<ISearchEntry> Search(string input, string fieldName = "")
+        public IEnumerable<T> Search(string input, string fieldName = "")
         {
             if (string.IsNullOrEmpty(input))
             {
-                return new List<ISearchEntry>();
+                return new List<T>();
             }
 
             var terms = input.Trim().Replace("-", " ").Split(' ')
                 .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
             input = string.Join(" ", terms);
 
-            return _search(input, fieldName);
+            return this.SearchInternal(input, fieldName);
         }  
     }
 }

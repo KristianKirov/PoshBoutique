@@ -8,9 +8,8 @@ namespace PoshBoutique.Search
 {
     public interface ISearchEntry
     {
-        string KeyField { get; }
-        string KeyValue { get; }
+        IndexField Key { get; }
 
-        IEnumerable<SearchFieldData> SearchFieldsData { get; }
+        IEnumerable<IndexField> SearchFieldsData { get; }
     }
 }
