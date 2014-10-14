@@ -250,11 +250,11 @@ namespace PoshBoutique.Data.Providers
             }
         }
 
-        public async Task<IEnumerable<ArticleModel>> GetArticlesByIds(IEnumerable<int> articleIds)
+        public IEnumerable<ArticleModel> GetArticlesByIds(IEnumerable<int> articleIds)
         {
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
-                Article[] articlesInCollection = await dataContext.Articles.Where(a => articleIds.Contains(a.Id) && a.Visible).OrderByDescending(a => a.DateCreated).ToArrayAsync();
+                Article[] articlesInCollection = dataContext.Articles.Where(a => articleIds.Contains(a.Id) && a.Visible).OrderByDescending(a => a.DateCreated).ToArray();
                 if (articlesInCollection.Length == 0)
                 {
                     return null;

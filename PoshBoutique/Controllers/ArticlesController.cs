@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using PoshBoutique.Data.Search.Articles;
 
 namespace PoshBoutique.Controllers
 {
@@ -120,6 +121,20 @@ namespace PoshBoutique.Controllers
             }
 
             return this.Ok(likedArticles);
+        }
+
+        [HttpGet]
+        [Route("Find")]
+        public IHttpActionResult FindArticles(string q)
+        {
+            if (string.IsNullOrEmpty(q))
+            {
+                return this.BadRequest("Search term cannot be empty");
+            }
+
+            IEnumerable<ArticleModel> foundArticles = ArticlesIndexStore.Current.Find(q);
+
+            return this.Ok(foundArticles);
         }
     }
 }

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+@using PoshBoutique.Data.Models
+
+<h2>Search</h2>
+<p>
+@using (Html.BeginForm("ReIndex", "Search", FormMethod.Post, new { role = "form", @class = "form-inline" }))
+{
+    <button type="submit" class="btn btn-info btn-xs">Reindex</button>
+}
+@using (Html.BeginForm("Clean", "Search", FormMethod.Post, new { role = "form", @class = "form-inline" }))
+{
+    <button type="submit" class="btn btn-danger btn-xs">Clean</button>
+}
+</p>
+<div>
+    @using (Html.BeginForm("Index", "Search", FormMethod.Get, new { role = "search" }))
+    {
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control" placeholder="Search" id="q" name="q" value="@ViewBag.SearchTerm">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </span>
+        </div>
+    }
+</div>
+@if (ViewBag.Articles != null)
+{
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (ArticleModel article in (IEnumerable<ArticleModel>)ViewBag.Articles)
+            {
+                <tr>
+                    <td>@article.Title</td>
+                    <td>@article.ShortDescription</td>
+                    <td>@article.Description</td>
+                    <td>@article.MaterialDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
+
+

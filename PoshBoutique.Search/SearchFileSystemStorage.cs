@@ -85,7 +85,7 @@ namespace PoshBoutique.Search
                         field.FieldName,
                         field.FieldValue,
                         field.Store ? Field.Store.YES : Field.Store.NO,
-                        field.Analyze ? Field.Index.NOT_ANALYZED : Field.Index.NOT_ANALYZED));
+                        field.Analyze ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED));
             }
 
             return indexDocument;
@@ -253,9 +253,9 @@ namespace PoshBoutique.Search
                 return new List<T>();
             }
 
-            var terms = input.Trim().Replace("-", " ").Split(' ')
-                .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
-            input = string.Join(" ", terms);
+            //var terms = input.Trim().Replace("-", " ").Split(' ')
+            //    .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
+            //input = string.Join(" ", terms);
 
             return this.SearchInternal(input, fieldName);
         }  

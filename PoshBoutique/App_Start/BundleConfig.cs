@@ -64,6 +64,10 @@ namespace PoshBoutique
                 "~/Scripts/respond.js",
                 "~/Scripts/ui-bootstrap-tpls-0.11.0.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-admin").Include(
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/respond.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/Site.css",

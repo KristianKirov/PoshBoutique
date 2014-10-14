@@ -44,6 +44,9 @@
                     <li>
                         @Html.ActionLink("Collections", "Index", "Collections")
                     </li>
+                    <li>
+                        @Html.ActionLink("Search", "Index", "Search")
+                    </li>
                 </ul>
             </div>
         </div>
@@ -58,7 +61,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-admin")
     @RenderSection("scripts", required: false)
 </body>
 </html>

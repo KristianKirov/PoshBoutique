@@ -46,9 +46,14 @@ namespace PoshBoutique.Data.Search.Articles
                 articlesOrderMap.Add(int.Parse(document.Get("Id")), documentIndex++);
             }
 
+            if (articlesOrderMap.Count == 0)
+            {
+                return new List<ArticleModel>();
+            }
+
             IEnumerable<int> articleIds = articlesOrderMap.Keys;
             ArticlesProvider articlesProvider = new ArticlesProvider();
-            IEnumerable<ArticleModel> foundArticles = articlesProvider.GetArticlesByIds(articleIds).Result.OrderBy(a => articlesOrderMap[a.Id]).ToList();
+            IEnumerable<ArticleModel> foundArticles = articlesProvider.GetArticlesByIds(articleIds).OrderBy(a => articlesOrderMap[a.Id]).ToList();
 
             return foundArticles;
         }

@@ -58,6 +58,7 @@ namespace PoshBoutique.Search.Analysis.Bulgarian
         }
 
         private readonly Version matchVersion;
+        private readonly bool enableStopPositionIncrements;
 
         public BulgarianAnalyzer(Version matchVersion)
             : this(matchVersion, DefaultSetHolder.DEFAULT_STOP_SET)
@@ -68,6 +69,7 @@ namespace PoshBoutique.Search.Analysis.Bulgarian
         {
             this.stoptable = new HashSet<string>(CharArraySet.Copy(stopwords));
             this.matchVersion = matchVersion;
+            this.enableStopPositionIncrements = StopFilter.GetEnablePositionIncrementsVersionDefault(matchVersion);
         }
 
         public override TokenStream TokenStream(string fieldName, TextReader reader)
@@ -75,7 +77,7 @@ namespace PoshBoutique.Search.Analysis.Bulgarian
             TokenStream result = new StandardTokenizer(matchVersion, reader);
             result = new StandardFilter(result);
             result = new LowerCaseFilter(result);
-            result = new StopFilter(false, result, stoptable);
+            result = new StopFilter(this.enableStopPositionIncrements, result, stoptable);
             result = new BulgarianStemFilter(result);
 
             return result;

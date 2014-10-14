@@ -11,13 +11,13 @@ namespace PoshBoutique.Search.Analysis.Bulgarian
     public class BulgarianStemFilter : TokenFilter
     {
         private readonly BulgarianStemmer stemmer;
-        private readonly TermAttribute termAtt;
+        private readonly ITermAttribute termAtt;
 
         public BulgarianStemFilter(TokenStream input)
             : base(input)
         {
             stemmer = new BulgarianStemmer();
-            this.termAtt = this.AddAttribute<TermAttribute>();
+            this.termAtt = this.AddAttribute<ITermAttribute>();
         }
 
         public override bool IncrementToken()

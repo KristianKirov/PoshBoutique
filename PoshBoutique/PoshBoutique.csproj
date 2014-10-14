@@ -205,6 +205,7 @@
     <Compile Include="Areas\Admin\Controllers\CollectionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ColorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DiscountsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SearchController.cs" />
     <Compile Include="Areas\Admin\Controllers\SizesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SizeTypesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ArticleCategoriesController.cs" />
@@ -678,6 +679,7 @@
     <Content Include="Areas\Admin\Views\Collections\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Collections\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Collections\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Search\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -752,6 +754,10 @@
     <ProjectReference Include="..\PoshBoutique.Data\PoshBoutique.Data.csproj">
       <Project>{fa1c2e85-44ef-4109-bbba-b0775e7f00c2}</Project>
       <Name>PoshBoutique.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoshBoutique.Search\PoshBoutique.Search.csproj">
+      <Project>{43fdd581-88ce-4ee9-b731-2d3ad425eb28}</Project>
+      <Name>PoshBoutique.Search</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
