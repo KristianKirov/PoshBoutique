@@ -232,14 +232,25 @@ poshBoutiqueApp
             controller: function ($scope, likedArticles, likesDataService) {
                 $scope.likedArticles = likedArticles;
 
-                $scope.unlikeArticle = function (articleIndex, unlikedArticle) {
+                $scope.articleUnlikedCallback = function (articleIndex, unlikedArticle) {
                     $scope.likedArticles.splice(articleIndex, 1);
-
-                    likesDataService.unlikeArticle(unlikedArticle.id);
                 };
             },
             data: {
                 authenticated: true
+            }
+        })
+        .state('search', {
+            url: "/search?term",
+            templateUrl: "partials/search.html",
+            resolve: {
+                foundArticles: function (articlesDataService, $stateParams) {
+                    return articlesDataService.findArticles($stateParams.term);
+                }
+            },
+            controller: function ($scope, $stateParams, foundArticles) {
+                $scope.searchTerm = $stateParams.term;
+                $scope.foundArticles = foundArticles;
             }
         });
 

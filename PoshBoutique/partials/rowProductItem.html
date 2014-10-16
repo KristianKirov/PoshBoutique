@@ -1,0 +1,27 @@
+﻿<div class="row">
+    <div class="col-sm-4 col-md-3">
+        <div class="view-content" style="text-align: center;">
+            <img ng-src="{{item.thumbnailUrl}}" alt="{{item.title}}" style="max-width:100%" />
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-9">
+        <div class="view-content" style="position:relative;">
+            <h2>
+                <a ui-sref="catalogue.category.view({ categoryUrl: 'all', itemUrl: item.urlName })">{{item.title}}</a>
+            </h2>
+
+            <p>
+                {{item.description}}
+            </p>
+            <p>
+                {{item.materialDescription}}
+            </p>
+            <div>
+                <strong>{{item.price | currency}}</strong>
+            </div>
+            <div ng-if="showDislikeButton" style="position:absolute;top:0;right:0;font-size:32px;cursor:pointer;" ng-click="unlikeArticle(item)">
+                <i class="glyphicon glyphicon-remove-circle"></i>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+﻿<div class="view-content">
+    <h2>Резултати от търсенето на: <strong><i>{{searchTerm}}</i></strong></h2>
+    <small>{{foundArticles.length}} съвпадени{{ foundArticles.length == 1 ? 'е' : 'я' }}</small>
+</div>
+<hr />
+<row-product-item ng-repeat="foundArticle in foundArticles" item="foundArticle" show-dislike-button="{{false}}" />

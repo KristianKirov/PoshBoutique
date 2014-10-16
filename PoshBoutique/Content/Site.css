@@ -77,9 +77,24 @@ input[type="checkbox"].input-validation-error {
 }
 
 .navbar-nav > li > a.fav {
-    padding: 0;
+    padding: 0 15px;
+    margin: 8px 0;
+    display: inline-block;
     font-size: 32px;
-    padding-top: 6px;
+}
+
+.navbar-nav > li > a.fav > .glyphicon {
+    top: 0;
+}
+
+form.navbar-form {
+    margin-left: 0;
+}
+
+.navbar .navbar--search {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .navbar .navbar--search input[type=search] {
@@ -96,9 +111,23 @@ input[type="checkbox"].input-validation-error {
         width: 120px;
     }
 
+    .navbar .navbar--search input[type=search].ng-invalid.ng-dirty {
+        border-color: rgb(255, 128, 128);
+        background-color: rgb(255, 240, 240);
+    }
+
+.navbar .navbar--search .search-part {
+    display: inline-block;
+    position: relative;
+    float: left;
+}
+
 .navbar .navbar--search .btn {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    height: 34px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .tooltip-inner {
@@ -1393,21 +1422,4 @@ a.hoverable .item-like {
 
 .view-content {
     margin:20px;
-}
-
-.row--animated.ng-enter,
-.row--animated.ng-leave {
-  -webkit-transition:0.5s linear all;
-  transition:0.5s linear all;
-}
-
-.row--animated.ng-enter,
-.row--animated.ng-leave.ng-leave-active {
-  opacity:0;
-
-}
-.row--animated.ng-leave,
-.row--animated.ng-enter.ng-enter-active {
-  opacity:1;
- 
 }

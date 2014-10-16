@@ -272,11 +272,14 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\banner.jpg" />
     <Content Include="Content\img\discount10.png" />
+    <Content Include="Content\img\discounts.png" />
     <Content Include="Content\img\door.png" />
     <Content Include="Content\img\handshake.png" />
     <Content Include="Content\img\shipping.png" />
     <Content Include="Content\img\sky.png" />
+    <Content Include="Content\img\spring-collection.jpg" />
     <Content Include="Content\img\sprite.png" />
+    <Content Include="Content\img\summer-collection.jpg" />
     <Content Include="Content\ngprogress-lite.css" />
     <Content Include="Content\Site.css" />
     <Content Include="external-login-authenticated.html" />
@@ -295,6 +298,8 @@
     <Content Include="partials\configurePurchaseForm.html" />
     <Content Include="partials\contactUs.html" />
     <Content Include="partials\currentUserNav.html" />
+    <Content Include="partials\rowProductItem.html" />
+    <Content Include="partials\navSearch.html" />
     <Content Include="partials\favourites.html" />
     <Content Include="partials\featured.html" />
     <Content Include="partials\discount.html" />
@@ -302,6 +307,7 @@
     <Content Include="partials\homeSliderFeedItem.html" />
     <Content Include="partials\homeSlider.html" />
     <Content Include="partials\loyalCustomer.html" />
+    <Content Include="partials\search.html" />
     <Content Include="partials\new.html" />
     <Content Include="partials\hoverableProductItem.html" />
     <Content Include="partials\relatedProductsList.html" />
@@ -339,6 +345,8 @@
     <Content Include="Scripts\app\controllers\catalogueController.js" />
     <Content Include="Scripts\app\controllers\contactUsController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
+    <Content Include="Scripts\app\directives\rowProductItem.js" />
+    <Content Include="Scripts\app\directives\navSearch.js" />
     <Content Include="Scripts\app\directives\collectionsPicker.js" />
     <Content Include="Scripts\app\directives\configurePurchaseForm.js" />
     <Content Include="Scripts\app\directives\homeSliderFeedItem.js" />

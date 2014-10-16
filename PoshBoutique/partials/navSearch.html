@@ -1,0 +1,10 @@
+﻿<form ng-submit="searchForm.$valid && searchArticles(searchForm)" class="navbar-form" novalidate name="searchForm">
+    <div class="navbar--search">
+        <input type="Search" placeholder="..." class="form-control search-part" ng-model="searchTerm" required ng-minlength="4" />
+        <div class="search-part">
+            <button class="btn btn-info highlighted-bg">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
+    </div>
+</form>

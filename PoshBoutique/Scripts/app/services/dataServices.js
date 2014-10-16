@@ -140,6 +140,19 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
 
                 return likedItems;
             });
+        },
+        findArticles: function (searchTerm) {
+            return $http({
+                method: 'GET',
+                url: '/api/articles/find',
+                params: {
+                    q: searchTerm
+                }
+            }).then(function (response) {
+                var foundArticles = response.data;
+
+                return foundArticles;
+            });
         }
     };
 });
