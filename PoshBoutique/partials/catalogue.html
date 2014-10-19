@@ -5,7 +5,7 @@
     <div class="col-md-3 left-sidebar">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
-                    <div class="left-sidebar-content">
+                <div class="left-sidebar-content">
                     <h3>Католог</h3>
                     <nav class="nav-categories">
                         <ul ng-tree="categories" class="categories-list">
@@ -21,14 +21,8 @@
             </div>
             <div class="hidden-xs col-sm-6 col-md-12 col-lg-12">
                 <div class="left-sidebar-content">
-                    <div class="thumbnail">
-                        <img src="http://lorempixel.com/250/300/fashion/" alt="...">
-                        <div class="caption">
-                            <h3>Thumbnail label</h3>
-                            <p>...</p>
-                            <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                        </div>
-                    </div>
+                    <h3>Препоръчани</h3>
+                    <recommended change-interval="{{5000}}" />
                 </div>
             </div>
         </div>

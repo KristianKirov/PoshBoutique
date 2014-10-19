@@ -40,6 +40,7 @@ namespace PoshBoutique.Data
         public int OrdersCount { get; set; }
         public int CollectionId { get; set; }
         public bool IsFeatured { get; set; }
+        public bool IsRecommended { get; set; }
     
         public virtual ICollection<ArticleImage> ArticleImages { get; set; }
         public virtual SizeType SizeType { get; set; }

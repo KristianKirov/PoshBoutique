@@ -1,10 +1,10 @@
-﻿<a ui-sref=".view({ itemUrl: item.urlName })" class="hoverable">
+﻿<a ui-sref="{{detailsSref}}" class="hoverable">
     <div class="hover-view hover-view-magnify">
         <img ng-src="{{item.thumbnailUrl}}" alt="{{item.title}}" />
         <div class="mask">
             <h2>{{item.title}}</h2>
             <p>{{item.shortDescription}}</p>
-            <button class="info">Добави в количка</button>
+            <!--<button class="info">Добави в количка</button>-->
         </div>
     </div>
     <div class="price-panel" ng-class="{ 'discounted': item.hasDiscount }">
@@ -20,7 +20,7 @@
         <i class="gspr"></i>
         <i class="gspr folw"></i>
     </div>
-    <div class="item-like" title="Харесай!" ng-click="toggleLike(item, $event)">
+    <div ng-if="showLikeButton" class="item-like" title="Харесай!" ng-click="toggleLike(item, $event)">
         <span class="glyphicon" ng-class="{ 'glyphicon-star': item.isLiked, 'glyphicon-star-empty': !item.isLiked }"></span>
     </div>
 </a>

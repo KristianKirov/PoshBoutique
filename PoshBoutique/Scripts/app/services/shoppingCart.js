@@ -4,9 +4,12 @@
             $window.localStorage["orderedItems"] = angular.toJson(orderedItems);
         },
         getOrderedItems: function () {
-            var orderedItems = $window.localStorage["orderedItems"];
+            var orderedItemsJson = $window.localStorage["orderedItems"];
+            if (orderedItemsJson) {
+                return angular.fromJson(orderedItemsJson);
+            }
 
-            return orderedItems;
+            return null;
         }
     }
 });
@@ -119,7 +122,7 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
                     color: color
                 };
 
-                orderdItems.add(item);
+                orderdItems.push(cartItem);
             }
 
             shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);

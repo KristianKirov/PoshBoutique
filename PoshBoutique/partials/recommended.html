@@ -1,0 +1,9 @@
+﻿<div class="recommended-placeholder">
+    <div class="recommended-slider">
+        <div class="scroll-view clearfix" ng-style="{ 'width': (articlesCount * 100) + '%', 'transform': 'translateX(-' + (selectedIndex * 100) / articlesCount + '%)' }">
+            <div ng-repeat="recommendedArticle in recommendedArticles" ng-style="{ 'width': (100 / articlesCount) + '%' }" class="scrollable">
+                <hoverable-product-item item="recommendedArticle" show-like-button="{{false}}" details-sref="{{'catalogue.category.view({ categoryUrl: \'all\', itemUrl: item.urlName })'}}" />
+            </div>
+        </div>
+    </div>
+</div>

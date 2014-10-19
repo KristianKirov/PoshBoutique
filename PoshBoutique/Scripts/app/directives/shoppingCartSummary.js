@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.directive('shoppingCartSummary', function () {
+﻿    poshBoutiqueApp.directive('shoppingCartSummary', function () {
     return {
         restrict: 'EA',
         replace: true,

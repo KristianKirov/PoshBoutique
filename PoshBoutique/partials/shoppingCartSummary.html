@@ -1,15 +1,25 @@
-﻿<li class="dropdown">
+﻿<li class="dropdown dropdown--cart-summary">
     <a href class="dropdown-toggle"><i class="glyphicon glyphicon-shopping-cart"></i>({{cart.total() | currency}})</a>
     <div class="dropdown-menu">
         <div ng-hide="cart.isEmpty()">
-            <table class="table table-cart table-hover" >
-                <tr class="noborder" ng-repeat="item in cart.items"><td nowrap>{{item.quantity}} x</td><td><a ng-href="#/catalogue/all/view{{item.urlName}}">{{item.title}}</a></td><td nowrap><i>{{item.price | currency}}</i> <a class="close" aria-hidden="true">&times;</a></td></tr>
-                
-                <tr><td colspan="2"><b>Доставка:</b></td><td><i>0.00 лв</i></td></tr>
-                <tr class="noborder"><td colspan="2"><b>Общо:</b></td><td><i>{{cart.total() | currency}}</i></td></tr>
+            <table class="table table-cart table-hover">
+                <tr class="noborder" ng-repeat="item in cart.items">
+                    <td nowrap>{{item.quantity}} x</td>
+                    <td><a ui-sref="catalogue.category.view({ categoryUrl: 'all', itemUrl: item.urlName })">{{item.title}}</a></td>
+                    <td nowrap><i>{{item.price | currency}}</i></td>
+                    <td><a class="close" aria-hidden="true" ng-click="cart.removeItemFromCart(item)">&times;</a></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Доставка:</b></td>
+                    <td colspan="2"><i>0.00 лв</i></tdcolspan>
+                </tr>
+                <tr class="noborder">
+                    <td colspan="2"><b>Общо:</b></td>
+                    <td colspan="2"><i>{{cart.total() | currency}}</i></td>
+                </tr>
             </table>
             <div class="btn-cart">
-                <a ui-sref="home" class="btn btn-success btn-block">Поръчай</a>
+                <a ui-sref="cart.order" class="btn btn-success btn-block">Поръчай</a>
             </div>
         </div>
         <div ng-show="cart.isEmpty()" class="alert alert-warning">

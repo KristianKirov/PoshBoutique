@@ -104,6 +104,9 @@ poshBoutiqueApp
                     onEnter: function ($stateParams, singleProductModal) {
                         console.log("3: HITTTTTTTTTTTTTTT!!!!!");
                         singleProductModal.open($stateParams.itemUrl);
+                    },
+                    data: {
+                        isDetailsState: true
                     }
                 })
         .state('autherror', {
@@ -181,6 +184,9 @@ poshBoutiqueApp
                 onEnter: function ($stateParams, singleProductModal) {
                     console.log("3: HITTTTTTTTTTTTTTT!!!!!");
                     singleProductModal.open($stateParams.itemUrl);
+                },
+                data: {
+                    isDetailsState: true
                 }
             })
         .state('discount', {
@@ -200,6 +206,9 @@ poshBoutiqueApp
                 onEnter: function ($stateParams, singleProductModal) {
                     console.log("3: HITTTTTTTTTTTTTTT!!!!!");
                     singleProductModal.open($stateParams.itemUrl);
+                },
+                data: {
+                    isDetailsState: true
                 }
             })
         .state('featured', {
@@ -219,6 +228,9 @@ poshBoutiqueApp
                 onEnter: function ($stateParams, singleProductModal) {
                     console.log("3: HITTTTTTTTTTTTTTT!!!!!");
                     singleProductModal.open($stateParams.itemUrl);
+                },
+                data: {
+                    isDetailsState: true
                 }
             })
         .state('favourites', {

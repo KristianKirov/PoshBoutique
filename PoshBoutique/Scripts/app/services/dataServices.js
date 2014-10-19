@@ -153,6 +153,13 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
 
                 return foundArticles;
             });
+        },
+        getRecommendedArticles: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/articles/recommended',
+                cache: true
+            });
         }
     };
 });

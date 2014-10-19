@@ -45,6 +45,8 @@ namespace PoshBoutique
                 "~/Scripts/app/directives/hoverableProductItem.js",
                 "~/Scripts/app/directives/navSearch.js",
                 "~/Scripts/app/directives/rowProductItem.js",
+                "~/Scripts/app/directives/recommended.js",
+                "~/Scripts/app/directives/multirowNav.js",
                 "~/Scripts/app/services/singleProductModal.js",
                 "~/Scripts/app/services/articleUrlProvider.js",
                 "~/Scripts/app/services/dataServices.js",

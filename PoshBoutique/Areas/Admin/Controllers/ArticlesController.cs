@@ -52,7 +52,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,LikesCount,OrdersCount,CollectionId,IsFeatured")] Article article)
+        public ActionResult Create([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,LikesCount,OrdersCount,CollectionId,IsFeatured,IsRecommended")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace PoshBoutique.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,OriginalPrice,DiscountDescription,LikesCount,OrdersCount,CollectionId,IsFeatured")] Article article)
+        public ActionResult Edit([Bind(Include = "Id,UrlName,Title,DateCreated,Price,Description,ShortDescription,MaterialDescription,ThumbnailUrl,SizeTypeId,Visible,OriginalPrice,DiscountDescription,LikesCount,OrdersCount,CollectionId,IsFeatured,IsRecommended")] Article article)
         {
             if (ModelState.IsValid)
             {

@@ -3,10 +3,16 @@
         restrict: 'E',
         replace: true,
         scope: {
-            item: '='
+            item: '=',
+            showLikeButton: '@',
+            detailsSref: '@'
         },
         templateUrl: 'partials/hoverableProductItem.html',
         controller: function ($scope, likesDataService, currentUser, authenticateModal) {
+            if (!$scope.detailsSref) {
+                $scope.detailsSref = '.view({ itemUrl: item.urlName })';
+            }
+
             $scope.toggleLike = function (item, e) {
                 e.preventDefault();
                 e.stopPropagation();

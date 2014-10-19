@@ -88,6 +88,7 @@ namespace PoshBoutique.Data.Providers
                 {
                     Id = article.Id,
                     Title = article.Title,
+                    UrlName = article.UrlName,
                     Description = article.Description,
                     MaterialDescription = article.MaterialDescription,
                     Price = article.Price
@@ -104,7 +105,16 @@ namespace PoshBoutique.Data.Providers
                 foreach (Stock stock in article.Stocks)
                 {
                     SizeModel sizeModel = sizesDictionary[stock.SizeId];
-                    sizeModel.AddColor(stock.Color, stock.Quantity);
+                    if (stock.ColorId == 0)
+                    {
+                        sizeModel.AddColor(null, stock.Quantity);
+
+                        break;
+                    }
+                    else
+                    {
+                        sizeModel.AddColor(stock.Color, stock.Quantity);
+                    }
                 }
 
                 articleModel.Sizes = sizesDictionary.Values.ToList().OrderBy(s => s.OrderIndex);
@@ -255,6 +265,23 @@ namespace PoshBoutique.Data.Providers
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
                 Article[] articlesInCollection = dataContext.Articles.Where(a => articleIds.Contains(a.Id) && a.Visible).OrderByDescending(a => a.DateCreated).ToArray();
+                if (articlesInCollection.Length == 0)
+                {
+                    return null;
+                }
+
+                ArticlesConverter converter = new ArticlesConverter();
+                ArticleModel[] articlesInCollectionModels = articlesInCollection.Select(a => converter.ToModel(a, null)).ToArray();
+
+                return articlesInCollectionModels;
+            }
+        }
+
+        public async Task<IEnumerable<ArticleModel>> GetRecommendedArticles()
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                Article[] articlesInCollection = await dataContext.Articles.Where(a => a.IsRecommended && a.Visible).OrderByDescending(a => a.DateCreated).ToArrayAsync();
                 if (articlesInCollection.Length == 0)
                 {
                     return null;

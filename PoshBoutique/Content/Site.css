@@ -1423,3 +1423,29 @@ a.hoverable .item-like {
 .view-content {
     margin:20px;
 }
+
+.recommended-placeholder {
+    margin: -5px;
+}
+
+    .recommended-placeholder > .recommended-slider {
+        overflow: hidden;
+        width: 100%;
+    }
+
+        .recommended-placeholder > .recommended-slider > .scroll-view {
+            transition: transform 1s ease-in-out;
+        }
+
+            .recommended-placeholder > .recommended-slider > .scroll-view > .scrollable {
+                float:left;
+                padding: 5px;
+            }
+
+.dropdown--cart-summary > .dropdown-menu {
+    min-width: 200px;
+}
+
+.dropdown--cart-summary > .dropdown-menu .alert {
+    margin: -5px 0 -5px 0;
+}

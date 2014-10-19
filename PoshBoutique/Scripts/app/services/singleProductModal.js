@@ -8,8 +8,10 @@
                 //    $location.url(listUrl);
                 //    $location.replace();
                 //}
-
-                $state.go('^')
+                var currentStateData = $state.current.data;
+                if (currentStateData && currentStateData.isDetailsState) {
+                    $state.go('^');
+                }
             };
 
             $modal.open({
@@ -31,9 +33,11 @@
                     };
                 }]
             }).result.then(function (result) {
+                debugger;
                 setPreviousUrl();
             },
             function () {
+                debugger;
                 setPreviousUrl();
             });
         }

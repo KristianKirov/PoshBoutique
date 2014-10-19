@@ -6,7 +6,7 @@
             product: '='
         },
         templateUrl: 'partials/configurePurchaseForm.html',
-        controller: function ($scope) {
+        controller: function ($scope, shoppingCart, $state) {
             $scope.selectedSize = null;
             $scope.selectedColor = null;
             $scope.quantity = 0;
@@ -67,6 +67,15 @@
                     }
 
                     return $scope.selectedSize.quantity;
+                }
+            };
+
+            $scope.addToCart = function (navigateToCart) {
+                var selectedColor = $scope.hasColors() ? $scope.selectedColor : null;
+                shoppingCart.addItemToCart($scope.product, $scope.quantity, $scope.selectedSize, selectedColor);
+
+                if (navigateToCart) {
+                    $state.go("cart.order");
                 }
             };
         }

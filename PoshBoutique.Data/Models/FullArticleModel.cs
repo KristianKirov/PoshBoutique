@@ -12,6 +12,8 @@ namespace PoshBoutique.Data.Models
 
         public string Title { get; set; }
 
+        public string UrlName { get; set; }
+
         public decimal Price { get; set; }
 
         public string Description { get; set; }

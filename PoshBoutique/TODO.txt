@@ -1,34 +1,43 @@
-﻿Validate state during authentication
-move external-login-authenticated.html to state in the app
--- handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url
-respect the ".expires" value returned by the /token endpoint and remove the token after that date
-handle expired tokens in smarter way
-http to https redirect
-responsivenes of top nav bar
-set title and meta description of the pages
-Implement search
--- Logout
--- Fix js error after login
-Hendle the case when you navigate to protected page and close the login screen
-Show error messages on logon/register screen
-Submit login/register form on enter key
-Forgotten password
--- Remove asp session from web.config
--- Single product view screen - connect to real service
-Add shopping cart states
-Add shopping cart navigation
-Add localization (internationalization)
-home page with banners
-favourites
--- subscriptions
--- discounts
-https redirect + www redirect
-Add items to shopping cart
-Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
--- Related products
--- details window remove details url on close when directly navigated to the detail view
--- categories tree autoexpand and select the node depending on the selected category on first request
--- search and filter list page
-Add like button in single window
-Add discount in single window
-Refresh articles list after login (Likes list)
+﻿tomorrow:
+	Add like button in single window
+	Add discount in single window
+	Refresh articles list after login (Likes list)
+the day after tomorroy:
+	Add shopping cart states
+	Add shopping cart navigation
+required:
+	Submit login/register form on enter key
+	Show error messages on logon/register screen
+	handle expired tokens in smarter way
+	Forgotten password
+	https redirect + www redirect
+	Hendle the case when you navigate to protected page and close the login screen
+	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
+	Account screen
+	Orders screen
+
+nice to have:
+	Validate state during authentication
+	move external-login-authenticated.html to state in the app
+	respect the ".expires" value returned by the /token endpoint and remove the token after that date
+	set title and meta description of the pages
+	Add localization (internationalization)
+	Multiple logins for single account
+
+done:
+	-- handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url
+	-- responsivenes of top nav bar
+	-- Implement search
+	-- Logout
+	-- Fix js error after login
+	-- Remove asp session from web.config
+	-- Single product view screen - connect to real service
+	-- home page with banners
+	-- favourites
+	-- subscriptions
+	-- discounts
+	-- Add items to shopping cart
+	-- Related products
+	-- details window remove details url on close when directly navigated to the detail view
+	-- categories tree autoexpand and select the node depending on the selected category on first request
+	-- search and filter list page

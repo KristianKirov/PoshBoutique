@@ -136,5 +136,20 @@ namespace PoshBoutique.Controllers
 
             return this.Ok(foundArticles);
         }
+
+        [HttpGet]
+        [Route("Recommended")]
+        public async Task<IHttpActionResult> GetRecommendedArticles()
+        {
+            ArticlesProvider articlesProvider = new ArticlesProvider();
+            IEnumerable<ArticleModel> recommendedArticles = await articlesProvider.GetRecommendedArticles();
+
+            if (recommendedArticles == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(recommendedArticles);
+        }
     }
 }

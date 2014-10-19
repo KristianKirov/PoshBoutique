@@ -28,18 +28,26 @@ namespace PoshBoutique.Data.Models
 
         public void AddColor(Color color, int quantity)
         {
-            if (this.colors == null)
+            if (color != null)
             {
-                this.colors = new List<ColorModel>();
-            }
-
-            this.Quantity += quantity;
-            this.colors.Add(new ColorModel()
+                if (this.colors == null)
                 {
-                    Id = color.Id,
-                    Title = color.Title,
-                    Quantity = quantity
-                });
+                    this.colors = new List<ColorModel>();
+                }
+
+                this.Quantity += quantity;
+                this.colors.Add(new ColorModel()
+                    {
+                        Id = color.Id,
+                        Title = color.Title,
+                        Quantity = quantity
+                    });
+            }
+            else
+            {
+                this.Quantity = quantity;
+                this.colors = null;
+            }
         }
     }
 }
