@@ -68,7 +68,7 @@ namespace PoshBoutique.Data.Providers
             return userLikes;
         }
 
-        public FullArticleModel GetFullArticleByUrlName(string urlName)
+        public FullArticleModel GetFullArticleByUrlName(string urlName, Guid? currentUserId)
         {
             FullArticleModel articleModel = null;
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
@@ -91,8 +91,20 @@ namespace PoshBoutique.Data.Providers
                     UrlName = article.UrlName,
                     Description = article.Description,
                     MaterialDescription = article.MaterialDescription,
-                    Price = article.Price
+                    Price = article.Price,
+                    OriginalPrice = article.OriginalPrice,
+                    HasDiscount = article.OriginalPrice != null,
+                    DiscountDescription = article.DiscountDescription
                 };
+
+                if (currentUserId == null)
+                {
+                    articleModel.IsLiked = false;
+                }
+                else
+                {
+                    articleModel.IsLiked = dataContext.UserLikes.Any(like => like.ArticleId == article.Id && like.UserId == currentUserId.Value);
+                }
 
                 Dictionary<int, SizeModel> sizesDictionary = article.Stocks.Select(s => s.Size).Distinct().ToDictionary(s => s.Id, s => new SizeModel()
                     {

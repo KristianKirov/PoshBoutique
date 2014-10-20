@@ -35,9 +35,15 @@ namespace PoshBoutique.Controllers
 
         public IHttpActionResult Get(string urlName)
         {
+            Guid? currentUserId = null;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                currentUserId = new Guid(this.User.Identity.GetUserId());
+            }
+
             ArticlesProvider articlesProvider = new ArticlesProvider();
 
-            FullArticleModel articleModel = articlesProvider.GetFullArticleByUrlName(urlName);
+            FullArticleModel articleModel = articlesProvider.GetFullArticleByUrlName(urlName, currentUserId);
             if (articleModel == null)
             {
                 return this.NotFound();

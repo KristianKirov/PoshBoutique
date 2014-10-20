@@ -15,7 +15,7 @@
                     $state.go("home");
                 }
                 else {
-                    $state.reload();
+                    $state.forceReload();
                 }
             };
 

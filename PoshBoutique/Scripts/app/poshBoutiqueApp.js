@@ -26,7 +26,7 @@ poshBoutiqueApp
         };
     })
 
-    .config(function ($stateProvider, $urlRouterProvider, articleListParamsProvider, $httpProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, articleListParamsProvider, $httpProvider, $provide) {
 
         $urlRouterProvider.otherwise('/');
         //$urlRouterProvider.when(/(.*)\/view\/(.*)/i, ['$match', '$stateParams', '$state', 'articleUrlProvider', 'singleProductModal', '$location',
@@ -72,7 +72,6 @@ poshBoutiqueApp
                   url: "/:categoryUrl",
                   templateUrl: "partials/productsListPlaceholder.html",
                   controller: function ($scope, listData, categoriesDataService, articleListParams) {
-                      debugger;
                       console.log("2: HITTTTTTTTTTTTTTT!!!!!");
                       $scope.articleListParams = articleListParams;
                       $scope.listData = listData;
@@ -318,6 +317,17 @@ poshBoutiqueApp
             };
         });
 
+        $provide.decorator('$state', function ($delegate, $stateParams) {
+            $delegate.forceReload = function () {
+                return $delegate.transitionTo($delegate.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+            };
+            return $delegate;
+        });
+
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         // Override $http service's default transformRequest
         $httpProvider.defaults.transformRequest = [function (data) {
@@ -369,13 +379,21 @@ poshBoutiqueApp
             }
         });
 
-        $rootScope.$on('$stateChangeStart', function (event, nextState) {
-            if (nextState.data) {
-                var authenticate = nextState.data.authenticated;
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data) {
+                var authenticate = toState.data.authenticated;
                 if (authenticate && !currentUser.isAuthenticated) {
+                    debugger;
                     event.preventDefault();
 
-                    var returnUrl = $window.location.href;
+                    var returnUrl = null;
+                    var toNav = toState.navigable;
+                    if (toNav) {
+                        returnUrl = toNav.url.format(toParams);
+                    }
+                    else {
+                        returnUrl = $window.location.href;
+                    }
                     authenticateModal.open(returnUrl);
                     return;
                 }

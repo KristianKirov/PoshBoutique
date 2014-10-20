@@ -1,24 +1,31 @@
 ﻿tomorrow:
-	Add like button in single window
-	Add discount in single window
-	Refresh articles list after login (Likes list)
+	-- Add like button in single window
+	-- Show price in single window
+	-- Add discount in single window
+	-- Refresh articles list after login (Likes list)
+	-- Submit login/register form on enter key
 the day after tomorroy:
+	move external-login-authenticated.html to state in the app
+	Authenticate modal -> change return url to return states
+	Show error messages on logon/register screen
+	handle expired tokens in smarter way
+	Hendle the case when you navigate to protected page and close the login screen
+	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
+	https redirect + www redirect
+
 	Add shopping cart states
 	Add shopping cart navigation
 required:
-	Submit login/register form on enter key
-	Show error messages on logon/register screen
-	handle expired tokens in smarter way
 	Forgotten password
-	https redirect + www redirect
-	Hendle the case when you navigate to protected page and close the login screen
-	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
 	Account screen
-	Orders screen
+	Orders screen		
+	Правила за условия и ползване
+	Таблица с размери
+	Поръчка и доставка
+	Замяна и връщане
 
 nice to have:
 	Validate state during authentication
-	move external-login-authenticated.html to state in the app
 	respect the ".expires" value returned by the /token endpoint and remove the token after that date
 	set title and meta description of the pages
 	Add localization (internationalization)

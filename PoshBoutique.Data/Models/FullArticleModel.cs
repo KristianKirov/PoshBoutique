@@ -14,6 +14,8 @@ namespace PoshBoutique.Data.Models
 
         public string UrlName { get; set; }
 
+        public decimal? OriginalPrice { get; set; }
+
         public decimal Price { get; set; }
 
         public string Description { get; set; }
@@ -23,5 +25,11 @@ namespace PoshBoutique.Data.Models
         public IEnumerable<SizeModel> Sizes { get; set; }
 
         public IEnumerable<ImageModel> Images { get; set; }
+
+        public bool IsLiked { get; set; }
+
+        public bool HasDiscount { get; set; }
+
+        public string DiscountDescription { get; set; }
     }
 }

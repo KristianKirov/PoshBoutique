@@ -3,10 +3,11 @@
         restrict: 'E',
         replace: true,
         scope: {
-            images: '='
+            product: '='
         },
         templateUrl: 'partials/imagesView.html',
-        controller: function ($scope, $modal) {
+        controller: function ($scope, $modal, likesDataService, currentUser, authenticateModal, $rootScope) {
+            $scope.images = $scope.product.images;
             $scope.selectedImage = $scope.images[0];
 
             $scope.isImageSelected = function (image) {
@@ -40,6 +41,25 @@
                     scope: $scope
                 });
             };
+
+            $scope.toggleLike = function (item, e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (currentUser.isAuthenticated) {
+                    var likeFunction = item.isLiked ? likesDataService.unlikeArticle : likesDataService.likeArticle;
+                    likeFunction(item.id);
+                }
+                else {
+                    authenticateModal.open();
+                }
+            };
+
+            $rootScope.$on('toggleLike', function (event, articleId, isLiked) {
+                debugger;
+                if (articleId == $scope.product.id) {
+                    $scope.product.isLiked = isLiked;
+                }
+            });
         },
         link: function (scope, element, attrs) {
             var $imagesListWrapper = element.find(".images-view-picker ul")

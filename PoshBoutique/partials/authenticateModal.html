@@ -7,7 +7,7 @@
         <div class="col-md-6">
             <div ng-show="state == 'login'">
                 <h3>Влез с Posh профил</h3>
-                <form role="form" name="loginForm" novalidate>
+                <form role="form" name="loginForm" ng-submit="loginForm.$valid && loginUser()" novalidate>
                     <div class="form-group" ng-class="{ 'has-error': loginForm.userEmail.$dirty && loginForm.userEmail.$invalid }">
                         <label for="userEmail" class="control-label">Email</label>
                         <input type="email" ng-model="login.user.email" required class="form-control input-lg" id="userEmail" name="userEmail" placeholder="Въведи email">
@@ -29,7 +29,7 @@
                             <input type="checkbox" ng-init="login.keepMeLoggedIn = true" ng-checked="login.keepMeLoggedIn"> Дръж ме в профила ми
                         </label>
                     </div>
-                    <button type="button" ng-click="loginUser()" class="btn btn-default btn-lg btn-block" ng-disabled="!loginForm.$valid">Вход с Posh профил</button>
+                    <button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="!loginForm.$valid">Вход с Posh профил</button>
                     <p class="form-control-static">
                         <a href="javascript:void(0)" ng-click="state = 'register'">
                             <i class="glyphicon glyphicon-user"></i>
@@ -40,7 +40,7 @@
             </div>
             <div ng-show="state == 'register'">
                 <h3>Създай Posh профил</h3>
-                <form role="form" name="registerForm" novalidate>
+                <form role="form" name="registerForm" ng-submit="registerForm.$valid && registerUser()" novalidate>
                     <div class="form-group" ng-class="{ 'has-error': registerForm.userEmail.$dirty && registerForm.userEmail.$invalid }">
                         <label for="userRegisterEmail" class="control-label">Email</label>
                         <input type="email" ng-model="register.user.email" required class="form-control input-lg" id="userRegisterEmail" name="userEmail" placeholder="Въведи email">
@@ -78,7 +78,7 @@
                             <span ng-show="registerForm.confirmPassword.$error.repeat">Паролите не съвпадат</span>
                         </div>
                     </div>
-                    <button type="button" ng-disabled="!registerForm.$valid" class="btn btn-default btn-lg btn-block" ng-click="registerUser()">Създай Posh профил</button>
+                    <button type="submit" ng-disabled="!registerForm.$valid" class="btn btn-default btn-lg btn-block">Създай Posh профил</button>
                     <p class="form-control-static">
                         <a href="javascript:void(0)" ng-click="state = 'login'">
                             <i class="glyphicon glyphicon-circle-arrow-right"></i>

@@ -3,12 +3,27 @@
         <div class="arrow arrow--left hide-magnfier" ng-click="selectPrevImage()">
             <i class="glyphicon glyphicon-chevron-left hide-magnfier"></i>
         </div>
-
+        <div class="item-like" title="Харесай!" ng-click="toggleLike(product, $event)">
+            <span class="glyphicon" ng-class="{ 'glyphicon-star': product.isLiked, 'glyphicon-star-empty': !product.isLiked }"></span>
+        </div>
         <div class="arrow arrow--right hide-magnfier" ng-click="selectNextImage()">
             <i class="glyphicon glyphicon-chevron-right hide-magnfier"></i>
         </div>
         <div class="large-image-view" ng-style="{'background-image':'url(' + selectedImage.largeUrl + ')'}" ng-click="openSelectedImage()"></div>
         <img ng-src="{{selectedImage.mediumUrl}}" ng-click="openSelectedImage()" />
+        <div class="price-panel" ng-class="{ 'discounted': product.hasDiscount }">
+            <div ng-if="product.hasDiscount" class="original-price">
+                {{product.originalPrice | currency}}
+            </div>
+            <div class="current-price">
+                {{product.price | currency}}
+            </div>
+        </div>
+        <div class="prom prom140" ng-if="product.hasDiscount">
+            <span class="gspr prr">{{product.discountDescription}}</span>
+            <i class="gspr"></i>
+            <i class="gspr folw"></i>
+        </div>
     </div>
     <div class="images-view-picker">
         <div class="arrow arrow--left" ng-click="scrollPickerLeft()" ng-show="showLeftArrow">

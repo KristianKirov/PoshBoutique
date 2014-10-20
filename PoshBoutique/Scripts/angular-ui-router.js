@@ -1811,6 +1811,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
         // Update $location
         var toNav = to.navigable;
         if (options.location && toNav) {
+            debugger;
           $location.url(toNav.url.format(toNav.locals.globals.$stateParams));
 
           if (options.location === 'replace') {

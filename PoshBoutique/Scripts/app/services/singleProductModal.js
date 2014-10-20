@@ -33,11 +33,9 @@
                     };
                 }]
             }).result.then(function (result) {
-                debugger;
                 setPreviousUrl();
             },
             function () {
-                debugger;
                 setPreviousUrl();
             });
         }

@@ -164,15 +164,19 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
     };
 });
 
-poshBoutiqueApp.factory("likesDataService", function ($http) {
+poshBoutiqueApp.factory("likesDataService", function ($http, $rootScope) {
     return {
         likeArticle: function (articleId) {
+            $rootScope.$emit('toggleLike', articleId, true);
+
             return $http({
                 method: 'PUT',
                 url: '/api/likes/' + articleId
             });
         },
         unlikeArticle: function (articleId) {
+            $rootScope.$emit('toggleLike', articleId, false);
+
             return $http({
                 method: 'DELETE',
                 url: '/api/likes/' + articleId

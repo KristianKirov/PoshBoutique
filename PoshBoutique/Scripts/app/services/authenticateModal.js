@@ -1,6 +1,7 @@
 ﻿poshBoutiqueApp.factory("authenticateModal", function ($modal, $window) {
     return {
         open: function (returnUrl) {
+            debugger;
             returnUrl = returnUrl || $window.location.href;
 
             $modal.open({
@@ -17,6 +18,7 @@
                     $scope.externalLogins = externalLogins;
 
                     var onUserAuthenticated = function (accessToken) {
+                        debugger;
                         if (accessToken) {
                             var rememberMe = $scope.login.keepMeLoggedIn;
                             currentUser.login(accessToken, rememberMe);
@@ -24,7 +26,8 @@
                             $scope.$close();
 
                             if ($window.location.href == returnUrl) {
-                                $state.reload();
+                                //$state.reload();
+                                $state.forceReload();
                             }
                             else {
                                 $window.location = returnUrl;
