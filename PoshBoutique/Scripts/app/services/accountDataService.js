@@ -14,7 +14,7 @@
 
     // Route operations
     function externalLoginsUrl(returnUrl, generateState) {
-        return httpsUrl + "/api/Account/ExternalLogins?returnUrl=" + (encodeURIComponent("/external-login-authenticated.html?ru=" + encodeURIComponent(returnUrl))) +
+        return httpsUrl + "/api/Account/ExternalLogins?returnUrl=" + (encodeURIComponent("/?ru=" + encodeURIComponent(returnUrl))) +
             "&generateState=" + (generateState ? "true" : "false");
     }
 

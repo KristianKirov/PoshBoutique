@@ -85,13 +85,13 @@ namespace PoshBoutique.Providers
             {
                 Uri requestUri = context.Request.Uri;
                 Uri redirectUri = new Uri(context.RedirectUri);
-                if (redirectUri.Host == requestUri.Host && "/external-login-authenticated.html".Equals(redirectUri.AbsolutePath, StringComparison.OrdinalIgnoreCase))
+                if (redirectUri.Host == requestUri.Host && "/".Equals(redirectUri.AbsolutePath, StringComparison.OrdinalIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(redirectUri.Query))
                     {
                         NameValueCollection queryString = HttpUtility.ParseQueryString(redirectUri.Query);
                         string initialUrl = queryString["ru"];
-                        if(!string.IsNullOrEmpty(initialUrl))
+                        if (!string.IsNullOrEmpty(initialUrl))
                         {
                             Uri initialUri = new Uri(initialUrl);
                             if (initialUri.Host == requestUri.Host)

@@ -1,4 +1,4 @@
-﻿var poshBoutiqueApp = angular.module('poshBoutiqueApp', ['ui.router', 'ui.router.router', 'ui.bootstrap', 'angularTree', 'ngProgressLite', 'authenticationStorage']);
+﻿var poshBoutiqueApp = angular.module('poshBoutiqueApp', ['ui.router', 'ui.router.router', 'ui.bootstrap', 'angularTree', 'ngProgressLite']);
 
 poshBoutiqueApp
 
@@ -263,6 +263,22 @@ poshBoutiqueApp
                 $scope.searchTerm = $stateParams.term;
                 $scope.foundArticles = foundArticles;
             }
+        })
+        .state('authenticateExternalLogin', {
+            url: "/access_token*tokenParams",
+            template: "",
+            controller: function ($stateParams, authenticationStorage, $window) {
+                debugger;
+                var token = parseQueryString('access_token' + $stateParams.tokenParams)["access_token"];
+                if (token) {
+                    authenticationStorage.setAccesToken(token, false);
+                }
+
+                var initialUrl = parseQueryString($window.location.search.substr(1))["ru"];
+                if (initialUrl) {
+                    $window.location.href = initialUrl;
+                }
+            }
         });
 
         var order = {
@@ -370,6 +386,7 @@ poshBoutiqueApp
     }).run([
   '$rootScope', '$modalStack', 'ngProgressLite', 'currentUser', 'authenticateModal', '$window',
     function ($rootScope, $modalStack, ngProgressLite, currentUser, authenticateModal, $window) {
+        debugger;
         currentUser.loadData();
 
         $rootScope.$on('$locationChangeStart', function () {

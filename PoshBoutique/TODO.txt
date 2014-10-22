@@ -5,7 +5,7 @@
 	-- Refresh articles list after login (Likes list)
 	-- Submit login/register form on enter key
 the day after tomorroy:
-	move external-login-authenticated.html to state in the app
+	-- move external-login-authenticated.html to state in the app
 	Authenticate modal -> change return url to return states
 	Show error messages on logon/register screen
 	handle expired tokens in smarter way

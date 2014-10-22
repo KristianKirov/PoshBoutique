@@ -1,4 +1,4 @@
-﻿angular.module("authenticationStorage", []).factory("authenticationStorage", function ($window) {
+﻿poshBoutiqueApp.factory("authenticationStorage", function ($window) {
     return {
         setAccesToken: function (accessToken, persistent) {
             if (persistent) {
