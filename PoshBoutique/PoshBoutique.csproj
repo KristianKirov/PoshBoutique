@@ -283,7 +283,6 @@
     <Content Include="Content\img\summer-collection.jpg" />
     <Content Include="Content\ngprogress-lite.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="external-login-authenticated.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
