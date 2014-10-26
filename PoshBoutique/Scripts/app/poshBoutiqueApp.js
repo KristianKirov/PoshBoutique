@@ -114,9 +114,9 @@ poshBoutiqueApp
             controller: 'autherrorController'
         })
         .state('login', {
-            url: "/login?returnUrl",
+            url: "/login?returnData",
             controller: function ($stateParams, authenticateModal) {
-                authenticateModal.open($stateParams.returnUrl);
+                authenticateModal.open($stateParams.returnData);
             }
         })
         .state('cart', {
@@ -134,6 +134,14 @@ poshBoutiqueApp
                 url: "/address",
                 templateUrl: "partials/cart/address.html",
                 controller: 'cartAddressController',
+                data: {
+                    authenticated: true
+                }
+            })
+            .state('cart.delivery', {
+                url: "/delivery",
+                templateUrl: "partials/cart/delivery.html",
+                controller: 'cartDeliveryController',
                 data: {
                     authenticated: true
                 }
@@ -267,16 +275,17 @@ poshBoutiqueApp
         .state('authenticateExternalLogin', {
             url: "/access_token*tokenParams",
             template: "",
-            controller: function ($stateParams, authenticationStorage, $window) {
+            controller: function ($stateParams, authenticationStorage, $window, authenticationFlow) {
                 debugger;
                 var token = parseQueryString('access_token' + $stateParams.tokenParams)["access_token"];
                 if (token) {
                     authenticationStorage.setAccesToken(token, false);
                 }
 
-                var initialUrl = parseQueryString($window.location.search.substr(1))["ru"];
-                if (initialUrl) {
-                    $window.location.href = initialUrl;
+                var returnData = parseQueryString($window.location.search.substr(1))["rd"];
+                if (returnData) {
+                    authenticationFlow.goToState(returnData, true);
+                    //$window.location.href = initialUrl;
                 }
             }
         });
@@ -294,12 +303,32 @@ poshBoutiqueApp
 
         articleListParamsProvider.setOrderDefaults(order);
 
-        $httpProvider.interceptors.push(function ($q, $window, authenticationStorage, $injector) {
-            function onUnauthorized() {
-                var returnUrl = $window.location.href;
+        $httpProvider.interceptors.push(function ($q, $window, authenticationStorage, $injector/*, authenticationFlow*/) {
+            function onUnauthorized(config) {
+                debugger;
+                if (!config) {
+                    return;
+                }
+
+                var requestUrl = config.url;
+                var requestUrlSegments = requestUrl.split("/");
+                if (requestUrlSegments.length == 0) {
+                    return;
+                }
 
                 var $state = $injector.get("$state");
-                $state.transitionTo("login", { returnUrl: returnUrl })
+                var requestAction = requestUrlSegments[requestUrlSegments.length - 1];
+                if (requestAction.toLowerCase() == 'userinfo') {
+                    var currentUser = $injector.get("currentUser");
+                    currentUser.logoutAndRedirect();
+
+                    return;
+                }
+
+                var authenticationFlow = $injector.get("authenticationFlow");
+
+                var returnData = authenticationFlow.getCurrentReturnData();
+                $state.transitionTo("login", { returnData: returnData });
             };
 
             return {
@@ -318,14 +347,16 @@ poshBoutiqueApp
                 },
                 'response': function (response) {
                     if (response.status === 401) {
-                        onUnauthorized();
+                        debugger;
+                        onUnauthorized(response.config);
                     }
 
                     return response || $q.when(response);
                 },
                 'responseError': function (rejection) {
                     if (rejection.status === 401) {
-                        onUnauthorized();
+                        debugger;
+                        onUnauthorized(rejection.config);
                     }
 
                     return $q.reject(rejection);
@@ -384,8 +415,8 @@ poshBoutiqueApp
             return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
         }];
     }).run([
-  '$rootScope', '$modalStack', 'ngProgressLite', 'currentUser', 'authenticateModal', '$window',
-    function ($rootScope, $modalStack, ngProgressLite, currentUser, authenticateModal, $window) {
+  '$rootScope', '$modalStack', 'ngProgressLite', 'currentUser', 'authenticateModal', 'authenticationFlow',
+    function ($rootScope, $modalStack, ngProgressLite, currentUser, authenticateModal, authenticationFlow) {
         debugger;
         currentUser.loadData();
 
@@ -403,15 +434,8 @@ poshBoutiqueApp
                     debugger;
                     event.preventDefault();
 
-                    var returnUrl = null;
-                    var toNav = toState.navigable;
-                    if (toNav) {
-                        returnUrl = toNav.url.format(toParams);
-                    }
-                    else {
-                        returnUrl = $window.location.href;
-                    }
-                    authenticateModal.open(returnUrl);
+                    var returnData = authenticationFlow.getReturnData(toState, toParams);
+                    authenticateModal.open(returnData);
                     return;
                 }
             }

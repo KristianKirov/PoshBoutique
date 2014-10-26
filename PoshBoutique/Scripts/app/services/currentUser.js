@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("currentUser", function (authenticationStorage, accountDataService) {
+﻿poshBoutiqueApp.factory("currentUser", function (authenticationStorage, accountDataService, $state) {
     var user = {};
 
     var setDefaults = function (isAuthenticated) {
@@ -38,6 +38,17 @@
     user.login = function (accessToken, persistent) {
         authenticationStorage.setAccesToken(accessToken, persistent);
         user.loadData();
+    };
+
+    user.logoutAndRedirect = function () {
+        user.logout();
+
+        if ($state.$current && $state.$current.data && $state.$current.data.authenticated) {
+            $state.go("home");
+        }
+        else {
+            $state.forceReload();
+        }
     };
 
     return user;

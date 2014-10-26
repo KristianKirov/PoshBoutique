@@ -20,11 +20,15 @@ namespace PoshBoutique.Data.Models
 
         public string Description { get; set; }
 
+        public string ShortDescription { get; set; }
+
         public string MaterialDescription { get; set; }
 
         public IEnumerable<SizeModel> Sizes { get; set; }
 
         public IEnumerable<ImageModel> Images { get; set; }
+
+        public string ThumbnailUrl { get; set; }
 
         public bool IsLiked { get; set; }
 

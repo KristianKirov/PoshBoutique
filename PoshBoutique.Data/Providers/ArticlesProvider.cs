@@ -94,7 +94,9 @@ namespace PoshBoutique.Data.Providers
                     Price = article.Price,
                     OriginalPrice = article.OriginalPrice,
                     HasDiscount = article.OriginalPrice != null,
-                    DiscountDescription = article.DiscountDescription
+                    DiscountDescription = article.DiscountDescription,
+                    ThumbnailUrl = article.ThumbnailUrl,
+                    ShortDescription = article.ShortDescription
                 };
 
                 if (currentUserId == null)

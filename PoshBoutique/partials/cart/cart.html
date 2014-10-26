@@ -1,7 +1,7 @@
 ﻿<div class="row">
     <div class="col-md-12">
         <ul class="shopping-cart-nav">
-            <li ng-repeat="step in cart.steps" ng-class="{ 'disabled': !cart.isStepActive($index) }">
+            <li ng-repeat="step in cart.steps" ng-class="{ 'disabled': false }">
                 <span>{{step.title}}</span>
                 <div class="triangle-shadow triangle-shadow-up"></div>
                 <div class="triangle-shadow triangle-shadow-down"></div>
@@ -9,16 +9,4 @@
         </ul>
     </div>
 </div>
-<div ui-view autoscroll="false" class="row"></div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="nav-button-wrapper nav-button-wrapper-left">
-            <button type="button" class="btn btn-default shopping-cart-nav-btn" ng-show="cart.hasPrevStep()" ng-click="cart.goToPrevStep()">&lt; Предишен</button>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="nav-button-wrapper nav-button-wrapper-right">
-            <button type="button" class="btn btn-primary shopping-cart-nav-btn" ng-show="cart.hasNextStep()" ng-click="cart.goToNextStep()" ng-disabled="!cart.canGoToNextStep()">Следващ &gt;</button>
-        </div>
-    </div>
-</div>
+<div ui-view autoscroll="false"></div>

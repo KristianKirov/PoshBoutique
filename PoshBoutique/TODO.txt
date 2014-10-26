@@ -6,12 +6,10 @@
 	-- Submit login/register form on enter key
 the day after tomorroy:
 	-- move external-login-authenticated.html to state in the app
-	Authenticate modal -> change return url to return states
-	Show error messages on logon/register screen
-	handle expired tokens in smarter way
-	Hendle the case when you navigate to protected page and close the login screen
-	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
-	https redirect + www redirect
+	-- Authenticate modal -> change return url to return states
+	-- Show error messages on logon/register screen
+	-- handle expired tokens in smarter way
+	-- https redirect + www redirect + trailing slash redirect
 
 	Add shopping cart states
 	Add shopping cart navigation
@@ -25,6 +23,8 @@ required:
 	Замяна и връщане
 
 nice to have:
+	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
+	Hendle the case when you navigate to protected page and close the login screen
 	Validate state during authentication
 	respect the ".expires" value returned by the /token endpoint and remove the token after that date
 	set title and meta description of the pages

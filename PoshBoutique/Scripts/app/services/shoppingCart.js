@@ -39,68 +39,30 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
 
     var orderStep = {
         title: "Поръчка",
-        stateName: "cart.order",
-        isValid: function () {
-            return orderdItems.length > 0;
-        }
+        stateName: "cart.order"
     };
 
     var addressStep = {
         title: "Адрес",
-        stateName: "cart.address",
-        prev: orderStep,
-        isValid: function () {
-            return false;
-        }
+        stateName: "cart.address"
+    };
+
+    var delieryStep = {
+        title: "Доставка",
+        stateName: "cart.delivery"
     };
 
     var paymentStep = {
         title: "Плащане",
-        stateName: "cart.payment",
-        prev: addressStep,
-        isValid: function () {
-            return false;
-        }
+        stateName: "cart.payment"
     };
 
     var confirmStep = {
         title: "Потвърждаване",
-        stateName: "cart.confirmation",
-        prev: paymentStep,
-        isValid: function () {
-            return false;
-        }
+        stateName: "cart.confirmation"
     };
 
-    var steps = [orderStep, addressStep, paymentStep, confirmStep];
-
-    var maxIndexStep = 0;
-    for (var i = 0; i < steps.length; i++) {
-        var stateToValidate = steps[i];
-        if (stateToValidate.isValid()) {
-            ++maxIndexStep;
-        }
-        else {
-            break;
-        }
-    }
-
-    var getStepIndex = function (stateName) {
-        for (var i = 0; i < steps.length; ++i) {
-            var stepToCheck = steps[i];
-            if (stepToCheck.stateName == stateName) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    var canShowStep = function (stepIndex) {
-        return stepIndex != -1 && stepIndex <= maxIndexStep;
-    };
-
-    var currentStepIndex = 0;
+    var steps = [orderStep, addressStep, delieryStep , paymentStep, confirmStep];
 
     return {
         items: orderdItems,
@@ -110,6 +72,7 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
                 orderedItem.quantity += quantity;
             }
             else {
+                debugger;
                 var cartItem = {
                     id: item.id,
                     title: item.title,
@@ -150,37 +113,6 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
         isEmpty: function () {
             return !(orderdItems.length > 0);
         },
-        steps: steps,
-        validateCurrentDisplayStateOrRedirect: function () {
-            var stepIndex = getStepIndex($state.$current.name);
-            if (!canShowStep(stepIndex)) {
-                $state.transitionTo(steps[0].stateName);
-            }
-            else {
-                currentStepIndex = stepIndex;
-            }
-        },
-        isStepActive: function (stepIndex) {
-            return stepIndex <= currentStepIndex;
-        },
-        hasPrevStep: function () {
-            return currentStepIndex > 0;
-        },
-        hasNextStep: function () {
-            return currentStepIndex < steps.length - 1;
-        },
-        canGoToNextStep: function () {
-            return canShowStep(currentStepIndex + 1);
-        },
-        goToPrevStep: function () {
-            if (currentStepIndex > 0) {
-                $state.transitionTo(steps[currentStepIndex - 1].stateName);
-            }
-        },
-        goToNextStep: function () {
-            if (canShowStep(currentStepIndex + 1)) {
-                $state.transitionTo(steps[currentStepIndex + 1].stateName);
-            }
-        }
+        steps: steps
     };
 });

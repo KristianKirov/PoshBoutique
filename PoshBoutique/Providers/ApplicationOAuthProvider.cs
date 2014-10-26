@@ -90,14 +90,11 @@ namespace PoshBoutique.Providers
                     if (!string.IsNullOrEmpty(redirectUri.Query))
                     {
                         NameValueCollection queryString = HttpUtility.ParseQueryString(redirectUri.Query);
-                        string initialUrl = queryString["ru"];
-                        if (!string.IsNullOrEmpty(initialUrl))
+                        string returnData = queryString["rd"];
+                        if (!string.IsNullOrEmpty(returnData))
                         {
-                            Uri initialUri = new Uri(initialUrl);
-                            if (initialUri.Host == requestUri.Host)
-                            {
-                                context.Validated();
-                            }
+                            //TODO: check if json is valid
+                            context.Validated();
                         }
                     }
                 }

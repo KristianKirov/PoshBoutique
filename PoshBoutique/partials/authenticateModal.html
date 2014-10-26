@@ -8,6 +8,9 @@
             <div ng-show="state == 'login'">
                 <h3>Влез с Posh профил</h3>
                 <form role="form" name="loginForm" ng-submit="loginForm.$valid && loginUser()" novalidate>
+                    <div class="alert alert-danger" role="alert" ng-show="loginError">
+                        <strong>Грешка!</strong> {{loginError}}
+                    </div>
                     <div class="form-group" ng-class="{ 'has-error': loginForm.userEmail.$dirty && loginForm.userEmail.$invalid }">
                         <label for="userEmail" class="control-label">Email</label>
                         <input type="email" ng-model="login.user.email" required class="form-control input-lg" id="userEmail" name="userEmail" placeholder="Въведи email">
@@ -41,6 +44,9 @@
             <div ng-show="state == 'register'">
                 <h3>Създай Posh профил</h3>
                 <form role="form" name="registerForm" ng-submit="registerForm.$valid && registerUser()" novalidate>
+                    <div class="alert alert-danger" role="alert" ng-show="registerError">
+                        <strong>Грешка!</strong> {{registerError}}
+                    </div>
                     <div class="form-group" ng-class="{ 'has-error': registerForm.userEmail.$dirty && registerForm.userEmail.$invalid }">
                         <label for="userRegisterEmail" class="control-label">Email</label>
                         <input type="email" ng-model="register.user.email" required class="form-control input-lg" id="userRegisterEmail" name="userEmail" placeholder="Въведи email">

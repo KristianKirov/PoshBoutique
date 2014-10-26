@@ -9,14 +9,7 @@
             };
 
             $scope.logout = function () {
-                currentUser.logout();
-                
-                if ($state.$current && $state.$current.data && $state.$current.data.authenticated) {
-                    $state.go("home");
-                }
-                else {
-                    $state.forceReload();
-                }
+                currentUser.logoutAndRedirect();
             };
 
             $scope.hasData = function () {

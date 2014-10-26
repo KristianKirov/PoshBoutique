@@ -1,17 +1,56 @@
-﻿poshBoutiqueApp.factory("authenticateModal", function ($modal, $window) {
+﻿poshBoutiqueApp.factory("authenticationFlow", function ($state, $stateParams, $window) {
+    var _getReturnData = function (state, stateParams) {
+        var stateData = {
+            sn: state.name,
+            sp: stateParams
+        };
+
+        return angular.toJson(stateData);
+    };
+
     return {
-        open: function (returnUrl) {
-            debugger;
-            returnUrl = returnUrl || $window.location.href;
+        getReturnData: function (state, stateParams) {
+            return _getReturnData(state, stateParams);
+        },
+        getCurrentReturnData: function () {
+            return _getReturnData($state.current, $stateParams);
+        },
+        goToState: function (returnData, replaceUrl) {
+            var stateData = angular.fromJson(returnData);
+
+            if ($state.$current.name != stateData.sn || !equalForKeys(stateData.sp, $stateParams)) {
+                debugger;
+                if (replaceUrl) {
+                    var stateUrl = $state.href(stateData.sn, stateData.sp);
+                    $window.location = "/" + stateUrl;
+                }
+                else {
+                    $state.transitionTo(stateData.sn, stateData.sp);
+                }
+            }
+            else {
+                $state.forceReload();
+            }
+        }
+    };
+});
+
+poshBoutiqueApp.factory("authenticateModal", function ($modal, authenticationFlow) {
+    return {
+        open: function (returnData) {
+            if (!returnData) {
+                debugger;
+                returnData = authenticationFlow.getCurrentReturnData();
+            }
 
             $modal.open({
                 templateUrl: "partials/authenticateModal.html",
                 resolve: {
                     externalLogins: function (accountDataService) {
-                        return accountDataService.getExternalLogins(returnUrl, true);
+                        return accountDataService.getExternalLogins(returnData, true);
                     }
                 },
-                controller: function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser, $state) {
+                controller: function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser, $state, $window) {
                     $scope.login = {};
                     $scope.register = {};
 
@@ -25,17 +64,20 @@
                             $scope.$destroy();
                             $scope.$close();
 
-                            if ($window.location.href == returnUrl) {
-                                //$state.reload();
-                                $state.forceReload();
-                            }
-                            else {
-                                $window.location = returnUrl;
-                            }
+                            //if ($window.location.href == returnUrl) {
+                            //    //$state.reload();
+                            //    $state.forceReload();
+                            //}
+                            //else {
+                            //    $window.location = returnUrl;
+                            //}
+                            debugger;
+                            authenticationFlow.goToState(returnData);
                         }
                     }
 
                     $scope.registerUser = function () {
+                        $scope.registerError = null;
                         accountDataService.register({
                             email: $scope.register.user.email,
                             firstName: $scope.register.user.firstName,
@@ -52,10 +94,19 @@
                             .success(function (data) {
                                 onUserAuthenticated(data.access_token);
                             });
+                        })
+                        .error(function (data, status, headers, config) {
+                            if (status == 400) {
+                                $scope.registerError = "Потребител с този Email вече съществува.";
+                            }
+                            else {
+                                $scope.registerError = "Възникна неизвестна грешка.";
+                            }
                         });
                     }
 
                     $scope.loginUser = function () {
+                        $scope.loginError = null;
                         accountDataService.login({
                             grant_type: "password",
                             username: $scope.login.user.email,
@@ -63,6 +114,14 @@
                         })
                         .success(function (data) {
                             onUserAuthenticated(data.access_token);
+                        })
+                        .error(function (data, status, headers, config) {
+                            if (status == 400) {
+                                $scope.loginError = "Потребител с този Email не е намерен.";
+                            }
+                            else {
+                                $scope.loginError = "Възникна неизвестна грешка.";
+                            }
                         });
                     };
 

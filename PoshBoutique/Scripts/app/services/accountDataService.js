@@ -1,25 +1,25 @@
 ﻿poshBoutiqueApp.factory("accountDataService", function ($http, $window) {
     var httpsUrl = "https://" + $window.location.host;
 
-    var addExternalLoginUrl = httpsUrl + "/api/Account/AddExternalLogin",
-        changePasswordUrl = httpsUrl + "/api/Account/changePassword",
-        loginUrl = httpsUrl + "/Token",
-        logoutUrl = httpsUrl + "/api/Account/Logout",
-        registerUrl = httpsUrl + "/api/Account/Register",
-        registerExternalUrl = httpsUrl + "/api/Account/RegisterExternal",
-        removeLoginUrl = httpsUrl + "/api/Account/RemoveLogin",
-        setPasswordUrl = httpsUrl + "/api/Account/setPassword",
+    var addExternalLoginUrl = httpsUrl + "/api/account/addexternallogin",
+        changePasswordUrl = httpsUrl + "/api/account/changepassword",
+        loginUrl = httpsUrl + "/token",
+        logoutUrl = httpsUrl + "/api/account/logout",
+        registerUrl = httpsUrl + "/api/account/register",
+        registerExternalUrl = httpsUrl + "/api/account/registerrxternal",
+        removeLoginUrl = httpsUrl + "/api/account/removelogin",
+        setPasswordUrl = httpsUrl + "/api/account/setpassword",
         siteUrl = httpsUrl + "/",
-        userInfoUrl = httpsUrl + "/api/Account/UserInfo";
+        userInfoUrl = httpsUrl + "/api/account/userinfo";
 
     // Route operations
-    function externalLoginsUrl(returnUrl, generateState) {
-        return httpsUrl + "/api/Account/ExternalLogins?returnUrl=" + (encodeURIComponent("/?ru=" + encodeURIComponent(returnUrl))) +
+    function externalLoginsUrl(returnData, generateState) {
+        return httpsUrl + "/api/account/externallogins?returnUrl=" + (encodeURIComponent("/?rd=" + encodeURIComponent(returnData))) +
             "&generateState=" + (generateState ? "true" : "false");
     }
 
     function manageInfoUrl(returnUrl, generateState) {
-        return httpsUrl + "/api/Account/ManageInfo?returnUrl=" + (encodeURIComponent(returnUrl)) +
+        return httpsUrl + "/api/account/manageinfo?returnUrl=" + (encodeURIComponent(returnUrl)) +
             "&generateState=" + (generateState ? "true" : "false");
     }
 

@@ -30,7 +30,7 @@ namespace PoshBoutique.Search
 
         private FSDirectory GetIndexDirectory(string uniqueIndex)
         {
-            string indexDir = HostingEnvironment.MapPath(string.Concat("~/", uniqueIndex));
+            string indexDir = HostingEnvironment.MapPath(string.Concat("~/SearchIndexes/", uniqueIndex));
             FSDirectory indexDyrectory = FSDirectory.Open(new DirectoryInfo(indexDir));
 
             if (IndexWriter.IsLocked(indexDyrectory))

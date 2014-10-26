@@ -240,6 +240,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Attributes\WebApi\RequireHttpsAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
@@ -288,6 +289,7 @@
     <Content Include="Global.asax" />
     <Content Include="partials\authenticateModal.html" />
     <Content Include="partials\autherror.html" />
+    <Content Include="partials\cart\delivery.html" />
     <Content Include="partials\cart\cart.html" />
     <Content Include="partials\cart\payment.html" />
     <Content Include="partials\cart\confirmation.html" />
@@ -366,7 +368,6 @@
     <Content Include="Scripts\app\directives\shoppingCartSummary.js" />
     <Content Include="Scripts\app\poshBoutiqueApp.js" />
     <Content Include="Scripts\app\services\accountDataService.js" />
-    <Content Include="Scripts\app\services\articleListParams.js" />
     <Content Include="Scripts\app\services\authenticateModal.js" />
     <Content Include="Scripts\app\services\authenticationStorage.js" />
     <Content Include="Scripts\app\services\currentUser.js" />
