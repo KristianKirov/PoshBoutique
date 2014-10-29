@@ -307,5 +307,15 @@ namespace PoshBoutique.Data.Providers
                 return articlesInCollectionModels;
             }
         }
+
+        public async Task<bool> HasArticleWithPrice(int articleId, decimal price)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                bool articleExists = await dataContext.Articles.AnyAsync(a => a.Id == articleId && (a.Price == price || a.OriginalPrice == price));
+
+                return articleExists;
+            }
+        }
     }
 }

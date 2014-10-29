@@ -219,3 +219,15 @@ poshBoutiqueApp.factory("collectionsDataService", function ($http) {
         }
     };
 });
+
+poshBoutiqueApp.factory("ordersDataService", function ($http) {
+    return {
+        validateOrder: function (orderedItems) {
+            return $http({
+                method: 'POST',
+                url: '/api/orders/validate',
+                data: { items: orderedItems }
+            });
+        }
+    };
+});

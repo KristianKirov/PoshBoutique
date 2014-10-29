@@ -113,6 +113,16 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
         isEmpty: function () {
             return !(orderdItems.length > 0);
         },
-        steps: steps
+        steps: steps,
+        getStepIndex: function (stepName) {
+            for (var i = 0; i < steps.length; i++) {
+                var step = steps[i];
+                if (step.stateName === stepName) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
     };
 });

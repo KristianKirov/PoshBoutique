@@ -55,7 +55,7 @@
             <a ui-sref="catalogue.category({ categoryUrl: 'all' })" class="btn btn-default btn-block">&lt; Продължи пазаруването</a>
         </div>
         <div class="col-md-6">
-            <a ui-sref="cart.address" class="btn btn-primary btn-block">Адрес &gt;</a>
+            <button ui-sref="cart.address" class="btn btn-primary btn-block" ng-disabled="!isValid" ng-click="navigateToNextState()">Адрес &gt;</button>
         </div>
     </div>
 </div>

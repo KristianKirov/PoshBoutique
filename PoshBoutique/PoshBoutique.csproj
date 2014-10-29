@@ -248,6 +248,7 @@
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\RelatedArticlesController.cs" />
     <Compile Include="Controllers\SubscribtionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -261,12 +262,14 @@
     <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ClientOrderModel.cs" />
     <Compile Include="Models\EmailSubscriptionModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validation\OrderValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

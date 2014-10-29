@@ -113,6 +113,7 @@
     <Compile Include="Providers\CollectionsProvider.cs" />
     <Compile Include="Providers\EmailSubscriptionsProvider.cs" />
     <Compile Include="Providers\FeedbackSubmissionsProvider.cs" />
+    <Compile Include="Providers\StocksProvider.cs" />
     <Compile Include="Providers\UserLikesProvider.cs" />
     <Compile Include="Search\Articles\ArticleSearchEntry.cs" />
     <Compile Include="Search\Articles\ArticlesIndexStore.cs" />
