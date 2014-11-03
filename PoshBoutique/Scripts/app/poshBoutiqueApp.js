@@ -136,6 +136,11 @@ poshBoutiqueApp
                 controller: 'cartAddressController',
                 data: {
                     authenticated: true
+                },
+                resolve: {
+                    addressInfo: function (ordersDataService) {
+                        return ordersDataService.getAddressInfo();
+                    }
                 }
             })
             .state('cart.delivery', {
@@ -144,6 +149,11 @@ poshBoutiqueApp
                 controller: 'cartDeliveryController',
                 data: {
                     authenticated: true
+                },
+                resolve: {
+                    deliveryMethods: function (ordersDataService) {
+                        return ordersDataService.getDeliveryMethods();
+                    }
                 }
             })
             .state('cart.payment', {

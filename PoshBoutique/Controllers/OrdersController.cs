@@ -7,6 +7,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using PoshBoutique.Identity;
+using System.Data.Entity;
+using PoshBoutique.Data.Providers;
+using PoshBoutique.Data.Models;
 
 namespace PoshBoutique.Controllers
 {
@@ -59,6 +64,95 @@ namespace PoshBoutique.Controllers
             }
 
             return this.Ok();
+        }
+
+        [HttpGet]
+        [Route("GetAddressInfo")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetAddressInfo()
+        {
+            AddressInfoModel addressInfo = new AddressInfoModel();
+            string userId = this.User.Identity.GetUserId();
+            using (ApplicationDbContext usersDbContext = new ApplicationDbContext())
+            {
+                Address userAddress = await usersDbContext.AddressInfos.FirstOrDefaultAsync(a => a.UserId == userId);
+                if (userAddress != null)
+                {
+                    addressInfo.FirstName = userAddress.FirstName;
+                    addressInfo.MiddleName = userAddress.MiddleName;
+                    addressInfo.LastName = userAddress.LastName;
+                    addressInfo.Email = userAddress.Email;
+                    addressInfo.Phone = userAddress.Phone;
+                    addressInfo.Country = userAddress.Country;
+                    addressInfo.District = userAddress.District;
+                    addressInfo.Commune = userAddress.Commune;
+                    addressInfo.City = userAddress.City;
+                    addressInfo.PostCode = userAddress.PostCode;
+                    addressInfo.Address = userAddress.AddresDetails;
+                }
+                else
+                {
+                    ApplicationUser currentUser = usersDbContext.Users.First(u => u.Id == userId);
+                    addressInfo.FirstName = currentUser.FirstName;
+                    addressInfo.LastName = currentUser.LastName;
+                    addressInfo.Email = currentUser.Email;
+                    addressInfo.Country = "България"; //TODO: add countries nomenclature
+                }
+            }
+
+            return this.Ok(addressInfo);
+        }
+
+        [HttpPost]
+        [Route("SetAddressInfo")]
+        [Authorize]
+        public async Task<IHttpActionResult> SetAddressInfo([FromBody]AddressInfoModel addressInfo)
+        {
+            using (ApplicationDbContext usersDbContext = new ApplicationDbContext())
+            {
+                string userId = this.User.Identity.GetUserId();
+                Address userAddress = await usersDbContext.AddressInfos.FirstOrDefaultAsync(a => a.UserId == userId);
+                if (userAddress == null)
+                {
+                    userAddress = new Address();
+                    userAddress.UserId = userId;
+                    usersDbContext.AddressInfos.Add(userAddress);
+                }
+
+                userAddress.FirstName = addressInfo.FirstName;
+                userAddress.MiddleName = addressInfo.MiddleName;
+                userAddress.LastName = addressInfo.LastName;
+                userAddress.Email = addressInfo.Email;
+                userAddress.Phone = addressInfo.Phone;
+                userAddress.Country = addressInfo.Country;
+                userAddress.District = addressInfo.District;
+                userAddress.Commune = addressInfo.Commune;
+                userAddress.City = addressInfo.City;
+                userAddress.PostCode = addressInfo.PostCode;
+                userAddress.AddresDetails = addressInfo.Address;
+
+                try
+                {
+                    await usersDbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    var m = ex.Message;
+                }
+            }
+
+            return this.Ok();
+        }
+
+        [HttpGet]
+        [Route("DeliveryMethods")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetDeliveryMethods([FromBody]AddressInfoModel addressInfo)
+        {
+            DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider();
+            IEnumerable<DeliveryMethodModel> allDeliveryMethods = await deliveryMethodsProvider.GetAllDeliveryMethods();
+
+            return this.Ok(allDeliveryMethods);
         }
     }
 }

@@ -74,6 +74,18 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="DeliveryMethods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LogoUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="DeliveryPrice" Type="money" Nullable="false" />
+          <Property Name="CODTax" Type="float" Nullable="false" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="EmailSubscriptions">
           <Key>
             <PropertyRef Name="Email" />
@@ -283,6 +295,7 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Collections" EntityType="Self.Collections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryMethods" EntityType="Self.DeliveryMethods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailSubscriptions" EntityType="Self.EmailSubscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FeedbackSubmissions" EntityType="Self.FeedbackSubmissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelatedArticles" EntityType="Self.RelatedArticles" Schema="dbo" store:Type="Tables" />
@@ -580,6 +593,7 @@
             <End Role="Collection" EntitySet="Collections" />
             <End Role="Article" EntitySet="Articles" />
           </AssociationSet>
+          <EntitySet Name="DeliveryMethods" EntityType="PoshBoutiqueModel.DeliveryMethod" />
         </EntityContainer>
         <EntityType Name="UserLike">
           <Key>
@@ -631,6 +645,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DeliveryMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LogoUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="CODTax" Type="Double" Nullable="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -767,6 +793,19 @@
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryMethods">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.DeliveryMethod">
+              <MappingFragment StoreEntitySet="DeliveryMethods">
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="CODTax" ColumnName="CODTax" />
+                <ScalarProperty Name="DeliveryPrice" ColumnName="DeliveryPrice" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

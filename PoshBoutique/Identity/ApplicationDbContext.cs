@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -12,5 +13,7 @@ namespace PoshBoutique.Identity
             : base("DefaultConnection")
         {
         }
+
+        public DbSet<Address> AddressInfos { get; set; }
     }
 }

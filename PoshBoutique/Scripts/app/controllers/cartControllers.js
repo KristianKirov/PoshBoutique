@@ -1,19 +1,50 @@
 ﻿poshBoutiqueApp.controller('cartController', function ($scope, shoppingCart, $state) {
+    $scope.currentStepIndex = -1;
     $scope.cart = shoppingCart;
+
+    var navigateToStepWithIndex = function (stepIndex) {
+        var newStep = shoppingCart.steps[stepIndex];
+        if (newStep) {
+            $state.go(newStep.stateName);
+        }
+    };
+
     $scope.navigateToNextState = function () {
         if ($scope.currentStepIndex < (shoppingCart.steps.length - 1)) {
-            var nextStep = shoppingCart.steps[$scope.currentStepIndex + 1];
-            $state.go(nextStep.stateName);
+            navigateToStepWithIndex($scope.currentStepIndex + 1);
+        }
+    };
+
+    $scope.navigateToPrevState = function () {
+        if ($scope.currentStepIndex > 0) {
+            navigateToStepWithIndex($scope.currentStepIndex - 1);
         }
     };
 
     $scope.setCurrentStepIndex = function (currentStateName) {
-        $scope.currentStepIndex = shoppingCart.getStepIndex($state.$current.name);
-    }
+        var newStepIndex = shoppingCart.getStepIndex($state.$current.name);
+        //if (newStepIndex <= 1 + $scope.currentStepIndex) {
+            $scope.currentStepIndex = newStepIndex;
+        //}
+        //else {
+        //    navigateToStepWithIndex(0);
+        //}
+    };
+
+    $scope.isStepActive = function (stepIndex) {
+        return stepIndex <= $scope.currentStepIndex;
+    };
+
+    $scope.navigateToStepWithIndexSafe = function (stepIndex) {
+        if (stepIndex < $scope.currentStepIndex) {
+            navigateToStepWithIndex(stepIndex);
+        }
+    };
 });
 
 poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, ordersDataService, shoppingCart) {
     $scope.setCurrentStepIndex($state.$current.name);
+
     var orderedItemsSimple = [];
     for (var i = 0; i < shoppingCart.items.length; i++) {
         var orderedItem = shoppingCart.items[i];
@@ -42,12 +73,23 @@ poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, orde
     $scope.isValid = false;
 });
 
-poshBoutiqueApp.controller('cartAddressController', function ($scope, $state) {
+poshBoutiqueApp.controller('cartAddressController', function ($scope, $state, addressInfo, ordersDataService) {
     $scope.setCurrentStepIndex($state.$current.name);
+    if (!$scope.cart.addressInfo) {
+        $scope.cart.addressInfo = addressInfo;
+    }
+
+    $scope.$on("$destroy", function () {
+        if ($scope.addressForm.$valid) {
+            ordersDataService.setAddressInfo($scope.cart.addressInfo);
+        }
+    });
 });
 
-poshBoutiqueApp.controller('cartDeliveryController', function ($scope, $state) {
+poshBoutiqueApp.controller('cartDeliveryController', function ($scope, $state, deliveryMethods) {
     $scope.setCurrentStepIndex($state.$current.name);
+
+    $scope.deliveryMethods = deliveryMethods;
 });
 
 poshBoutiqueApp.controller('cartPaymentController', function ($scope, $state) {

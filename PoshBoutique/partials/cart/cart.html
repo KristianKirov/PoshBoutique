@@ -1,7 +1,7 @@
 ﻿<div class="row">
     <div class="col-md-12">
         <ul class="shopping-cart-nav">
-            <li ng-repeat="step in cart.steps" ng-class="{ 'disabled': false }">
+            <li ng-repeat="step in cart.steps" ng-class="{ 'disabled': !isStepActive($index) }" ng-click="navigateToStepWithIndexSafe($index)">
                 <span>{{step.title}}</span>
                 <div class="triangle-shadow triangle-shadow-up"></div>
                 <div class="triangle-shadow triangle-shadow-down"></div>

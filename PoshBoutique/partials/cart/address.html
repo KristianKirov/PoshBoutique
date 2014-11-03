@@ -1,1 +1,74 @@
-﻿
+﻿<div class="view-content">
+    <h2 style="margin-top:0;text-align:center;">Информация за доставка</h2>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form role="form" novalidate id="addressForm" name="addressForm">
+                <div class="row">
+                    <div class="form-group col-md-4" ng-class="{ 'has-error': addressForm.firstNameTb.$dirty && addressForm.firstNameTb.$invalid }">
+                        <label for="firstNameTb">Име:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.firstName" id="firstNameTb" name="firstNameTb" placeholder="Име" required />
+                    </div>
+                    <div class="form-group col-md-4" ng-class="{ 'has-error': addressForm.middleNameTb.$dirty && addressForm.middleNameTb.$invalid }">
+                        <label for="middleNameTb">Презиме:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.middleName" id="middleNameTb" name="middleNameTb" placeholder="Презиме" required />
+                    </div>
+                    <div class="form-group col-md-4" ng-class="{ 'has-error': addressForm.lastNameTb.$dirty && addressForm.lastNameTb.$invalid }">
+                        <label for="lastNameTb">Фамилия:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.lastName" id="lastNameTb" name="lastNameTb" placeholder="Фамилия" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6" ng-class="{ 'has-error': addressForm.phoneTb.$dirty && addressForm.phoneTb.$invalid }">
+                        <label for="phoneTb">Телефон:</label>
+                        <input type="tel" class="form-control input-lg" ng-model="cart.addressInfo.phone" id="phoneTb" name="phoneTb" placeholder="Телефон за връзка" required />
+                    </div>
+                    <div class="form-group col-md-6" ng-class="{ 'has-error': addressForm.emailTb.$dirty && addressForm.emailTb.$invalid }">
+                        <label for="emailTb">Email:</label>
+                        <input type="email" class="form-control input-lg" ng-model="cart.addressInfo.email" id="emailTb" name="emailTb" placeholder="Email за връзка" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error': addressForm.countryDd.$dirty && addressForm.countryDd.$invalid }">
+                    <label for="countryDd">Държава:</label>
+                    <select class="form-control input-lg" ng-model="cart.addressInfo.country" id="countryDd" name="countryDd" required>
+                        <option>България</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6" ng-class="{ 'has-error': addressForm.districtTb.$dirty && addressForm.districtTb.$invalid }">
+                        <label for="districtTb">Област:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.district" id="districtTb" name="districtTb" placeholder="Област" required />
+                    </div>
+                    <div class="form-group col-md-6" ng-class="{ 'has-error': addressForm.communeTb.$dirty && addressForm.communeTb.$invalid }">
+                        <label for="communeTb">Община:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.commune" id="communeTb" name="communeTb" placeholder="Община" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6" ng-class="{ 'has-error': addressForm.cityTb.$dirty && addressForm.cityTb.$invalid }">
+                        <label for="cityTb">Град/Село:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.city" id="cityTb" name="cityTb" placeholder="Град/Село" required />
+                    </div>
+                    <div class="form-group col-md-6" ng-class="{ 'has-error': addressForm.postCodeTb.$dirty && addressForm.postCodeTb.$invalid }">
+                        <label for="postCodeTb">Пощенски код:</label>
+                        <input type="text" class="form-control input-lg" ng-model="cart.addressInfo.postCode" id="postCodeTb" name="postCodeTb" placeholder="Пощенски код" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error': addressForm.addressTextArea.$dirty && addressForm.addressTextArea.$invalid }">
+                    <label for="addressTextArea">Адрес:</label>
+                    <textarea class="form-control" style="resize:vertical" ng-model="cart.addressInfo.address" id="addressTextArea" name="addressTextArea" rows="2" placeholder="улица / блок / вход / етаж / апартамент" required></textarea>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" ng-click="navigateToPrevState()">&lt; Поръчка</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" ng-click="navigateToNextState()" ng-disabled="addressForm.$invalid">Доставка &gt;</button>
+                </div>
+            </div>
+        </div>
+        <!--<div class="col-md-6">
+            <h2 style="margin-top:0;text-align:center;">Информация за фактура</h2>
+        </div>-->
+    </div>
+</div>

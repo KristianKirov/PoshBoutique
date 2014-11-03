@@ -1,1 +1,32 @@
-﻿
+﻿<div class="view-content">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="row" style="text-align:center;">
+                <div class="col-md-6 col-sm-6" ng-repeat="deliveryMethod in deliveryMethods">
+                    <div class="delivery-method-item" ng-click="cart.selectedDeliveryMethod = deliveryMethod" ng-class="{ 'delivery-method-item--selected': cart.selectedDeliveryMethod.id == deliveryMethod.id}">
+                        <h4>{{deliveryMethod.name}}</h4>
+                        <p ng-if="deliveryMethod.description">{{deliveryMethod.description}}</p>
+                        <img ng-src="{{deliveryMethod.logoUrl}}" style="max-height:45px;max-width:100%;" />
+                        <p>
+                            При доставка с наложен платеж, се добавят <strong>{{deliveryMethod.codTax | number:2}}%</strong> към стойността на поръчката.
+                        </p>
+                        <div>
+                            <strong>{{deliveryMethod.deliveryPrice | currency}}</strong>
+                        </div>
+                        <div class="radio-button-area">
+                            <input type="radio" name="deliveryMethodRadio" ng-value="deliveryMethod" ng-model="cart.selectedDeliveryMethod" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" ng-click="navigateToPrevState()">&lt; Адрес</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" ng-click="navigateToNextState()" ng-disabled="!cart.selectedDeliveryMethod">Плащане &gt;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

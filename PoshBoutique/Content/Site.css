@@ -1433,3 +1433,34 @@ a.hoverable .item-like {
 .dropdown--cart-summary > .dropdown-menu .alert {
     margin: -5px 0 -5px 0;
 }
+
+.delivery-method-item {
+    box-shadow: 0px 0px 5px #888888;
+    padding: 5px;
+    cursor:pointer;
+    transition: all .3s ease-in;
+    background-color: rgb(242, 242, 242);
+    opacity: .5;
+    margin-bottom: 15px;
+}
+
+.delivery-method-item:hover {
+    opacity: 1;
+}
+
+.delivery-method-item .radio-button-area {
+    background-color: rgb(210, 210, 210);
+    padding: 20px;
+    margin: 5px -5px -5px -5px;
+    transition: all .3s ease-in;
+}
+
+.delivery-method-item--selected {
+    box-shadow: 0px 0px 5px #41FFA1;
+    background-color: rgb(245, 255, 245);
+    opacity: 1;
+}
+
+.delivery-method-item--selected .radio-button-area {
+    background-color: rgb(213, 255, 213);
+}

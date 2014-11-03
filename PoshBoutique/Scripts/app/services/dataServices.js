@@ -228,6 +228,33 @@ poshBoutiqueApp.factory("ordersDataService", function ($http) {
                 url: '/api/orders/validate',
                 data: { items: orderedItems }
             });
-        }
+        },
+        getAddressInfo: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/orders/getaddressinfo'
+            }).then(function (response) {
+                var addressInfo = response.data;
+
+                return addressInfo;
+            });
+        },
+        setAddressInfo: function (addressInfo) {
+            return $http({
+                method: 'POST',
+                url: '/api/orders/setaddressinfo',
+                data: addressInfo
+            });
+        },
+        getDeliveryMethods: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/orders/deliverymethods'
+            }).then(function (response) {
+                var deliveryMethods = response.data;
+
+                return deliveryMethods;
+            });
+        },
     };
 });
