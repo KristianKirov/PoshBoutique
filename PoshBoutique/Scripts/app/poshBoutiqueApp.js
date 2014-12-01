@@ -162,6 +162,11 @@ poshBoutiqueApp
                 controller: 'cartPaymentController',
                 data: {
                     authenticated: true
+                },
+                resolve: {
+                    paymentMethods: function (ordersDataService) {
+                        return ordersDataService.getPaymentMethods();
+                    }
                 }
             })
             .state('cart.confirmation', {
@@ -172,6 +177,10 @@ poshBoutiqueApp
                     authenticated: true
                 }
             })
+        .state('order-accepted', {
+            url: "/order-accepted",
+            template: "<div class='view-content alert alert-success' role='alert'><p>Поръчката Ви е приета!</p><p>Можете да следите статуса ѝ в <a ui-sref='account.orders' class='alert-link'>профила</a> cи.</p></div>"
+        })
         .state('contact-us', {
             url: "/contact-us",
             templateUrl: "partials/contactUs.html",
@@ -298,7 +307,45 @@ poshBoutiqueApp
                     //$window.location.href = initialUrl;
                 }
             }
-        });
+        })
+        .state('account', {
+            abstract: true,
+            url: "/account",
+            templateUrl: "partials/account/account.html",
+            controller: 'accountController',
+        })
+            .state('account.edit', {
+                url: "/edit",
+                templateUrl: "partials/account/edit.html",
+                controller: 'accountEditController',
+                data: {
+                    authenticated: true
+                },
+                resolve: {
+                    manageInfo: function (accountDataService, authenticationFlow, $state) {
+                        debugger;
+                        var returnData = authenticationFlow.getReturnData($state.get("account.edit"), null);
+
+                        return accountDataService.getManageInfo(returnData, true);
+                    },
+                    addressInfo: function (ordersDataService) {
+                        return ordersDataService.getAddressInfo();
+                    }
+                }
+            })
+            .state('account.orders', {
+                url: "/orders",
+                templateUrl: "partials/account/orders.html",
+                controller: 'accountOrdersController',
+                data: {
+                    authenticated: true
+                },
+                resolve: {
+                    userOrders: function (ordersDataService) {
+                        return ordersDataService.my();
+                    }
+                }
+            });
 
         var order = {
             options: [
@@ -461,3 +508,9 @@ poshBoutiqueApp
             ngProgressLite.done();
         });
     }]);
+
+poshBoutiqueApp.filter('toLocalDate', function () {
+    return function (utcDate) {
+        return new Date(utcDate + 'Z').getTime();
+    }
+});

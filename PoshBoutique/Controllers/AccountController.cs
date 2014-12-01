@@ -146,46 +146,6 @@ namespace PoshBoutique.Controllers
             return Ok();
         }
 
-        // POST api/Account/AddExternalLogin
-        [Route("AddExternalLogin")]
-        public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-
-            AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
-
-            if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-                && ticket.Properties.ExpiresUtc.HasValue
-                && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
-            {
-                return BadRequest("External login failure.");
-            }
-
-            ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
-
-            if (externalData == null)
-            {
-                return BadRequest("The external login is already associated with an account.");
-            }
-
-            IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
-                new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
-
-            IHttpActionResult errorResult = GetErrorResult(result);
-
-            if (errorResult != null)
-            {
-                return errorResult;
-            }
-
-            return Ok();
-        }
-
         // POST api/Account/RemoveLogin
         [Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
@@ -275,10 +235,17 @@ namespace PoshBoutique.Controllers
             }
             else
             {
-                bool isExternalLoginForUser = user.Logins.Any(l => l.LoginProvider == externalLogin.LoginProvider && l.ProviderKey == externalLogin.ProviderKey);
-                if (!isExternalLoginForUser)
+                bool isExistingLogin = user.Logins.Any(l => l.LoginProvider == externalLogin.LoginProvider && l.ProviderKey == externalLogin.ProviderKey);
+                if (!isExistingLogin)
                 {
-                    return Redirect(Url.Content("~/") + "?code=1&data=" + Uri.EscapeDataString(externalLogin.Email) + "#/autherror");
+                    user.Logins.Add(new IdentityUserLogin()
+                    {
+                        LoginProvider = externalLogin.LoginProvider,
+                        ProviderKey = externalLogin.ProviderKey,
+                        UserId = user.Id
+                    });
+
+                    await UserManager.UpdateAsync(user);
                 }
             }
 
@@ -353,44 +320,6 @@ namespace PoshBoutique.Controllers
             };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-            IHttpActionResult errorResult = GetErrorResult(result);
-
-            if (errorResult != null)
-            {
-                return errorResult;
-            }
-
-            return Ok();
-        }
-
-        // POST api/Account/RegisterExternal
-        [OverrideAuthentication]
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("RegisterExternal")]
-        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
-
-            if (externalLogin == null)
-            {
-                return InternalServerError();
-            }
-
-            ApplicationUser user = new ApplicationUser
-            {
-                UserName = model.UserName
-            };
-            user.Logins.Add(new IdentityUserLogin
-            {
-                LoginProvider = externalLogin.LoginProvider,
-                ProviderKey = externalLogin.ProviderKey
-            });
-            IdentityResult result = await UserManager.CreateAsync(user);
             IHttpActionResult errorResult = GetErrorResult(result);
 
             if (errorResult != null)

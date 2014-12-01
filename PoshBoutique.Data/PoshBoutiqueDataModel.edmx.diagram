@@ -27,6 +27,19 @@
         <EntityTypeShape EntityType="PoshBoutiqueModel.Collection" Width="1.5" PointX="5.125" PointY="9.625" />
         <AssociationConnector Association="PoshBoutiqueModel.FK_Articles_Collections" />
         <EntityTypeShape EntityType="PoshBoutiqueModel.DeliveryMethod" Width="1.5" PointX="7.375" PointY="9.75" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.PaymentMethod" Width="1.5" PointX="9.375" PointY="9.75" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.OrderDetail" Width="1.5" PointX="10.625" PointY="6.375" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.Order" Width="1.5" PointX="10.625" PointY="2.25" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_OrderDetails_Articles" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_OrderDetails_Colors" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_OrderDetails_Orders" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_OrderDetails_Sizes" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.OrderStatus" Width="1.5" PointX="12.625" PointY="2.125" />
+        <EntityTypeShape EntityType="PoshBoutiqueModel.OrderStatusesHistory" Width="1.5" PointX="12.625" PointY="4.5" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_Orders_OrderStatuses" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_OrderStatuses_Orders" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_OrderStatuses_OrderStatuses11" />
+        <AssociationConnector Association="PoshBoutiqueModel.FK_Orders_PaymentMethods" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

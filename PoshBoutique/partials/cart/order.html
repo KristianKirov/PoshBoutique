@@ -1,43 +1,45 @@
 ﻿<div class="view-content" ng-if="!cart.isEmpty()">
-    <table class="table table-condensed">
-        <tr ng-repeat="orderedItem in cart.items">
-            <td>
-                <img style="height:150px;" ng-src="{{orderedItem.thumbnailUrl}}" alt="{{orderedItem.title}}" />
-            </td>
-            <td style="width:100%;position:relative;">
-                <div>
-                    <h4 style="text-align:center;">
-                        <a ui-sref="catalogue.category.view({ categoryUrl: 'all', itemUrl: orderedItem.urlName })">{{orderedItem.title}}</a>
-                    </h4>
-                    <p style="text-align:center;">
-                        {{orderedItem.shortDescription}}
-                    </p>
-                </div>
-                <table class="table table-condensed" style="position: absolute;bottom: 0;left: 0;right: 0;margin-bottom:5px;">
-                    <thead>
-                        <tr>
-                            <th>Размер</th>
-                            <th>Цвят</th>
-                            <th>Количество</th>
-                            <th>Едиинична Цена</th>
-                            <th>Междинна Сума</th>
-                            <th style="text-align:center;width:1%;">Премахни</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{orderedItem.size.name}}</td>
-                            <td>{{orderedItem.color ? orderedItem.color.title : "--"}}</td>
-                            <td>{{orderedItem.quantity}}</td>
-                            <td>{{orderedItem.price | currency}}</td>
-                            <td>{{(orderedItem.quantity * orderedItem.price) | currency}}</td>
-                            <td style="cursor:pointer;text-align:center;" ng-click="cart.removeItemFromCart(orderedItem)"><i class="glyphicon glyphicon-trash"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-condensed">
+            <tr ng-repeat="orderedItem in cart.items">
+                <td>
+                    <img style="height:150px;" ng-src="{{orderedItem.thumbnailUrl}}" alt="{{orderedItem.title}}" />
+                </td>
+                <td style="width:100%;position:relative;">
+                    <div>
+                        <h4 style="text-align:center;">
+                            <a ui-sref="catalogue.category.view({ categoryUrl: 'all', itemUrl: orderedItem.urlName })">{{orderedItem.title}}</a>
+                        </h4>
+                        <p style="text-align:center;">
+                            {{orderedItem.shortDescription}}
+                        </p>
+                    </div>
+                    <table class="table table-condensed" style="position: absolute;bottom: 0;left: 0;right: 0;margin-bottom:5px;">
+                        <thead>
+                            <tr>
+                                <th>Размер</th>
+                                <th>Цвят</th>
+                                <th>Количество</th>
+                                <th>Едиинична Цена</th>
+                                <th>Междинна Сума</th>
+                                <th style="text-align:center;width:1%;">Премахни</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{orderedItem.size.name}}</td>
+                                <td>{{orderedItem.color ? orderedItem.color.title : "--"}}</td>
+                                <td>{{orderedItem.quantity}}</td>
+                                <td>{{orderedItem.price | currency}}</td>
+                                <td>{{(orderedItem.quantity * orderedItem.price) | currency}}</td>
+                                <td style="cursor:pointer;text-align:center;" ng-click="cart.removeItemFromCart(orderedItem)"><i class="glyphicon glyphicon-trash"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="row">
         <div class="col-md-offset-6 col-md-6">
             <div class="row" style="margin:0; border-top:2px solid black;">
@@ -45,7 +47,7 @@
                     <h2>Обща сума:</h2>
                 </div>
                 <div class="col-md-6" style="padding:0;">
-                    <h2>{{cart.total() | currency}}</h2>
+                    <h2>{{cart.total().order | currency}} <small style="white-space:nowrap;">(без доставка)</small></h2>
                 </div>
             </div>
         </div>

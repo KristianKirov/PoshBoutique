@@ -1,0 +1,33 @@
+﻿@model PoshBoutique.Data.Models.SimpleOrderModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Epay</title>
+</head>
+<body>
+    <h2>
+        Пренасочване към ePay.bg 
+    </h2>
+    <form action="https://www.epay.bg/" method="post" id="ePayForm" style="display:none">
+        <input type="hidden" name="PAGE" value="paylogin" />
+        <input type="hidden" name="MIN" value="8840528469" />
+        <input type="hidden" name="INVOICE" value="@Model.Id" />
+        <input type="hidden" name="TOTAL" value="@Model.TotalPrice.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)" />
+        <input type="hidden" name="DESCR" value="Заплащане на поръчка към PoshBoutique" />
+        <input type="hidden" name="ENCODING" value="utf-8" />
+        <input type="hidden" name="URL_OK" value="https://www.poshboutique-bg.com/#/order-accepted" />
+        <input type="hidden" name="URL_CANCEL" value="https://www.poshboutique-bg.com/#/order-accepted" />
+        <input type="submit" name="BUTTON:EPAYNOW" value="" alt="ePay" title="ePay" />
+    </form>
+    <script>
+        var form = document.getElementById("ePayForm");
+        form.submit();
+    </script>
+</body>
+</html>

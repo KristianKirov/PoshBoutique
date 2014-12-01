@@ -3,7 +3,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="row" style="text-align:center;">
                 <div class="col-md-6 col-sm-6" ng-repeat="deliveryMethod in deliveryMethods">
-                    <div class="delivery-method-item" ng-click="cart.selectedDeliveryMethod = deliveryMethod" ng-class="{ 'delivery-method-item--selected': cart.selectedDeliveryMethod.id == deliveryMethod.id}">
+                    <div class="selectable-card-item" ng-click="cart.selectedDeliveryMethod = deliveryMethod" ng-class="{ 'selectable-card-item--selected': cart.selectedDeliveryMethod.id == deliveryMethod.id }">
                         <h4>{{deliveryMethod.name}}</h4>
                         <p ng-if="deliveryMethod.description">{{deliveryMethod.description}}</p>
                         <img ng-src="{{deliveryMethod.logoUrl}}" style="max-height:45px;max-width:100%;" />
@@ -13,8 +13,8 @@
                         <div>
                             <strong>{{deliveryMethod.deliveryPrice | currency}}</strong>
                         </div>
-                        <div class="radio-button-area">
-                            <input type="radio" name="deliveryMethodRadio" ng-value="deliveryMethod" ng-model="cart.selectedDeliveryMethod" />
+                        <div class="state-area">
+                            <i class="glyphicon" ng-class="{ 'glyphicon glyphicon-ok': cart.selectedDeliveryMethod.id == deliveryMethod.id, 'glyphicon glyphicon-minus': cart.selectedDeliveryMethod.id != deliveryMethod.id }"></i>
                         </div>
                     </div>
                 </div>

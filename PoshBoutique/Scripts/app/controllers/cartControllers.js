@@ -21,45 +21,40 @@
         }
     };
 
-    $scope.setCurrentStepIndex = function (currentStateName) {
-        var newStepIndex = shoppingCart.getStepIndex($state.$current.name);
-        //if (newStepIndex <= 1 + $scope.currentStepIndex) {
-            $scope.currentStepIndex = newStepIndex;
-        //}
-        //else {
-        //    navigateToStepWithIndex(0);
-        //}
-    };
-
-    $scope.isStepActive = function (stepIndex) {
-        return stepIndex <= $scope.currentStepIndex;
-    };
-
     $scope.navigateToStepWithIndexSafe = function (stepIndex) {
         if (stepIndex < $scope.currentStepIndex) {
             navigateToStepWithIndex(stepIndex);
         }
     };
+
+    $scope.setCurrentStepIndex = function (currentStateName) {
+        var newStepIndex = shoppingCart.getStepIndex($state.$current.name);
+        var canDisplayState = true;
+        for (var i = 0; i <= newStepIndex; i++) {
+            preceedingStep = shoppingCart.steps[i];
+            if (!preceedingStep.canShow()) {
+                canDisplayState = false;
+                break;
+            }
+        }
+
+        if (canDisplayState) {
+            $scope.currentStepIndex = newStepIndex;
+        }
+        else {
+            navigateToStepWithIndex(0);
+        }
+    };
+
+    $scope.isStepActive = function (stepIndex) {
+        return stepIndex <= $scope.currentStepIndex;
+    };
 });
 
-poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, ordersDataService, shoppingCart) {
+poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, ordersDataService) {
     $scope.setCurrentStepIndex($state.$current.name);
 
-    var orderedItemsSimple = [];
-    for (var i = 0; i < shoppingCart.items.length; i++) {
-        var orderedItem = shoppingCart.items[i];
-        var orderedItemSimple = {
-            articleId: orderedItem.id,
-            sizeId: orderedItem.size.id,
-            quantity: orderedItem.quantity,
-            price: orderedItem.price
-        };
-
-        if (orderedItem.color) {
-            orderedItemSimple.colorId = orderedItem.color.id;
-        }
-        orderedItemsSimple.push(orderedItemSimple);
-    }
+    var orderedItemsSimple = $scope.cart.getSimpleItems();
 
     ordersDataService.validateOrder(orderedItemsSimple)
         .success(function () {
@@ -75,10 +70,11 @@ poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, orde
 
 poshBoutiqueApp.controller('cartAddressController', function ($scope, $state, addressInfo, ordersDataService) {
     $scope.setCurrentStepIndex($state.$current.name);
+
     if (!$scope.cart.addressInfo) {
         $scope.cart.addressInfo = addressInfo;
     }
-
+    
     $scope.$on("$destroy", function () {
         if ($scope.addressForm.$valid) {
             ordersDataService.setAddressInfo($scope.cart.addressInfo);
@@ -92,10 +88,32 @@ poshBoutiqueApp.controller('cartDeliveryController', function ($scope, $state, d
     $scope.deliveryMethods = deliveryMethods;
 });
 
-poshBoutiqueApp.controller('cartPaymentController', function ($scope, $state) {
+poshBoutiqueApp.controller('cartPaymentController', function ($scope, $state, paymentMethods) {
     $scope.setCurrentStepIndex($state.$current.name);
+
+    $scope.paymentMethods = paymentMethods;
 });
 
-poshBoutiqueApp.controller('cartConfirmationController', function ($scope, $state) {
+poshBoutiqueApp.controller('cartConfirmationController', function ($scope, $state, ordersDataService, $window) {
     $scope.setCurrentStepIndex($state.$current.name);
+
+    $scope.postOrder = function () {
+        var simpleOrder = $scope.cart.getSimpleOrder();
+        ordersDataService.validateAndSaveOrder(simpleOrder)
+            .success(function (orderId) {
+                var externalPaymentService = $scope.cart.selectedPaymentMethod.isExternal;
+
+                $scope.cart.clean();
+
+                if (externalPaymentService) {
+                    $window.location = "/pay/order/" + orderId;
+                }
+                else {
+                    $state.go("order-accepted");
+                }
+            })
+            .error(function () {
+                //TODO: show message to user!
+            });
+    };
 });

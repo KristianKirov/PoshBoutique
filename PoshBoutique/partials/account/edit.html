@@ -1,0 +1,94 @@
+﻿<h2>Профил</h2>
+<div class="row">
+    <div class="col-md-8">
+        <h4 style="text-align:center">Адрес за доставки</h4>
+        <address-form address-info-model="addressInfo" address-form="addressForm"></address-form>
+        <button class="btn btn-primary btn-block" ng-disabled="addressForm.$invalid" ng-click="saveUserAddress()">Запази</button>
+
+        <div class="alert alert-success" role="alert" ng-show="addressSuccessfullySaved">
+            Адресът за доставки беше запазен.
+        </div>
+        <div class="alert alert-danger" role="alert" ng-show="addressErrorOnSave">
+            Възникна грешка при запазване на адреса Ви. Моля опитайте по-късно или се свържете с нас.
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Свързани профили</h4>
+        <div ng-show="hasLocalLogin">
+            <strong>Промяна на парола</strong>
+            <form role="form" name="changePasswordForm" novalidate ng-submit="changePasswordForm.$valid && changePassword()">
+                <div class="form-group" ng-class="{ 'has-error': changePasswordForm.oldPassword.$dirty && changePasswordForm.oldPassword.$invalid }">
+                    <label for="oldPassword" class="control-label">Текуща парола</label>
+                    <input type="password" ng-model="changePasswordModel.oldPassword" required ng-minlength="6" class="form-control input-lg" name="oldPassword" placeholder="Парола">
+                    <div ng-show="changePasswordForm.oldPassword.$dirty && changePasswordForm.oldPassword.$invalid" class="text-danger">
+                        <span ng-show="changePasswordForm.oldPassword.$error.required">Моля въведете парола.</span>
+                        <span ng-show="changePasswordForm.oldPassword.$error.minlength">Паролата трябва да е поне 6 символа</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error': changePasswordForm.newPassword.$dirty && changePasswordForm.newPassword.$invalid }">
+                    <label for="newPassword" class="control-label">Нова парола</label>
+                    <input type="password" ng-model="changePasswordModel.newPassword" required ng-minlength="6" class="form-control input-lg" name="newPassword" placeholder="Парола">
+                    <div ng-show="changePasswordForm.newPassword.$dirty && changePasswordForm.newPassword.$invalid" class="text-danger">
+                        <span ng-show="changePasswordForm.newPassword.$error.required">Моля въведете парола.</span>
+                        <span ng-show="changePasswordForm.newPassword.$error.minlength">Паролата трябва да е поне 6 символа</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error': changePasswordForm.confirmPassword.$dirty && changePasswordForm.confirmPassword.$invalid }">
+                    <label for="newPassword" class="control-label">Повторете новата парола</label>
+                    <input type="password" ng-model="changePasswordModel.confirmPassword" repeat-password="newPassword" class="form-control input-lg" name="confirmPassword" placeholder="Повторете паролата">
+                    <div ng-show="changePasswordForm.confirmPassword.$dirty && changePasswordForm.confirmPassword.$invalid" class="text-danger">
+                        <span ng-show="changePasswordForm.confirmPassword.$error.repeat">Паролите не съвпадат</span>
+                    </div>
+                </div>
+                <button type="submit" ng-disabled="!changePasswordForm.$valid" class="btn btn-default btn-lg btn-block">Смени паролата</button>
+            </form>
+        </div>
+        <div ng-hide="hasLocalLogin">
+            <strong>Създаване на Posh профил</strong>
+            <form role="form" name="newPasswordForm" novalidate ng-submit="newPasswordForm.$valid && setPassword()">
+                <div class="form-group" ng-class="{ 'has-error': newPasswordForm.newPassword.$dirty && newPasswordForm.newPassword.$invalid }">
+                    <label for="newPassword" class="control-label">Парола</label>
+                    <input type="password" ng-model="setPasswordModel.newPassword" required ng-minlength="6" class="form-control input-lg" name="newPassword" placeholder="Парола">
+                    <div ng-show="newPasswordForm.newPassword.$dirty && newPasswordForm.newPassword.$invalid" class="text-danger">
+                        <span ng-show="newPasswordForm.newPassword.$error.required">Моля въведете парола.</span>
+                        <span ng-show="newPasswordForm.newPassword.$error.minlength">Паролата трябва да е поне 6 символа</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error': newPasswordForm.confirmPassword.$dirty && newPasswordForm.confirmPassword.$invalid }">
+                    <label for="newPassword" class="control-label">Повторете паролата</label>
+                    <input type="password" ng-model="setPasswordModel.confirmPassword" repeat-password="newPassword" class="form-control input-lg" name="confirmPassword" placeholder="Повторете паролата">
+                    <div ng-show="newPasswordForm.confirmPassword.$dirty && newPasswordForm.confirmPassword.$invalid" class="text-danger">
+                        <span ng-show="newPasswordForm.confirmPassword.$error.repeat">Паролите не съвпадат</span>
+                    </div>
+                </div>
+                <button type="submit" ng-disabled="!newPasswordForm.$valid" class="btn btn-default btn-lg btn-block">Създай профил</button>
+            </form>
+        </div>
+        <div class="alert alert-success" ng-show="passwordSuccessfullySet">
+            Успешно създадохте Posh профил. Можете да влизате в него с Email-а с който сте регистриран и паролата, която зададохте.
+        </div>
+        <div class="alert alert-danger" ng-show="passwordErrorOnSet">
+            Възникна грешка при създаване на Posh профил. Моля опитайте по-късно или се свържете с нас.
+        </div>
+        <div class="alert alert-success" ng-show="passwordSuccessfullyChanged">
+            Успешно успешно сменихте паролата на вашия Posh профил.
+        </div>
+        <div class="alert alert-danger" ng-show="passwordErrorOnChange">
+            Възникна грешка при промяната на паролата Ви. Моля опитайте по-късно или се свържете с нас.
+        </div>
+        <ul class="public-providers-list">
+            <li ng-show="hasLocalLogin">
+                <button class="btn btn-default btn-lg btn-block public-provider">
+                    Posh профил <i ng-click="removeLocalLogin()" ng-show="canRemoveLogin()" class="glyphicon glyphicon-remove" title="Премахване на Posh профил"></i>
+                </button>
+            </li>
+            <li ng-repeat="login in logins">
+                <button type="button" class="btn btn-primary btn-lg btn-block public-provider public-provider-{{login.name}}">
+                    {{login.name}}
+                    <i ng-click="removeLogin(login)" ng-show="canRemoveLogin() && login.currentLoginData" class="glyphicon glyphicon-remove" title="Разкачи профила"></i>
+                    <i ng-click="addLogin(login)" ng-hide="login.currentLoginData" class="glyphicon glyphicon-plus" title="Свържи профила"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>

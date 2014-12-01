@@ -1,1 +1,32 @@
-﻿
+﻿<div class="view-content">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="row" style="text-align:center;">
+                <div class="col-md-6 col-sm-6" ng-repeat="paymentMethod in paymentMethods">
+                    <div class="selectable-card-item" ng-click="cart.selectedPaymentMethod = paymentMethod" ng-class="{ 'selectable-card-item--selected': cart.selectedPaymentMethod.id == paymentMethod.id }">
+                        <h4>{{paymentMethod.name}}</h4>
+                        <p ng-if="paymentMethod.description">{{paymentMethod.description}}</p>
+                        <img ng-src="{{paymentMethod.logoUrl}}" style="height:70px;max-width:100%;" />
+                        <p ng-if="paymentMethod.applyDeliveryTax">
+                            {{cart.selectedDeliveryMethod.name}}: <strong>+{{cart.selectedDeliveryMethod.codTax | number:2}}%</strong> към стойността на поръчката.
+                        </p>
+                        <p ng-if="!paymentMethod.applyDeliveryTax">
+                            Без допълнителна такса
+                        </p>
+                        <div class="state-area">
+                            <i class="glyphicon" ng-class="{ 'glyphicon glyphicon-ok': cart.selectedPaymentMethod.id == paymentMethod.id, 'glyphicon glyphicon-minus': cart.selectedPaymentMethod.id != paymentMethod.id }"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" ng-click="navigateToPrevState()">&lt; Доставка</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" ng-click="navigateToNextState()" ng-disabled="!cart.selectedPaymentMethod">Потвърждаване &gt;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

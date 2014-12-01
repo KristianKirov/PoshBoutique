@@ -256,5 +256,45 @@ poshBoutiqueApp.factory("ordersDataService", function ($http) {
                 return deliveryMethods;
             });
         },
+        getPaymentMethods: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/orders/paymentmethods'
+            }).then(function (response) {
+                var paymentMethods = response.data;
+
+                return paymentMethods;
+            });
+        },
+        validateAndSaveOrder: function (simpleOrder) {
+            return $http({
+                method: 'POST',
+                url: '/api/orders/validateandsaveorder',
+                data: simpleOrder
+            });
+        },
+        my: function () {
+            return $http({
+                method: 'GET',
+                url: '/api/orders/my'
+            })
+            .then(function (response) {
+                var userOrders = response.data;
+
+                return userOrders;
+            });
+        },
+        orderItems: function (orderId) {
+            return $http({
+                method: 'GET',
+                url: '/api/orders/' + orderId + '/items'
+            });
+        },
+        orderHistory: function (orderId) {
+            return $http({
+                method: 'GET',
+                url: '/api/orders/' + orderId + '/history'
+            });
+        }
     };
 });

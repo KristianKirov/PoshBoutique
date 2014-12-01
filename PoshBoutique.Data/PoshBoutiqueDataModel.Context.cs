@@ -37,5 +37,10 @@ namespace PoshBoutique.Data
         public virtual DbSet<FeedbackSubmission> FeedbackSubmissions { get; set; }
         public virtual DbSet<Collection> Collections { get; set; }
         public virtual DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+        public virtual DbSet<OrderStatusesHistory> OrderStatusesHistories { get; set; }
     }
 }

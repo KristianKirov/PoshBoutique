@@ -17,11 +17,13 @@ namespace PoshBoutique.Data
         public Color()
         {
             this.Stocks = new HashSet<Stock>();
+            this.OrderDetails = new HashSet<OrderDetail>();
         }
     
         public int Id { get; set; }
         public string Title { get; set; }
     
         public virtual ICollection<Stock> Stocks { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

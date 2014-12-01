@@ -1,0 +1,52 @@
+﻿<h2>Поръчки</h2>
+<style>
+    a.accordion-toggle {
+        cursor: pointer;
+        display: block;
+    }
+
+    .panel.expanded-panel i.glyphicon {
+        transform: rotateZ(90deg);
+    }
+</style>
+<accordion ng-if="userOrders.length" close-others="false">
+    <accordion-group ng-repeat="order in userOrders" is-open="order.visible" ng-class="{ 'expanded-panel': order.visible }">
+        <accordion-heading ng-click="">
+            <div ng-click="orderClicked(order)">
+                <b style=" text-decoration:underline;">Извършена на:</b> {{order.dateCreated | toLocalDate | date:'dd MMMM yyyy г. HH:mm ч.'}} |
+                <b style="text-decoration:underline;">Доставчик:</b> {{order.deliveryMerchant}} |
+                <b style="text-decoration:underline;">Статус:</b> {{order.status}} |
+                <b style="text-decoration:underline;">Дължима сума:</b> {{order.totalPrice | currency}}
+                <i class="pull-right glyphicon glyphicon-play-circle"></i>
+            </div>
+        </accordion-heading>
+        <div class="row">
+            <div class="col-md-9">
+                <h4>Артикули</h4>
+                <div ng-repeat="article in order.items" style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">
+                    <img ng-src="{{article.thumbnailUrl}}" title="article.articleTitle" style="height: 50px;" />
+                    <a ui-sref="catalogue.category.view({ categoryUrl: 'all', itemUrl: article.articleUrlName })">{{article.articleTitle}}</a> |
+                    Размер: {{article.size}} |
+                    <span ng-if="article.color">Цвят: {{article.color}} |</span>
+                    Количество: {{article.quantity}} |
+                    Единична цена: {{article.itemPrice | currency}}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h4>История</h4>
+                <div ng-repeat="statusChange in order.history" style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">
+                    {{statusChange.name}}:
+                    <span class="pull-right" style="color:gray;">{{order.dateCreated | toLocalDate | date:'dd MMMM yyyy г. HH:mm ч.'}}</span>
+                </div>
+                <h4>Доставка</h4>
+                <div style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">Доставчик: {{order.deliveryMerchant}}</div>
+                <div style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">Такса: {{order.deliveryPrice | currency}}</div>
+                <div style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;" ng-if="order.hasComission">Комисионна: {{order.commissionPercents}}%</div>
+                <div style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">Общо: {{order.shippingPrice | currency}}</div>
+            </div>
+        </div>
+    </accordion-group>
+</accordion>
+<div class="alert alert-warning" role="alert" ng-if="!userOrders.length">
+    Нямате поръчки.
+</div>

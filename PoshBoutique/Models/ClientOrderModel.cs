@@ -6,10 +6,64 @@ using System.Web;
 
 namespace PoshBoutique.Models
 {
+    public class OrderItemsGrouper
+    {
+        public IList<OrderedItemModel> NormalizeOrderedItems(List<OrderedItemModel> items)
+        {
+            List<OrderedItemModel> normalizedItems = new List<OrderedItemModel>();
+            while (items.Count > 0)
+            {
+                OrderedItemModel currentItem = items[0];
+                OrderedItemModel[] equalItems = items.Where(i => i.Equals(currentItem)).ToArray();
+                int totalQuantity = 0;
+                foreach (OrderedItemModel equalItem in equalItems)
+                {
+                    if (equalItem.Price != currentItem.Price)
+                    {
+                        return null;
+                    }
+
+                    totalQuantity += equalItem.Quantity.Value;
+                }
+
+                items.RemoveAll(i => i.Equals(currentItem));
+                currentItem.Quantity = totalQuantity;
+
+                normalizedItems.Add(currentItem);
+            }
+
+            return normalizedItems;
+        }
+    }
+
     public class ClientOrderModel
     {
         [Required]
         public IEnumerable<OrderedItemModel> Items { get; set; }
+    }
+
+    public class FullOrderModel : ClientOrderModel
+    {
+        [Required]
+        public int? PaymentMethodId { get; set; }
+
+        [Required]
+        public int? DeliveryMethodId { get; set; }
+
+        [Required]
+        public OrderTotal Total { get; set; }
+    }
+
+    public class OrderTotal
+    {
+        [Required]
+        public decimal? Shipping { get; set; }
+
+        [Required]
+        public decimal? Order { get; set; }
+
+        [Required]
+        public decimal? Full { get; set; }
     }
 
     public class OrderedItemModel

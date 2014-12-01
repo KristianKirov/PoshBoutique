@@ -12,6 +12,7 @@ using PoshBoutique.Identity;
 using System.Data.Entity;
 using PoshBoutique.Data.Providers;
 using PoshBoutique.Data.Models;
+using PoshBoutique.Data;
 
 namespace PoshBoutique.Controllers
 {
@@ -32,31 +33,15 @@ namespace PoshBoutique.Controllers
                 return this.BadRequest("Empty order");
             }
 
-            List<OrderedItemModel> items = order.Items.ToList();
-            List<OrderedItemModel> normalizedItems = new List<OrderedItemModel>();
-            while (items.Count > 0)
+            OrderItemsGrouper itemsGrouper = new OrderItemsGrouper();
+            IList<OrderedItemModel> normalizedItems = itemsGrouper.NormalizeOrderedItems(order.Items.ToList());
+            if (normalizedItems == null)
             {
-                OrderedItemModel currentItem = items[0];
-                OrderedItemModel[] equalItems = items.Where(i => i.Equals(currentItem)).ToArray();
-                int totalQuantity = 0;
-                foreach (OrderedItemModel equalItem in equalItems)
-                {
-                    if (equalItem.Price != currentItem.Price)
-                    {
-                        return this.BadRequest("Different prices of the same item");
-                    }
-
-                    totalQuantity += equalItem.Quantity.Value;
-                }
-
-                items.RemoveAll(i => i.Equals(currentItem));
-                currentItem.Quantity = totalQuantity;
-
-                normalizedItems.Add(currentItem);
+                return this.BadRequest("Different prices of the same item");
             }
 
             OrderValidator orderValidator = new OrderValidator();
-            bool isOrderValid = await orderValidator.ValidateOrder(normalizedItems);
+            bool isOrderValid = await orderValidator.ValidateOrderItems(normalizedItems);
             
             if (!isOrderValid)
             {
@@ -131,14 +116,7 @@ namespace PoshBoutique.Controllers
                 userAddress.PostCode = addressInfo.PostCode;
                 userAddress.AddresDetails = addressInfo.Address;
 
-                try
-                {
-                    await usersDbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    var m = ex.Message;
-                }
+                await usersDbContext.SaveChangesAsync();
             }
 
             return this.Ok();
@@ -147,12 +125,139 @@ namespace PoshBoutique.Controllers
         [HttpGet]
         [Route("DeliveryMethods")]
         [Authorize]
-        public async Task<IHttpActionResult> GetDeliveryMethods([FromBody]AddressInfoModel addressInfo)
+        public async Task<IHttpActionResult> GetDeliveryMethods()
         {
             DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider();
             IEnumerable<DeliveryMethodModel> allDeliveryMethods = await deliveryMethodsProvider.GetAllDeliveryMethods();
 
             return this.Ok(allDeliveryMethods);
+        }
+
+        [HttpGet]
+        [Route("PaymentMethods")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetPaymentMethods()
+        {
+            PaymentMethodsProvider paymentMethodsProvider = new PaymentMethodsProvider();
+            IEnumerable<PaymentMethodModel> allPaymentMethods = await paymentMethodsProvider.GetAllPaymentMethods();
+
+            return this.Ok(allPaymentMethods);
+        }
+
+        [HttpPost]
+        [Route("ValidateAndSaveOrder")]
+        [Authorize]
+        public async Task<IHttpActionResult> ValidateAndSaveOrder(FullOrderModel order)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            if (order.Items.Count() == 0)
+            {
+                return this.BadRequest("Empty order");
+            }
+
+            OrderItemsGrouper itemsGrouper = new OrderItemsGrouper();
+            IList<OrderedItemModel> normalizedItems = itemsGrouper.NormalizeOrderedItems(order.Items.ToList());
+            if (normalizedItems == null)
+            {
+                return this.BadRequest("Different prices of the same item");
+            }
+
+            OrderValidator orderValidator = new OrderValidator();
+            bool areOrderItemsValid = await orderValidator.ValidateOrderItems(normalizedItems);
+
+            if (!areOrderItemsValid)
+            {
+                return this.BadRequest("Invalid quantities");
+            }
+
+            bool areOrderPricesValid = await orderValidator.ValidatePrices(order);
+            if (!areOrderPricesValid)
+            {
+                return this.BadRequest("Invalid price");
+            }
+
+            DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider();
+            Task<DeliveryMethodModel> getDeliveryMethodTask = deliveryMethodsProvider.GetDeliveryMethodById(order.DeliveryMethodId.Value);
+
+            PaymentMethodsProvider paymentMethodsProvider = new PaymentMethodsProvider();
+            Task<PaymentMethodModel> getPaymentMethodTask = paymentMethodsProvider.GetPaymentMethodById(order.PaymentMethodId.Value);
+
+            DeliveryMethodModel deliveryMethod = await getDeliveryMethodTask;
+            PaymentMethodModel paymentMethod = await getPaymentMethodTask;
+
+            Order newOrder = new Order();
+            newOrder.UserId = new Guid(this.User.Identity.GetUserId());
+            newOrder.DeliveryMerchant = deliveryMethod.Name;
+            newOrder.DeliveryPrice = deliveryMethod.DeliveryPrice;
+            newOrder.PaymentMethodId = paymentMethod.Id;
+            newOrder.HasCommission = paymentMethod.ApplyDeliveryTax;
+            newOrder.CommissionPercents = deliveryMethod.CODTax;
+            newOrder.ShippingPrice = order.Total.Shipping.Value;
+            newOrder.ItemsPrice = order.Total.Order.Value;
+            newOrder.TotalPrice = order.Total.Full.Value;
+            newOrder.StatusId = 1;
+            newOrder.DateCreated = DateTime.UtcNow;
+
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            foreach (OrderedItemModel orderedItem in order.Items)
+            {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.ItemId = orderedItem.ArticleId.Value;
+                orderDetail.SizeId = orderedItem.SizeId.Value;
+                orderDetail.ColorId = orderedItem.ColorId;
+                orderDetail.Quantity = orderedItem.Quantity.Value;
+                orderDetail.ItemPrice = orderedItem.Price.Value;
+
+                orderDetails.Add(orderDetail);
+            }
+
+            OrdersProvider ordersProvider = new OrdersProvider();
+            int newOrderId = await ordersProvider.SaveOrder(newOrder, orderDetails);
+
+            return this.Ok(newOrderId);
+        }
+
+        [HttpGet]
+        [Route("My")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetCurrentUserOrders()
+        {
+            Guid userId = new Guid(this.User.Identity.GetUserId());
+
+            OrdersProvider ordersProvider = new OrdersProvider();
+            IEnumerable<OrderModel> userOrders = await ordersProvider.GetOrdersByUserId(userId);
+
+            return this.Ok(userOrders);
+        }
+
+        [HttpGet]
+        [Route("{orderId}/items")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetOrderItems(int orderId)
+        {
+            Guid userId = new Guid(this.User.Identity.GetUserId());
+
+            OrdersProvider ordersProvider = new OrdersProvider();
+            IEnumerable<OrderItemModel> orderItems = await ordersProvider.GetOrderItems(orderId, userId);
+
+            return this.Ok(orderItems);
+        }
+
+        [HttpGet]
+        [Route("{orderId}/history")]
+        [Authorize]
+        public async Task<IHttpActionResult> GetOrderHistory(int orderId)
+        {
+            Guid userId = new Guid(this.User.Identity.GetUserId());
+
+            OrdersProvider ordersProvider = new OrdersProvider();
+            IEnumerable<StatusHistoryModel> orderItems = await ordersProvider.GetOrderHistory(orderId, userId);
+
+            return this.Ok(orderItems);
         }
     }
 }

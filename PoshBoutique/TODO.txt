@@ -1,35 +1,23 @@
-﻿tomorrow:
-	-- Add like button in single window
-	-- Show price in single window
-	-- Add discount in single window
-	-- Refresh articles list after login (Likes list)
-	-- Submit login/register form on enter key
-the day after tomorroy:
-	-- move external-login-authenticated.html to state in the app
-	-- Authenticate modal -> change return url to return states
-	-- Show error messages on logon/register screen
-	-- handle expired tokens in smarter way
-	-- https redirect + www redirect + trailing slash redirect
-
-	Add shopping cart states
-	Add shopping cart navigation
+﻿	Forgotten password
+	Клуб лоялен клиент
+	
 required:
-	Forgotten password
-	Account screen
-	Orders screen		
 	Правила за условия и ползване
 	Таблица с размери
 	Поръчка и доставка
 	Замяна и връщане
+	Web site redesign
 
 nice to have:
 	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
 	Hendle the case when you navigate to protected page and close the login screen
 	Validate state during authentication
 	respect the ".expires" value returned by the /token endpoint and remove the token after that date
+	SEO precompiled pages output
 	set title and meta description of the pages
 	Add localization (internationalization)
 	Multiple logins for single account
+	Do not allow the same external login fo different profiles
 
 done:
 	-- handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url
@@ -48,3 +36,24 @@ done:
 	-- details window remove details url on close when directly navigated to the detail view
 	-- categories tree autoexpand and select the node depending on the selected category on first request
 	-- search and filter list page
+	-- Add like button in single window
+	-- Show price in single window
+	-- Add discount in single window
+	-- Refresh articles list after login (Likes list)
+	-- Submit login/register form on enter key
+	-- move external-login-authenticated.html to state in the app
+	-- Authenticate modal -> change return url to return states
+	-- Show error messages on logon/register screen
+	-- handle expired tokens in smarter way
+	-- https redirect + www redirect + trailing slash redirect
+	-- Implement shipping taxes in shopping cart dropdown
+	-- Add shopping cart states
+	-- Add shopping cart navigation
+	-- Add new articles to search index
+	-- Implement order statuses history
+	-- Editor for order status history
+	-- Orders screen
+	-- Add external logins
+	-- Account screen
+	-- Set/Change password
+	-- Mail sending service

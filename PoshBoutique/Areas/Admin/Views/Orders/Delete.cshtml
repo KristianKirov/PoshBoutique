@@ -1,0 +1,105 @@
+﻿@model PoshBoutique.Data.Order
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DeliveryMerchant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeliveryMerchant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeliveryPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeliveryPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HasCommission)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HasCommission)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CommissionPercents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CommissionPercents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShippingPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShippingPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemsPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemsPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderStatus.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderStatus.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

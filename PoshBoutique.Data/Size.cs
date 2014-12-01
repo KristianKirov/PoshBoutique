@@ -17,6 +17,7 @@ namespace PoshBoutique.Data
         public Size()
         {
             this.Stocks = new HashSet<Stock>();
+            this.OrderDetails = new HashSet<OrderDetail>();
         }
     
         public int Id { get; set; }
@@ -26,5 +27,6 @@ namespace PoshBoutique.Data
     
         public virtual SizeType SizeType { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

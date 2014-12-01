@@ -194,8 +194,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AuditTrailingRegistration.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MailSendingConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Areas\Admin\Controllers\CollectionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ColorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DiscountsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\SearchController.cs" />
     <Compile Include="Areas\Admin\Controllers\SizesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SizeTypesController.cs" />
@@ -241,6 +244,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Attributes\WebApi\RequireHttpsAttribute.cs" />
+    <Compile Include="AuditTrailing\ArticleSearchIndexTrailer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
@@ -249,6 +253,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PayController.cs" />
     <Compile Include="Controllers\RelatedArticlesController.cs" />
     <Compile Include="Controllers\SubscribtionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -292,6 +297,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="partials\account\account.html" />
+    <Content Include="partials\account\edit.html" />
+    <Content Include="partials\account\orders.html" />
+    <Content Include="partials\addressForm.html" />
     <Content Include="partials\authenticateModal.html" />
     <Content Include="partials\autherror.html" />
     <Content Include="partials\cart\delivery.html" />
@@ -348,11 +357,13 @@
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\controllers\accountControllers.js" />
     <Content Include="Scripts\app\controllers\autherrorController.js" />
     <Content Include="Scripts\app\controllers\cartControllers.js" />
     <Content Include="Scripts\app\controllers\catalogueController.js" />
     <Content Include="Scripts\app\controllers\contactUsController.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
+    <Content Include="Scripts\app\directives\addressForm.js" />
     <Content Include="Scripts\app\directives\multirowNav.js" />
     <Content Include="Scripts\app\directives\recommended.js" />
     <Content Include="Scripts\app\directives\rowProductItem.js" />
@@ -697,6 +708,12 @@
     <Content Include="Areas\Admin\Views\Collections\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Collections\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Search\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="App_Data\appSettings.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -727,10 +744,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Pay\Epay.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -771,6 +787,10 @@
     <ProjectReference Include="..\PoshBoutique.Data\PoshBoutique.Data.csproj">
       <Project>{fa1c2e85-44ef-4109-bbba-b0775e7f00c2}</Project>
       <Name>PoshBoutique.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoshBoutique.MailSending\PoshBoutique.MailSending.csproj">
+      <Project>{de861119-6356-41ae-b6ca-a567c3122840}</Project>
+      <Name>PoshBoutique.MailSending</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoshBoutique.Search\PoshBoutique.Search.csproj">
       <Project>{43fdd581-88ce-4ee9-b731-2d3ad425eb28}</Project>

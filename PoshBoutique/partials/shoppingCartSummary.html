@@ -1,5 +1,5 @@
 ﻿<li class="dropdown dropdown--cart-summary">
-    <a href class="dropdown-toggle"><i class="glyphicon glyphicon-shopping-cart"></i>({{cart.total() | currency}})</a>
+    <a href class="dropdown-toggle"><i class="glyphicon glyphicon-shopping-cart"></i>({{cart.total().full | currency}})</a>
     <div class="dropdown-menu">
         <div ng-hide="cart.isEmpty()">
             <table class="table table-cart table-hover">
@@ -11,11 +11,11 @@
                 </tr>
                 <tr>
                     <td colspan="2"><b>Доставка:</b></td>
-                    <td colspan="2"><i>0.00 лв</i></tdcolspan>
+                    <td colspan="2"><i>{{cart.total().shipping | currency}}</i></td>
                 </tr>
                 <tr class="noborder">
                     <td colspan="2"><b>Общо:</b></td>
-                    <td colspan="2"><i>{{cart.total() | currency}}</i></td>
+                    <td colspan="2"><i>{{cart.total().full | currency}}</i></td>
                 </tr>
             </table>
             <div class="btn-cart">

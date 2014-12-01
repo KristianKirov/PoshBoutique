@@ -175,3 +175,6 @@ FakesAssemblies/
 
 # Lucene Indexes
 SearchIndexes/
+
+#app settings
+App_Data/

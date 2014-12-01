@@ -15,6 +15,8 @@ namespace PoshBoutique
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AuditTrailingRegistration.RegisterAllAuditTrailers();
+            MailSendingConfig.Configure();
         }
     }
 }

@@ -60,6 +60,8 @@
     <Compile Include="ArticleImage.cs">
       <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="AuditTrailing\AuditTrailerBase.cs" />
+    <Compile Include="AuditTrailing\Concrete\OrderStatusesHistoryTrailer.cs" />
     <Compile Include="Category.cs">
       <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
     </Compile>
@@ -87,11 +89,32 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\ColorModel.cs" />
+    <Compile Include="Models\OrderItemModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\SimpleOrderModel.cs" />
+    <Compile Include="Models\PaymentMethodModel.cs" />
     <Compile Include="Models\DeliveryMethodModel.cs" />
     <Compile Include="Models\FullArticleModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\SizeModel.cs" />
     <Compile Include="Models\SortDirection.cs" />
+    <Compile Include="Models\StatusHistoryModel.cs" />
+    <Compile Include="Order.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetail.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderStatus.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderStatusesHistory.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentMethod.cs">
+      <DependentUpon>PoshBoutiqueDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PoshBoutiqueData.Overrides.cs" />
     <Compile Include="PoshBoutiqueDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,6 +138,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\CollectionsProvider.cs" />
+    <Compile Include="Providers\OrdersProvider.cs" />
+    <Compile Include="Providers\PaymentMethodsProvider.cs" />
     <Compile Include="Providers\DeliveryMethodsProvider.cs" />
     <Compile Include="Providers\EmailSubscriptionsProvider.cs" />
     <Compile Include="Providers\FeedbackSubmissionsProvider.cs" />
@@ -165,6 +190,7 @@
       <Name>PoshBoutique.Search</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

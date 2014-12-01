@@ -63,8 +63,46 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
     };
 
     var steps = [orderStep, addressStep, delieryStep , paymentStep, confirmStep];
+    
+    var getShippingPrice = function (priceWithoutShipping) {
+        if (!cart.selectedDeliveryMethod) {
+            return 0;
+        }
 
-    return {
+        if (!cart.selectedPaymentMethod) {
+            return cart.selectedDeliveryMethod.deliveryPrice;
+        }
+
+        if (!cart.selectedPaymentMethod.applyDeliveryTax) {
+            return cart.selectedDeliveryMethod.deliveryPrice;
+        }
+
+        var shippingPrice = cart.selectedDeliveryMethod.deliveryPrice + ((cart.selectedDeliveryMethod.codTax * priceWithoutShipping) / 100);
+
+        return shippingPrice;
+    };
+
+    var getSimpleOrderedItems = function () {
+        var orderedItemsSimple = [];
+        for (var i = 0; i < cart.items.length; i++) {
+            var orderedItem = cart.items[i];
+            var orderedItemSimple = {
+                articleId: orderedItem.id,
+                sizeId: orderedItem.size.id,
+                quantity: orderedItem.quantity,
+                price: orderedItem.price
+            };
+
+            if (orderedItem.color) {
+                orderedItemSimple.colorId = orderedItem.color.id;
+            }
+            orderedItemsSimple.push(orderedItemSimple);
+        }
+
+        return orderedItemsSimple;
+    };
+
+    var cart = {
         items: orderdItems,
         addItemToCart: function (item, quantity, size, color) {
             var orderedItem = getOrderedItem(item, size, color);
@@ -72,7 +110,6 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
                 orderedItem.quantity += quantity;
             }
             else {
-                debugger;
                 var cartItem = {
                     id: item.id,
                     title: item.title,
@@ -101,14 +138,24 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
         persist: function () {
             shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);
         },
+        clean: function () {
+            orderdItems.length = 0;
+            shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);
+        },
         total: function () {
             var totalPrice = 0;
             for (var i = orderdItems.length - 1; i >= 0; i--) {
                 var orderedItem = orderdItems[i];
                 totalPrice += (orderedItem.quantity * orderedItem.price);
             }
-
-            return totalPrice;
+            
+            var shippingPrice = getShippingPrice(totalPrice);
+            
+            return {
+                shipping: shippingPrice,
+                order: totalPrice,
+                full: (totalPrice + shippingPrice)
+            };
         },
         isEmpty: function () {
             return !(orderdItems.length > 0);
@@ -123,6 +170,43 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
             }
 
             return -1;
+        },
+        addressInfo: null,
+        selectedPaymentMethod: null,
+        selectedDeliveryMethod: null,
+        getSimpleItems: function () {
+            return getSimpleOrderedItems();
+        },
+        getSimpleOrder: function () {
+            var simpleOrder = {};
+            simpleOrder.items = getSimpleOrderedItems();
+            simpleOrder.paymentMethodId = cart.selectedPaymentMethod.id;
+            simpleOrder.deliveryMethodId = cart.selectedDeliveryMethod.id;
+            simpleOrder.total = cart.total();
+
+            return simpleOrder;
         }
     };
+
+    orderStep.canShow = function () {
+        return true;
+    };
+
+    addressStep.canShow = function () {
+        return !cart.isEmpty();
+    };
+
+    delieryStep.canShow = function () {
+        return !!cart.addressInfo;
+    };
+
+    paymentStep.canShow = function () {
+        return !!cart.selectedDeliveryMethod;
+    };
+
+    confirmStep.canShow = function () {
+        return !!cart.selectedPaymentMethod;
+    };
+
+    return cart;
 });

@@ -101,6 +101,54 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="SizeId" Type="int" Nullable="false" />
+          <Property Name="ColorId" Type="int" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="ItemPrice" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentMethodId" Type="int" Nullable="false" />
+          <Property Name="DeliveryMerchant" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DeliveryPrice" Type="money" Nullable="false" />
+          <Property Name="HasCommission" Type="bit" Nullable="false" />
+          <Property Name="CommissionPercents" Type="float" Nullable="false" />
+          <Property Name="ShippingPrice" Type="money" Nullable="false" />
+          <Property Name="ItemsPrice" Type="money" Nullable="false" />
+          <Property Name="TotalPrice" Type="money" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderStatuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentMethods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="LogoUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ApplyDeliveryTax" Type="bit" Nullable="false" />
+          <Property Name="IsExternal" Type="bit" Nullable="false" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="RelatedArticles">
           <Key>
             <PropertyRef Name="ArticleId" />
@@ -143,6 +191,15 @@
           </Key>
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ArticleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderStatuses1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="StatusAssignDate" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_ArticleCategories_Articles">
           <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
@@ -213,6 +270,102 @@
             </Principal>
             <Dependent Role="Categories1">
               <PropertyRef Name="ParentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Articles">
+          <End Role="Articles" Type="Self.Articles" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Colors">
+          <End Role="Colors" Type="Self.Colors" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Colors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ColorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Sizes">
+          <End Role="Sizes" Type="Self.Sizes" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sizes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderStatuses">
+          <End Role="OrderStatuses" Type="Self.OrderStatuses" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatuses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_PaymentMethods">
+          <End Role="PaymentMethods" Type="Self.PaymentMethods" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMethods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="PaymentMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatuses_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderStatuses1" Type="Self.OrderStatuses1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderStatuses1">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatuses_OrderStatuses1">
+          <End Role="OrderStatuses" Type="Self.OrderStatuses" Multiplicity="1" />
+          <End Role="OrderStatuses1" Type="Self.OrderStatuses1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatuses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderStatuses1">
+              <PropertyRef Name="StatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -298,11 +451,16 @@
           <EntitySet Name="DeliveryMethods" EntityType="Self.DeliveryMethods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailSubscriptions" EntityType="Self.EmailSubscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FeedbackSubmissions" EntityType="Self.FeedbackSubmissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderStatuses" EntityType="Self.OrderStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentMethods" EntityType="Self.PaymentMethods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelatedArticles" EntityType="Self.RelatedArticles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SizeTypes" EntityType="Self.SizeTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLikes" EntityType="Self.UserLikes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderStatuses1" EntityType="Self.OrderStatuses1" Schema="history" Table="OrderStatuses" store:Type="Tables" />
           <AssociationSet Name="FK_ArticleCategories_Articles" Association="Self.FK_ArticleCategories_Articles">
             <End Role="Articles" EntitySet="Articles" />
             <End Role="ArticleCategories" EntitySet="ArticleCategories" />
@@ -326,6 +484,38 @@
           <AssociationSet Name="FK_Categories_Categories" Association="Self.FK_Categories_Categories">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Categories1" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Articles" Association="Self.FK_OrderDetails_Articles">
+            <End Role="Articles" EntitySet="Articles" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Colors" Association="Self.FK_OrderDetails_Colors">
+            <End Role="Colors" EntitySet="Colors" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Orders" Association="Self.FK_OrderDetails_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Sizes" Association="Self.FK_OrderDetails_Sizes">
+            <End Role="Sizes" EntitySet="Sizes" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderStatuses" Association="Self.FK_Orders_OrderStatuses">
+            <End Role="OrderStatuses" EntitySet="OrderStatuses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_PaymentMethods" Association="Self.FK_Orders_PaymentMethods">
+            <End Role="PaymentMethods" EntitySet="PaymentMethods" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatuses_Orders" Association="Self.FK_OrderStatuses_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderStatuses1" EntitySet="OrderStatuses1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatuses_OrderStatuses1" Association="Self.FK_OrderStatuses_OrderStatuses1">
+            <End Role="OrderStatuses" EntitySet="OrderStatuses" />
+            <End Role="OrderStatuses1" EntitySet="OrderStatuses1" />
           </AssociationSet>
           <AssociationSet Name="FK_RelatedArticles_Articles" Association="Self.FK_RelatedArticles_Articles">
             <End Role="Articles" EntitySet="Articles" />
@@ -385,6 +575,7 @@
           <NavigationProperty Name="Collection" Relationship="PoshBoutiqueModel.FK_Articles_Collections" FromRole="Article" ToRole="Collection" />
           <Property Name="IsFeatured" Type="Boolean" Nullable="false" />
           <Property Name="IsRecommended" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OrderDetails" Relationship="PoshBoutiqueModel.FK_OrderDetails_Articles" FromRole="Article" ToRole="OrderDetail" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -406,6 +597,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Colors" FromRole="Colors" ToRole="Stocks" />
+          <NavigationProperty Name="OrderDetails" Relationship="PoshBoutiqueModel.FK_OrderDetails_Colors" FromRole="Color" ToRole="OrderDetail" />
         </EntityType>
         <EntityType Name="Size">
           <Key>
@@ -417,6 +609,7 @@
           <Property Name="OrderIndex" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SizeType" Relationship="Self.FK_Sizes_SizeTypes" FromRole="Sizes" ToRole="SizeTypes" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Sizes" FromRole="Sizes" ToRole="Stocks" />
+          <NavigationProperty Name="OrderDetails" Relationship="PoshBoutiqueModel.FK_OrderDetails_Sizes" FromRole="Size" ToRole="OrderDetail" />
         </EntityType>
         <EntityType Name="SizeType">
           <Key>
@@ -594,6 +787,43 @@
             <End Role="Article" EntitySet="Articles" />
           </AssociationSet>
           <EntitySet Name="DeliveryMethods" EntityType="PoshBoutiqueModel.DeliveryMethod" />
+          <EntitySet Name="PaymentMethods" EntityType="PoshBoutiqueModel.PaymentMethod" />
+          <EntitySet Name="OrderDetails" EntityType="PoshBoutiqueModel.OrderDetail" />
+          <EntitySet Name="Orders" EntityType="PoshBoutiqueModel.Order" />
+          <AssociationSet Name="FK_OrderDetails_Articles" Association="PoshBoutiqueModel.FK_OrderDetails_Articles">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Colors" Association="PoshBoutiqueModel.FK_OrderDetails_Colors">
+            <End Role="Color" EntitySet="Colors" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Orders" Association="PoshBoutiqueModel.FK_OrderDetails_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Sizes" Association="PoshBoutiqueModel.FK_OrderDetails_Sizes">
+            <End Role="Size" EntitySet="Sizes" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <EntitySet Name="OrderStatuses" EntityType="PoshBoutiqueModel.OrderStatus" />
+          <EntitySet Name="OrderStatusesHistories" EntityType="PoshBoutiqueModel.OrderStatusesHistory" />
+          <AssociationSet Name="FK_Orders_OrderStatuses" Association="PoshBoutiqueModel.FK_Orders_OrderStatuses">
+            <End Role="OrderStatus" EntitySet="OrderStatuses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatuses_Orders" Association="PoshBoutiqueModel.FK_OrderStatuses_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderStatuses1" EntitySet="OrderStatusesHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatuses_OrderStatuses11" Association="PoshBoutiqueModel.FK_OrderStatuses_OrderStatuses11">
+            <End Role="OrderStatus" EntitySet="OrderStatuses" />
+            <End Role="OrderStatusesHistory" EntitySet="OrderStatusesHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_PaymentMethods" Association="PoshBoutiqueModel.FK_Orders_PaymentMethods">
+            <End Role="PaymentMethod" EntitySet="PaymentMethods" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserLike">
           <Key>
@@ -657,6 +887,172 @@
           <Property Name="CODTax" Type="Double" Nullable="false" />
           <Property Name="OrderIndex" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="PaymentMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="LogoUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ApplyDeliveryTax" Type="Boolean" Nullable="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <Property Name="IsExternal" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="PoshBoutiqueModel.FK_Orders_PaymentMethods" FromRole="PaymentMethod" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="SizeId" Type="Int32" Nullable="false" />
+          <Property Name="ColorId" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="ItemPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Article" Relationship="PoshBoutiqueModel.FK_OrderDetails_Articles" FromRole="OrderDetail" ToRole="Article" />
+          <NavigationProperty Name="Color" Relationship="PoshBoutiqueModel.FK_OrderDetails_Colors" FromRole="OrderDetail" ToRole="Color" />
+          <NavigationProperty Name="Order" Relationship="PoshBoutiqueModel.FK_OrderDetails_Orders" FromRole="OrderDetail" ToRole="Order" />
+          <NavigationProperty Name="Size" Relationship="PoshBoutiqueModel.FK_OrderDetails_Sizes" FromRole="OrderDetail" ToRole="Size" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeliveryMerchant" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="HasCommission" Type="Boolean" Nullable="false" />
+          <Property Name="CommissionPercents" Type="Double" Nullable="false" />
+          <Property Name="ShippingPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ItemsPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="OrderDetails" Relationship="PoshBoutiqueModel.FK_OrderDetails_Orders" FromRole="Order" ToRole="OrderDetail" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="OrderStatus" Relationship="PoshBoutiqueModel.FK_Orders_OrderStatuses" FromRole="Order" ToRole="OrderStatus" />
+          <NavigationProperty Name="OrderStatusesHistory" Relationship="PoshBoutiqueModel.FK_OrderStatuses_Orders" FromRole="Order" ToRole="OrderStatuses1" />
+          <Property Name="PaymentMethodId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PaymentMethod" Relationship="PoshBoutiqueModel.FK_Orders_PaymentMethods" FromRole="Order" ToRole="PaymentMethod" />
+        </EntityType>
+        <Association Name="FK_OrderDetails_Articles">
+          <End Type="PoshBoutiqueModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Colors">
+          <End Type="PoshBoutiqueModel.Color" Role="Color" Multiplicity="0..1" />
+          <End Type="PoshBoutiqueModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ColorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Orders">
+          <End Type="PoshBoutiqueModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Sizes">
+          <End Type="PoshBoutiqueModel.Size" Role="Size" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="SizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OrderStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="PoshBoutiqueModel.FK_Orders_OrderStatuses" FromRole="OrderStatus" ToRole="Order" />
+          <NavigationProperty Name="OrderStatusHistories" Relationship="PoshBoutiqueModel.FK_OrderStatuses_OrderStatuses11" FromRole="OrderStatus" ToRole="OrderStatusesHistory" />
+        </EntityType>
+        <EntityType Name="OrderStatusesHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="StatusAssignDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Order" Relationship="PoshBoutiqueModel.FK_OrderStatuses_Orders" FromRole="OrderStatuses1" ToRole="Order" />
+          <NavigationProperty Name="OrderStatus" Relationship="PoshBoutiqueModel.FK_OrderStatuses_OrderStatuses11" FromRole="OrderStatusesHistory" ToRole="OrderStatus" />
+        </EntityType>
+        <Association Name="FK_Orders_OrderStatuses">
+          <End Type="PoshBoutiqueModel.OrderStatus" Role="OrderStatus" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatuses_Orders">
+          <End Type="PoshBoutiqueModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.OrderStatusesHistory" Role="OrderStatuses1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderStatuses1">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatuses_OrderStatuses11">
+          <End Type="PoshBoutiqueModel.OrderStatus" Role="OrderStatus" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.OrderStatusesHistory" Role="OrderStatusesHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderStatusesHistory">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_PaymentMethods">
+          <End Type="PoshBoutiqueModel.PaymentMethod" Role="PaymentMethod" Multiplicity="1" />
+          <End Type="PoshBoutiqueModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="PaymentMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -807,6 +1203,68 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentMethods">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.PaymentMethod">
+              <MappingFragment StoreEntitySet="PaymentMethods">
+                <ScalarProperty Name="IsExternal" ColumnName="IsExternal" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="ApplyDeliveryTax" ColumnName="ApplyDeliveryTax" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="ItemPrice" ColumnName="ItemPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ColorId" ColumnName="ColorId" />
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="PaymentMethodId" ColumnName="PaymentMethodId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="ItemsPrice" ColumnName="ItemsPrice" />
+                <ScalarProperty Name="ShippingPrice" ColumnName="ShippingPrice" />
+                <ScalarProperty Name="CommissionPercents" ColumnName="CommissionPercents" />
+                <ScalarProperty Name="HasCommission" ColumnName="HasCommission" />
+                <ScalarProperty Name="DeliveryPrice" ColumnName="DeliveryPrice" />
+                <ScalarProperty Name="DeliveryMerchant" ColumnName="DeliveryMerchant" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatuses">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.OrderStatus">
+              <MappingFragment StoreEntitySet="OrderStatuses">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatusesHistories">
+            <EntityTypeMapping TypeName="PoshBoutiqueModel.OrderStatusesHistory">
+              <MappingFragment StoreEntitySet="OrderStatuses1">
+                <ScalarProperty Name="StatusAssignDate" ColumnName="StatusAssignDate" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -26,5 +26,24 @@ namespace PoshBoutique.Data.Providers
                     }).ToArrayAsync();
             }
         }
+
+        public async Task<DeliveryMethodModel> GetDeliveryMethodById(int deliveryMethodId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                DeliveryMethod foundDeliveryMethod = await dataContext.DeliveryMethods.FindAsync(deliveryMethodId);
+
+                return new DeliveryMethodModel()
+                {
+                    Id = foundDeliveryMethod.Id,
+                    Name = foundDeliveryMethod.Name,
+                    LogoUrl = foundDeliveryMethod.LogoUrl,
+                    Description = foundDeliveryMethod.Description,
+                    DeliveryPrice = foundDeliveryMethod.DeliveryPrice,
+                    CODTax = foundDeliveryMethod.CODTax,
+                    OrderIndex = foundDeliveryMethod.OrderIndex
+                };
+            }
+        }
     }
 }
