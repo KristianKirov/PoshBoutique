@@ -10,7 +10,7 @@ using PoshBoutique.Data;
 
 namespace PoshBoutique.Areas.Admin.Controllers
 {
-    public class ArticleImagesController : Controller
+    public class ArticleImagesController : AdminControllerBase
     {
         private PoshBoutiqueData db = new PoshBoutiqueData();
 

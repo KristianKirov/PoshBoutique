@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace PoshBoutique.Areas.Admin.Controllers
 {
-    public class SearchController : Controller
+    public class SearchController : AdminControllerBase
     {
         public ActionResult Index(string q)
         {

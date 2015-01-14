@@ -1,4 +1,5 @@
 ﻿using PoshBoutique.Data.Providers;
+using PoshBoutique.Facades;
 using PoshBoutique.Models;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace PoshBoutique.Controllers
 
             FeedbackSubmissionsProvider feedbackProvider = new FeedbackSubmissionsProvider();
             await feedbackProvider.CreateFeedbackSubmission(feedback.Email, feedback.Name, feedback.Message);
+
+            MailSendingFacade mailSender = new MailSendingFacade();
+            mailSender.SendContactUsMail(feedback);
 
             return this.Ok();
         }

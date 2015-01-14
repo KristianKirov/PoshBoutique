@@ -10,7 +10,10 @@
         removeLoginUrl = httpsUrl + "/api/account/removelogin",
         setPasswordUrl = httpsUrl + "/api/account/setpassword",
         //siteUrl = httpsUrl + "/",
-        userInfoUrl = httpsUrl + "/api/account/userinfo";
+        userInfoUrl = httpsUrl + "/api/account/userinfo",
+        sendResetPasswordMailUrl = httpsUrl + "/api/account/sendresetpasswordmail",
+        resetPasswordUrl = httpsUrl + "/api/account/resetpassword",
+        profileUrl = httpsUrl + "/api/account/profile";
 
     // Route operations
     function getExternalLoginsReturnUrl(returnData) {
@@ -132,6 +135,27 @@
 
         setPassword: function (data) {
             return $http({ method: "POST", url: setPasswordUrl, data: data });
+        },
+
+        sendResetPasswordMail: function (email) {
+            return $http({ method: "GET", url: sendResetPasswordMailUrl + "?email=" + encodeURIComponent(email) });
+        },
+
+        resetPassword: function (email, newPassword, confirmPassword, token) {
+            return $http({
+                method: "POST",
+                url: resetPasswordUrl,
+                data: {
+                    email: email,
+                    newPassword: newPassword,
+                    confirmPassword: confirmPassword,
+                    token: token
+                }
+            });
+        },
+
+        getProfile: function () {
+            return $http({ method: "GET", url: profileUrl });
         }
     };
 });

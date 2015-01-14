@@ -10,7 +10,7 @@ using PoshBoutique.Data;
 
 namespace PoshBoutique.Areas.Admin.Controllers
 {
-    public class OrdersController : Controller
+    public class OrdersController : AdminControllerBase
     {
         private PoshBoutiqueData db = new PoshBoutiqueData();
 
@@ -86,7 +86,19 @@ namespace PoshBoutique.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(order).State = EntityState.Modified;
+                Order dbOrder = db.Orders.Find(order.Id);
+                dbOrder.DeliveryMerchant = order.DeliveryMerchant;
+                dbOrder.DeliveryPrice = order.DeliveryPrice;
+                dbOrder.HasCommission = order.HasCommission;
+                dbOrder.CommissionPercents = order.CommissionPercents;
+                dbOrder.ShippingPrice = order.ShippingPrice;
+                dbOrder.ItemsPrice = order.ItemsPrice;
+                dbOrder.TotalPrice = order.TotalPrice;
+                dbOrder.UserId = order.UserId;
+                dbOrder.StatusId = order.StatusId;
+                dbOrder.DateCreated = order.DateCreated;
+                dbOrder.PaymentMethodId = order.PaymentMethodId;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

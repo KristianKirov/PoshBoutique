@@ -15,5 +15,7 @@ namespace PoshBoutique.Identity
         }
 
         public DbSet<Address> AddressInfos { get; set; }
+
+        public DbSet<Profile> UserProfiles { get; set; }
     }
 }

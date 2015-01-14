@@ -1,6 +1,6 @@
 ﻿using PoshBoutique.AuditTrailing;
 using PoshBoutique.Data;
-using PoshBoutique.Data.AuditTrailing.Concrete;
+using PoshBoutique.Facades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace PoshBoutique
     {
         public static void RegisterAllAuditTrailers()
         {
-            PoshBoutiqueData.RegisterAuditTrailer(new OrderStatusesHistoryTrailer());
+            PoshBoutiqueData.RegisterAuditTrailer(new OrdersAuditTrailer());
             PoshBoutiqueData.RegisterAuditTrailer(new ArticleSearchIndexTrailer());
         }
     }

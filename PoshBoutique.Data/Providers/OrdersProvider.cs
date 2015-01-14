@@ -37,7 +37,8 @@ namespace PoshBoutique.Data.Providers
                 {
                     Id = order.Id,
                     PaymentMethodId = order.PaymentMethodId,
-                    TotalPrice = order.TotalPrice
+                    TotalPrice = order.TotalPrice,
+                    UserId = order.UserId
                 };
             }
         }
@@ -110,6 +111,32 @@ namespace PoshBoutique.Data.Providers
                     .ToArrayAsync();
 
                 return statusHistory;
+            }
+        }
+
+        public async Task<Order> GetFullOrderData(int orderId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                return await dataContext.Orders.Include(o => o.OrderDetails).Include(o => o.OrderDetails.Select(od => od.Article)).FirstOrDefaultAsync(o => o.Id == orderId);
+            }
+        }
+
+        public async Task<OrderStatusModel> GetStatus(int statusId)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                OrderStatus orderStatus = await dataContext.OrderStatuses.FindAsync(statusId);
+                if (orderStatus == null)
+                {
+                    return null;
+                }
+
+                return new OrderStatusModel()
+                {
+                    Id = orderStatus.Id,
+                    Name = orderStatus.Name
+                };
             }
         }
     }

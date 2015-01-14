@@ -13,5 +13,7 @@ namespace PoshBoutique.Data.Models
         public int PaymentMethodId { get; set; }
 
         public decimal TotalPrice { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }

@@ -17,6 +17,10 @@ using PoshBoutique.Models;
 using PoshBoutique.Providers;
 using PoshBoutique.Results;
 using PoshBoutique.Identity;
+using PoshBoutique.Extensions;
+using PoshBoutique.Facades;
+using System.Configuration;
+using System.Data.Entity;
 
 namespace PoshBoutique.Controllers
 {
@@ -232,6 +236,9 @@ namespace PoshBoutique.Controllers
                 {
                     return errorResult;
                 }
+
+                MailSendingFacade mailSender = new MailSendingFacade();
+                mailSender.SendNewUserRegisteredMail(externalLogin.Email, externalLogin.FirstName, externalLogin.LastName);
             }
             else
             {
@@ -327,7 +334,99 @@ namespace PoshBoutique.Controllers
                 return errorResult;
             }
 
+            MailSendingFacade mailSender = new MailSendingFacade();
+            mailSender.SendNewUserRegisteredMail(model.Email, model.FirstName, model.LastName);
+
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [Route("SendResetPasswordMail")]
+        [HttpGet]
+        public async Task<IHttpActionResult> SendResetPasswordMail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return this.BadRequest("Email is required!");
+            }
+
+            ApplicationUser user = await this.UserManager.FindByNameAsync(email);
+            if (user == null)
+            {
+                return this.BadRequest("User with email: " + email + " is not found!");
+            }
+
+            if (string.IsNullOrEmpty(user.PasswordHash))
+            {
+                return this.BadRequest("The user with email: " + email + "does not have local login!");
+            }
+
+            this.UserManager.SetUserTokenProvider("ForgottenPassword");
+            string passwordResetToken = await this.UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            string baseUrl = ConfigurationManager.AppSettings["Site.BaseUrl"];
+            string resetPasswordPath = ConfigurationManager.AppSettings["Site.ResetPasswordPath"];
+            string resetPasswordUrl = string.Concat(baseUrl, resetPasswordPath.TrimStart('/'), "/", HttpUtility.UrlEncode(email), "?token=", HttpUtility.UrlEncode(passwordResetToken));
+            MailSendingFacade mailSender = new MailSendingFacade();
+            mailSender.SendForgottenPasswordMail(baseUrl, resetPasswordUrl, email);
+
+            return this.Ok();
+        }
+
+        [AllowAnonymous]
+        [Route("resetpassword")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ResetPassword([FromBody]ResetPasswordBindingModel resetPasswordModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            ApplicationUser user = await this.UserManager.FindByNameAsync(resetPasswordModel.Email);
+            if (user == null)
+            {
+                return this.BadRequest("User with email: " + resetPasswordModel.Email + " is not found!");
+            }
+
+            if (string.IsNullOrEmpty(user.PasswordHash))
+            {
+                return this.BadRequest("The user with email: " + resetPasswordModel.Email + "does not have local login!");
+            }
+
+            this.UserManager.SetUserTokenProvider("ForgottenPassword");
+            IdentityResult resetPasswordResult = await this.UserManager.ResetPasswordAsync(user.Id, resetPasswordModel.Token, resetPasswordModel.NewPassword);
+
+            IHttpActionResult errorResult = GetErrorResult(resetPasswordResult);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            return this.Ok();
+        }
+
+        [Route("Profile")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetProfile()
+        {
+            string currentUserId = this.User.Identity.GetUserId();
+            Profile currentUserProfile = null;
+            using (ApplicationDbContext usersDbContext = new ApplicationDbContext())
+            {
+                currentUserProfile = await usersDbContext.UserProfiles.FirstOrDefaultAsync(p => p.UserId == currentUserId);
+            }
+
+            if (currentUserProfile == null)
+            {
+                return this.Ok();
+            }
+
+            return this.Ok(new UserProfileModel()
+            {
+                UserId = new Guid(currentUserId),
+                TotalExpenses = currentUserProfile.TotalExpenses
+            });
         }
 
         protected override void Dispose(bool disposing)

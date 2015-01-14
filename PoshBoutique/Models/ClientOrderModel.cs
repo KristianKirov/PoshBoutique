@@ -52,6 +52,8 @@ namespace PoshBoutique.Models
 
         [Required]
         public OrderTotal Total { get; set; }
+
+        public IEnumerable<CouponeModel> Coupones { get; set; }
     }
 
     public class OrderTotal
@@ -61,6 +63,9 @@ namespace PoshBoutique.Models
 
         [Required]
         public decimal? Order { get; set; }
+
+        [Required]
+        public decimal? CouponesDiscount { get; set; }
 
         [Required]
         public decimal? Full { get; set; }
@@ -82,6 +87,9 @@ namespace PoshBoutique.Models
 
         [Required]
         public decimal? Price { get; set; }
+
+        [Required]
+        public bool? HasDiscount { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -14,6 +14,10 @@
                     <td colspan="2"><i>{{cart.total().shipping | currency}}</i></td>
                 </tr>
                 <tr class="noborder">
+                    <td colspan="2"><b>Отстъпка:</b></td>
+                    <td colspan="2"><i>{{cart.total().couponesDiscount | currency}}</i></td>
+                </tr>
+                <tr class="noborder">
                     <td colspan="2"><b>Общо:</b></td>
                     <td colspan="2"><i>{{cart.total().full | currency}}</i></td>
                 </tr>

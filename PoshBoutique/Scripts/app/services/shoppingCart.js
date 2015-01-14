@@ -90,7 +90,8 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
                 articleId: orderedItem.id,
                 sizeId: orderedItem.size.id,
                 quantity: orderedItem.quantity,
-                price: orderedItem.price
+                price: orderedItem.price,
+                hasDiscount: orderedItem.hasDiscount
             };
 
             if (orderedItem.color) {
@@ -102,8 +103,57 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
         return orderedItemsSimple;
     };
 
+    var couponeExists = function (name) {
+        for (var i = 0; i < cart.coupones.length; i++) {
+            if (cart.coupones[i].name == name) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     var cart = {
         items: orderdItems,
+        coupones: [],
+        clearCoupones: function () {
+            cart.coupones = [];
+        },
+        addCoupones: function (coupones) {
+            for (var i = 0; i < coupones.length; i++) {
+                var currentCoupone = coupones[i];
+                if (!couponeExists(currentCoupone.name)) {
+                    cart.coupones.push(currentCoupone);
+                }
+            }
+            
+            cart.refreshCouponeValues();
+        },
+        hasFreeShippingCoupon: function () {
+            for (var i = 0; i < cart.coupones.length; i++) {
+                if (cart.coupones[i].freeShipping) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+        refreshCouponeValues: function () {
+            var cartTotal = cart.total();
+            for (var i = 0; i < cart.coupones.length; i++) {
+                var currentCoupone = cart.coupones[i];
+                debugger;
+                if (currentCoupone.valueType == 1) { //Percent
+                    currentCoupone.absoluteValue = (cartTotal.orderNonDiscounted * currentCoupone.value) / 100;
+                }
+                else if (currentCoupone.valueType == 2) { //Absolute
+                    currentCoupone.absoluteValue = currentCoupone.value;
+                }
+                else {
+                    currentCoupone.absoluteValue = 0;
+                }
+            }
+        },
         addItemToCart: function (item, quantity, size, color) {
             var orderedItem = getOrderedItem(item, size, color);
             if (orderedItem) {
@@ -119,13 +169,15 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
                     price: item.price,
                     quantity: quantity,
                     size: size,
-                    color: color
+                    color: color,
+                    hasDiscount: item.hasDiscount
                 };
 
                 orderdItems.push(cartItem);
             }
 
             shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);
+            cart.refreshCouponeValues();
         },
         removeItemFromCart: function (item) {
             var orderedItemIndex = getOrderedItemIndex(item, item.size, item.color);
@@ -134,27 +186,42 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
             }
 
             shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);
+            cart.refreshCouponeValues();
         },
         persist: function () {
             shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);
         },
         clean: function () {
             orderdItems.length = 0;
+            cart.clearCoupones();
             shoppingCartPersistanceStorage.persistOrderedItems(orderdItems);
         },
         total: function () {
             var totalPrice = 0;
+            var totalPriceNonDiscounted = 0;
             for (var i = orderdItems.length - 1; i >= 0; i--) {
                 var orderedItem = orderdItems[i];
-                totalPrice += (orderedItem.quantity * orderedItem.price);
+                var currentItemTotalPrice = orderedItem.quantity * orderedItem.price;
+                totalPrice += currentItemTotalPrice;
+                if (!orderedItem.hasDiscount) {
+                    totalPriceNonDiscounted += currentItemTotalPrice;
+                }
             }
             
             var shippingPrice = getShippingPrice(totalPrice);
+
+            var couponesDiscount = 0;
+            for (var i = 0; i < cart.coupones.length; i++) {
+                couponesDiscount += cart.coupones[i].absoluteValue;
+            }
             
             return {
                 shipping: shippingPrice,
                 order: totalPrice,
-                full: (totalPrice + shippingPrice)
+                orderWithDiscounts: totalPrice - couponesDiscount,
+                orderNonDiscounted: totalPriceNonDiscounted,
+                couponesDiscount: couponesDiscount,
+                full: (totalPrice + shippingPrice - couponesDiscount)
             };
         },
         isEmpty: function () {
@@ -182,6 +249,7 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
             simpleOrder.items = getSimpleOrderedItems();
             simpleOrder.paymentMethodId = cart.selectedPaymentMethod.id;
             simpleOrder.deliveryMethodId = cart.selectedDeliveryMethod.id;
+            simpleOrder.coupones = cart.coupones;
             simpleOrder.total = cart.total();
 
             return simpleOrder;

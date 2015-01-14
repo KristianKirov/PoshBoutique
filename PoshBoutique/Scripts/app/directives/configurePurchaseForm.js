@@ -6,11 +6,24 @@
             product: '='
         },
         templateUrl: 'partials/configurePurchaseForm.html',
-        controller: function ($scope, shoppingCart, $state) {
+        controller: function ($scope, shoppingCart, $state, $timeout) {
             $scope.selectedSize = null;
             $scope.selectedColor = null;
             $scope.quantity = 0;
             $scope.availableQuantity = 0;
+            $scope.articleAddedInCart = false;
+            $scope.noQuantity = false;
+
+            var totalQuantity = 0;
+            if ($scope.product.sizes) {
+                for (var i = 0; i < $scope.product.sizes.length; i++) {
+                    var currentSize = $scope.product.sizes[i];
+                    if (currentSize.quantity) {
+                        totalQuantity += currentSize.quantity;
+                    }
+                }
+            }
+            $scope.noQuantity = !totalQuantity;
 
             var setQuantity = function () {
                 if ($scope.quantity > $scope.availableQuantity) {
@@ -76,6 +89,13 @@
 
                 if (navigateToCart) {
                     $state.go("cart.order");
+                }
+                else {
+                    $scope.articleAddedInCart = true;
+
+                    $timeout(function () {
+                        $scope.articleAddedInCart = false;
+                    }, 5000);
                 }
             };
         }

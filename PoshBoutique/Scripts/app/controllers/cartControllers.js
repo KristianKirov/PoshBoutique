@@ -1,6 +1,7 @@
 ﻿poshBoutiqueApp.controller('cartController', function ($scope, shoppingCart, $state) {
     $scope.currentStepIndex = -1;
     $scope.cart = shoppingCart;
+    shoppingCart.clearCoupones();
 
     var navigateToStepWithIndex = function (stepIndex) {
         var newStep = shoppingCart.steps[stepIndex];
@@ -51,8 +52,10 @@
     };
 });
 
-poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, ordersDataService) {
+poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, ordersDataService, defaultCoupons) {
     $scope.setCurrentStepIndex($state.$current.name);
+
+    $scope.cart.addCoupones(defaultCoupons);
 
     var orderedItemsSimple = $scope.cart.getSimpleItems();
 
@@ -68,8 +71,10 @@ poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, orde
     $scope.isValid = false;
 });
 
-poshBoutiqueApp.controller('cartAddressController', function ($scope, $state, addressInfo, ordersDataService) {
+poshBoutiqueApp.controller('cartAddressController', function ($scope, $state, addressInfo, ordersDataService, defaultCoupons) {
     $scope.setCurrentStepIndex($state.$current.name);
+
+    $scope.cart.addCoupones(defaultCoupons);
 
     if (!$scope.cart.addressInfo) {
         $scope.cart.addressInfo = addressInfo;

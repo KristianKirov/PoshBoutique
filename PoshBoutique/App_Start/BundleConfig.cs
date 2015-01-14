@@ -78,6 +78,9 @@ namespace PoshBoutique
                  "~/Content/bootstrap.css",
                  "~/Content/Site.css",
                  "~/Content/ngprogress-lite.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/errorLogging").Include(
+                "~/Scripts/app/errorLogging.js"));
         }
     }
 }

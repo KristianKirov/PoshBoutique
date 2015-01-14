@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace PoshBoutique.Areas.Admin.Controllers
 {
-    public class DiscountsController : Controller
+    public class DiscountsController : AdminControllerBase
     {
         private PoshBoutiqueData db = new PoshBoutiqueData();
 

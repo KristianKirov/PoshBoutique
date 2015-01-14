@@ -13,6 +13,11 @@ using System.Data.Entity;
 using PoshBoutique.Data.Providers;
 using PoshBoutique.Data.Models;
 using PoshBoutique.Data;
+using PoshBoutique.Facades;
+using PoshBoutique.Factories;
+using PoshBoutique.Providers;
+using System.Security.Principal;
+using PoshBoutique.Logging;
 
 namespace PoshBoutique.Controllers
 {
@@ -23,13 +28,24 @@ namespace PoshBoutique.Controllers
         [Route("Validate")]
         public async Task<IHttpActionResult> Validate(ClientOrderModel order)
         {
+            if (order == null)
+            {
+                Logger.Current.LogWarning("Orders.Validate: null");
+
+                return this.BadRequest("Empty order");
+            }
+
             if (!this.ModelState.IsValid)
             {
+                Logger.Current.LogWarning("Orders.Validate: invalid model state");
+
                 return this.BadRequest(this.ModelState);
             }
 
             if (order.Items.Count() == 0)
             {
+                Logger.Current.LogWarning("Orders.Validate: no items");
+
                 return this.BadRequest("Empty order");
             }
 
@@ -37,6 +53,8 @@ namespace PoshBoutique.Controllers
             IList<OrderedItemModel> normalizedItems = itemsGrouper.NormalizeOrderedItems(order.Items.ToList());
             if (normalizedItems == null)
             {
+                Logger.Current.LogWarning("Orders.Validate: grouping error");
+
                 return this.BadRequest("Different prices of the same item");
             }
 
@@ -45,6 +63,8 @@ namespace PoshBoutique.Controllers
             
             if (!isOrderValid)
             {
+                Logger.Current.LogWarning("Orders.Validate: invalid quantities");
+
                 return this.BadRequest("Invalid quantities");
             }
 
@@ -125,9 +145,10 @@ namespace PoshBoutique.Controllers
         [HttpGet]
         [Route("DeliveryMethods")]
         [Authorize]
-        public async Task<IHttpActionResult> GetDeliveryMethods()
+        public async Task<IHttpActionResult> GetDeliveryMethods(bool freeShipping)
         {
-            DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider();
+            IModelTracker<DeliveryMethodModel> modelTracker = new DeliveryMethodsTrackerFactory().GetDeliveryMethodsTracker(freeShipping);
+            DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider(modelTracker);
             IEnumerable<DeliveryMethodModel> allDeliveryMethods = await deliveryMethodsProvider.GetAllDeliveryMethods();
 
             return this.Ok(allDeliveryMethods);
@@ -136,9 +157,10 @@ namespace PoshBoutique.Controllers
         [HttpGet]
         [Route("PaymentMethods")]
         [Authorize]
-        public async Task<IHttpActionResult> GetPaymentMethods()
+        public async Task<IHttpActionResult> GetPaymentMethods(bool freeShipping)
         {
-            PaymentMethodsProvider paymentMethodsProvider = new PaymentMethodsProvider();
+            IModelTracker<PaymentMethodModel> modelTracker = new PaymentMethodsTrackerFactory().GetPaymentMethodsTracker(freeShipping);
+            PaymentMethodsProvider paymentMethodsProvider = new PaymentMethodsProvider(modelTracker);
             IEnumerable<PaymentMethodModel> allPaymentMethods = await paymentMethodsProvider.GetAllPaymentMethods();
 
             return this.Ok(allPaymentMethods);
@@ -151,11 +173,15 @@ namespace PoshBoutique.Controllers
         {
             if (!this.ModelState.IsValid)
             {
+                Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: invalid model state");
+
                 return this.BadRequest(this.ModelState);
             }
 
             if (order.Items.Count() == 0)
             {
+                Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: no items");
+
                 return this.BadRequest("Empty order");
             }
 
@@ -163,6 +189,8 @@ namespace PoshBoutique.Controllers
             IList<OrderedItemModel> normalizedItems = itemsGrouper.NormalizeOrderedItems(order.Items.ToList());
             if (normalizedItems == null)
             {
+                Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: grouping error");
+
                 return this.BadRequest("Different prices of the same item");
             }
 
@@ -171,19 +199,51 @@ namespace PoshBoutique.Controllers
 
             if (!areOrderItemsValid)
             {
+                Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: invalid quantities");
+
                 return this.BadRequest("Invalid quantities");
             }
 
-            bool areOrderPricesValid = await orderValidator.ValidatePrices(order);
+            bool freeShipping = order.Coupones != null && order.Coupones.Any(c => c.FreeShipping.Value);
+
+            IModelTracker<DeliveryMethodModel> deliveryMethodModelTracker = new DeliveryMethodsTrackerFactory().GetDeliveryMethodsTracker(freeShipping);
+            IModelTracker<PaymentMethodModel> paymentMethodModelTracker = new PaymentMethodsTrackerFactory().GetPaymentMethodsTracker(freeShipping);
+            bool isLoyal = deliveryMethodModelTracker is FreeShippingDeliveryMethodsTracker;
+            DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider(deliveryMethodModelTracker);
+            PaymentMethodsProvider paymentMethodsProvider = new PaymentMethodsProvider(paymentMethodModelTracker);
+
+            if (order.Coupones != null)
+            {
+                bool areCouponesValid = await orderValidator.ValidateCoupones(this.User.Identity.GetUserId(), order);
+                if (!areCouponesValid)
+                {
+                    Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: invalid coupones");
+
+                    return this.BadRequest("Invalid coupones");
+                }
+            }
+
+            bool areOrderPricesValid = await orderValidator.ValidatePrices(order, deliveryMethodsProvider, paymentMethodsProvider);
             if (!areOrderPricesValid)
             {
+                Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: invalid prive");
+
                 return this.BadRequest("Invalid price");
             }
 
-            DeliveryMethodsProvider deliveryMethodsProvider = new DeliveryMethodsProvider();
-            Task<DeliveryMethodModel> getDeliveryMethodTask = deliveryMethodsProvider.GetDeliveryMethodById(order.DeliveryMethodId.Value);
+            StocksProvider stocksProvider = new StocksProvider();
+            bool stockQuantitiesUpdatedSuccessfully = await stocksProvider.UpdateStocks(
+                normalizedItems.Select(o => new StockChangeModel(o.ArticleId.Value, o.SizeId.Value, o.ColorId, -o.Quantity.Value)),
+                Logger.Current);
+            if (!stockQuantitiesUpdatedSuccessfully)
+            {
+                Logger.Current.LogWarning("Orders.ValidateAndSaveOrder: invalid quantities (update stocks)");
 
-            PaymentMethodsProvider paymentMethodsProvider = new PaymentMethodsProvider();
+                return this.BadRequest("Invalid quantities");
+            }
+
+            
+            Task<DeliveryMethodModel> getDeliveryMethodTask = deliveryMethodsProvider.GetDeliveryMethodById(order.DeliveryMethodId.Value);
             Task<PaymentMethodModel> getPaymentMethodTask = paymentMethodsProvider.GetPaymentMethodById(order.PaymentMethodId.Value);
 
             DeliveryMethodModel deliveryMethod = await getDeliveryMethodTask;
@@ -203,7 +263,7 @@ namespace PoshBoutique.Controllers
             newOrder.DateCreated = DateTime.UtcNow;
 
             List<OrderDetail> orderDetails = new List<OrderDetail>();
-            foreach (OrderedItemModel orderedItem in order.Items)
+            foreach (OrderedItemModel orderedItem in normalizedItems)
             {
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.ItemId = orderedItem.ArticleId.Value;
@@ -217,6 +277,9 @@ namespace PoshBoutique.Controllers
 
             OrdersProvider ordersProvider = new OrdersProvider();
             int newOrderId = await ordersProvider.SaveOrder(newOrder, orderDetails);
+
+            MailSendingFacade mailSender = new MailSendingFacade();
+            mailSender.SendNewOrderMail(newOrderId);
 
             return this.Ok(newOrderId);
         }
@@ -258,6 +321,38 @@ namespace PoshBoutique.Controllers
             IEnumerable<StatusHistoryModel> orderItems = await ordersProvider.GetOrderHistory(orderId, userId);
 
             return this.Ok(orderItems);
+        }
+
+        [Route("DefaultCoupons")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetDefaultCoupons(ClientOrderModel order)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                Logger.Current.LogWarning("Orders.GetDefaultCoupons: invalid model state");
+
+                return this.BadRequest(this.ModelState);
+            }
+
+            List<CouponeModel> defaultCoupons = new List<CouponeModel>();
+            IIdentity currentIdentity = this.User.Identity;
+            bool isAuthenticated = currentIdentity.IsAuthenticated;
+
+            bool isLoyalCustomer = false;
+            if (isAuthenticated)
+            {
+                string currentUserId = currentIdentity.GetUserId();
+                using (ApplicationUserManager userManager = Startup.UserManagerFactory())
+                {
+                    isLoyalCustomer = await userManager.IsInRoleAsync(currentUserId, "LoyalCustomer");
+                }
+            }
+
+            //Volume discounts can be added here
+            CouponesProvider couponesProvider = new CouponesProvider();
+            IEnumerable<CouponeModel> coupones = await couponesProvider.GetCoupons(isAuthenticated, isLoyalCustomer);
+
+            return this.Ok(coupones);
         }
     }
 }

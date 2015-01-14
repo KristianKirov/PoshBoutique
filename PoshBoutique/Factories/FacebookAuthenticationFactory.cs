@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -45,8 +46,8 @@ namespace PoshBoutique.Factories
         {
             FacebookAuthenticationOptions facebookAuthenticationOptions = new FacebookAuthenticationOptions()
             {
-                AppId = "717955831558103",
-                AppSecret = "b4c52444cce98a1f7bd03cbd55654194"
+                AppId = ConfigurationManager.AppSettings["oAuth2.Facebook.AppId"],
+                AppSecret = ConfigurationManager.AppSettings["oAuth2.Facebook.AppSecret"]
             };
             facebookAuthenticationOptions.Scope.Add("email");
             facebookAuthenticationOptions.Provider = this.CreateAuthenticationProvider(facebookAuthenticationOptions.AuthenticationType);

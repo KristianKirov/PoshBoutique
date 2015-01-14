@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Security.Facebook;
 using System.Security.Claims;
 using PoshBoutique.Factories;
+using Microsoft.Owin.Security.Google;
+using System.Configuration;
 
 namespace PoshBoutique
 {
@@ -64,7 +66,15 @@ namespace PoshBoutique
             FacebookAuthenticationOptions facebookAuthenticationOptions = facebookAuthenticationFactory.CreateAuthenticationOptions();
             app.UseFacebookAuthentication(facebookAuthenticationOptions);
 
-            app.UseGoogleAuthentication();
+            GoogleOAuth2AuthenticationOptions googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = ConfigurationManager.AppSettings["oAuth2.Google.ClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["oAuth2.Google.ClientSecret"]
+            };
+            googleOAuth2AuthenticationOptions.Scope.Add("profile");
+            googleOAuth2AuthenticationOptions.Scope.Add("email");
+
+            app.UseGoogleAuthentication(googleOAuth2AuthenticationOptions);
         }
     }
 }

@@ -14,5 +14,7 @@ namespace PoshBoutique.Identity
         public string LastName { get; set; }
 
         public virtual Address Address { get; set; }
+
+        public virtual Profile Profile { get; set; }
     }
 }

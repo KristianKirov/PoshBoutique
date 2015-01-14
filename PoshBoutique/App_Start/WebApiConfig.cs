@@ -6,6 +6,10 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using PoshBoutique.Attributes.WebApi;
+using System.Web.Http.ExceptionHandling;
+using Common.Logging.Mvc;
+using PoshBoutique.Logging;
+using Common.Logging.Mvc.Formatting;
 
 namespace PoshBoutique
 {
@@ -18,6 +22,8 @@ namespace PoshBoutique
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             config.Filters.Add(new RequireHttpsAttribute());
+
+            config.Services.Add(typeof(IExceptionLogger), new FormattedExceptionLogger(Logger.Current, new ExceptionLoggerContextFormatter()));
 
             // Use camel case for JSON data.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

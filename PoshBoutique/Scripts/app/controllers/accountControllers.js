@@ -1,5 +1,9 @@
-﻿poshBoutiqueApp.controller('accountController', function ($scope, currentUser) {
+﻿poshBoutiqueApp.controller('accountController', function ($scope, currentUser, accountDataService) {
     $scope.user = currentUser;
+    accountDataService.getProfile().
+        success(function (profile) {
+            $scope.profile = profile;
+        });
 });
 
 poshBoutiqueApp.controller('accountEditController', function ($scope, manageInfo, addressInfo, ordersDataService, accountDataService, $timeout, $window) {
@@ -168,4 +172,57 @@ poshBoutiqueApp.controller('accountOrdersController', function ($scope, userOrde
                 });
         }
     }
+});
+
+poshBoutiqueApp.controller('forgottenPasswordController', function ($scope, accountDataService) {
+    debugger;
+    $scope.sendResetPasswordMail = function () {
+        if ($scope.forgottenPasswordForm.$invalid) {
+            return;
+        }
+
+        $scope.successfullySent = false;
+        $scope.errorOnSend = false;
+
+        accountDataService.sendResetPasswordMail($scope.email).
+            success(function () {
+                $scope.successfullySent = true;
+                $scope.errorOnSend = false;
+            }).
+            error(function () {
+                $scope.successfullySent = false;
+                $scope.errorOnSend = true;
+            });
+    };
+});
+
+poshBoutiqueApp.controller('resetPasswordController', function ($scope, $stateParams, accountDataService, currentUser, $state) {
+    $scope.email = $stateParams.email;
+
+    $scope.resetPassword = function () {
+        if ($scope.resetPasswordForm.$invalid) {
+            return;
+        }
+
+        $scope.errorOnResetPassword = false;
+
+        accountDataService.resetPassword($stateParams.email, $scope.newPassword, $scope.confirmPassword, $stateParams.token).
+            success(function () {
+                $scope.errorOnResetPassword = false;
+
+                accountDataService.login({
+                    grant_type: "password",
+                    username: $stateParams.email,
+                    password: $scope.newPassword
+                })
+                .success(function (data) {
+                    var accessToken = data.access_token;
+                    currentUser.login(accessToken, false);
+                    $state.go("home");
+                });
+            }).
+            error(function () {
+                $scope.errorOnResetPassword = true;
+            });
+    };
 });

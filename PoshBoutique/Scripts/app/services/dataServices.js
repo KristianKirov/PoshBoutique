@@ -246,20 +246,20 @@ poshBoutiqueApp.factory("ordersDataService", function ($http) {
                 data: addressInfo
             });
         },
-        getDeliveryMethods: function () {
+        getDeliveryMethods: function (freeShipping) {
             return $http({
                 method: 'GET',
-                url: '/api/orders/deliverymethods'
+                url: '/api/orders/deliverymethods?freeShipping=' + freeShipping
             }).then(function (response) {
                 var deliveryMethods = response.data;
 
                 return deliveryMethods;
             });
         },
-        getPaymentMethods: function () {
+        getPaymentMethods: function (freeShipping) {
             return $http({
                 method: 'GET',
-                url: '/api/orders/paymentmethods'
+                url: '/api/orders/paymentmethods?freeShipping=' + freeShipping
             }).then(function (response) {
                 var paymentMethods = response.data;
 
@@ -295,6 +295,18 @@ poshBoutiqueApp.factory("ordersDataService", function ($http) {
                 method: 'GET',
                 url: '/api/orders/' + orderId + '/history'
             });
-        }
+        },
+        getDefaultCoupons: function (orderedItems) {
+            return $http({
+                method: 'POST',
+                url: '/api/orders/defaultcoupons',
+                data: { items: orderedItems }
+            })
+            .then(function (response) {
+                var defaultCoupons = response.data;
+
+                return defaultCoupons;
+            });
+        },
     };
 });

@@ -1,1 +1,4 @@
-﻿<row-product-item ng-repeat="likedArticle in likedArticles" item="likedArticle" on-article-unliked="articleUnlikedCallback($index, unlikedArticle)" show-dislike-button="{{true}}" />
+﻿<div class="alert alert-danger view-content" ng-if="!likedArticles || !likedArticles.length">
+    Нямате любими артикули. Изполвайте бутона <b><i class="glyphicon glyphicon-star-empty"></i></b> да маркирате съответния артикул като любими.
+</div>
+<row-product-item ng-repeat="likedArticle in likedArticles" item="likedArticle" on-article-unliked="articleUnlikedCallback($index, unlikedArticle)" show-dislike-button="{{true}}" />

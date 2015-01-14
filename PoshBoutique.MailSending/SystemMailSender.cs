@@ -26,18 +26,15 @@ namespace PoshBoutique.MailSending
             return mailClient;
         }
 
-        protected override void SendMailMessage(MailMessage message)
+        protected override async Task SendMailMessage(MailMessage message)
         {
-            Task.Run(() =>
+            using (SmtpClient mailClient = this.GetMailClient())
+            {
+                using (message)
                 {
-                    using (SmtpClient mailClient = this.GetMailClient())
-                    {
-                        using (message)
-                        {
-                            mailClient.Send(message);
-                        }
-                    }
-                });
+                    await mailClient.SendMailAsync(message);
+                }
+            }
         }
     }
 }

@@ -36,7 +36,7 @@
                 <h4>История</h4>
                 <div ng-repeat="statusChange in order.history" style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">
                     {{statusChange.name}}:
-                    <span class="pull-right" style="color:gray;">{{order.dateCreated | toLocalDate | date:'dd MMMM yyyy г. HH:mm ч.'}}</span>
+                    <span class="pull-right" style="color:gray;">{{statusChange.dateAssigned | toLocalDate | date:'dd MMMM yyyy г. HH:mm ч.'}}</span>
                 </div>
                 <h4>Доставка</h4>
                 <div style="border-bottom: 1px solid gray; padding: 5px 0 5px 0;">Доставчик: {{order.deliveryMerchant}}</div>

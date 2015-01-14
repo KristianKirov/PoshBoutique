@@ -13,13 +13,15 @@ namespace PoshBoutique.MailSending
         {
             MailMessage message = new MailMessage(MailSenderOptions.Settings.DefaultSender, to);
             message.Subject = subject;
+            message.IsBodyHtml = true;
             message.Body = body;
-            message.Bcc.Add(to);
+            message.Bcc.Add(MailSenderOptions.Settings.DefaultSender);
+            message.SubjectEncoding = message.BodyEncoding = Encoding.Unicode;
 
             return message;
         }
 
-        public void SendEmail(string to, string subject, string body)
+        public async Task SendEmail(string to, string subject, string body)
         {
             if (!MailSenderOptions.IsEnabled)
             {
@@ -27,9 +29,9 @@ namespace PoshBoutique.MailSending
             }
 
             MailMessage message = this.GetMailMessage(to, subject, body);
-            this.SendMailMessage(message);
+            await this.SendMailMessage(message);
         }
 
-        protected abstract void SendMailMessage(MailMessage message);
+        protected abstract Task SendMailMessage(MailMessage message);
     }
 }

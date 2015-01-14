@@ -258,7 +258,7 @@ namespace PoshBoutique.Data.Providers
 
                 if (likedArticles.Length == 0)
                 {
-                    return null;
+                    return new ArticleModel[0];
                 }
 
                 ArticlesConverter converter = new ArticlesConverter();
@@ -315,6 +315,20 @@ namespace PoshBoutique.Data.Providers
                 bool articleExists = await dataContext.Articles.AnyAsync(a => a.Id == articleId && (a.Price == price || a.OriginalPrice == price));
 
                 return articleExists;
+            }
+        }
+
+        public async Task UpdateOrdersCounts(IEnumerable<ArticleOrderCountModel> ordersCounts)
+        {
+            using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
+            {
+                foreach (ArticleOrderCountModel articleOrderCounts in ordersCounts)
+	            {
+                    await dataContext.Database.ExecuteSqlCommandAsync(
+                                    "UPDATE Articles SET OrdersCount = OrdersCount + @p1 WHERE Id = @p0",
+                                    articleOrderCounts.ArticleId,
+                                    articleOrderCounts.OrderCount);
+	            }
             }
         }
     }

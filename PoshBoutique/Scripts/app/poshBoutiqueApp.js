@@ -1,5 +1,14 @@
 ﻿var poshBoutiqueApp = angular.module('poshBoutiqueApp', ['ui.router', 'ui.router.router', 'ui.bootstrap', 'angularTree', 'ngProgressLite']);
 
+poshBoutiqueApp.factory('$exceptionHandler', function ($log) {
+    return function (exception, cause) {
+        debugger;
+        $log.error.apply($log, arguments);
+
+        logError(exception, cause);
+    };
+});
+
 poshBoutiqueApp
 
     .provider('articleListParams', function () {
@@ -128,7 +137,12 @@ poshBoutiqueApp
             .state('cart.order', {
                 url: "/order",
                 templateUrl: "partials/cart/order.html",
-                controller: 'cartOrderController'
+                controller: 'cartOrderController',
+                resolve: {
+                    defaultCoupons: function (ordersDataService, shoppingCart) {
+                        return ordersDataService.getDefaultCoupons(shoppingCart.getSimpleItems());
+                    }
+                }
             })
             .state('cart.address', {
                 url: "/address",
@@ -140,6 +154,9 @@ poshBoutiqueApp
                 resolve: {
                     addressInfo: function (ordersDataService) {
                         return ordersDataService.getAddressInfo();
+                    },
+                    defaultCoupons: function (ordersDataService, shoppingCart) {
+                        return ordersDataService.getDefaultCoupons(shoppingCart.getSimpleItems());
                     }
                 }
             })
@@ -151,8 +168,8 @@ poshBoutiqueApp
                     authenticated: true
                 },
                 resolve: {
-                    deliveryMethods: function (ordersDataService) {
-                        return ordersDataService.getDeliveryMethods();
+                    deliveryMethods: function (ordersDataService, shoppingCart) {
+                        return ordersDataService.getDeliveryMethods(shoppingCart.hasFreeShippingCoupon());
                     }
                 }
             })
@@ -164,8 +181,8 @@ poshBoutiqueApp
                     authenticated: true
                 },
                 resolve: {
-                    paymentMethods: function (ordersDataService) {
-                        return ordersDataService.getPaymentMethods();
+                    paymentMethods: function (ordersDataService, shoppingCart) {
+                        return ordersDataService.getPaymentMethods(shoppingCart.hasFreeShippingCoupon());
                     }
                 }
             })
@@ -312,7 +329,7 @@ poshBoutiqueApp
             abstract: true,
             url: "/account",
             templateUrl: "partials/account/account.html",
-            controller: 'accountController',
+            controller: 'accountController'
         })
             .state('account.edit', {
                 url: "/edit",
@@ -345,6 +362,21 @@ poshBoutiqueApp
                         return ordersDataService.my();
                     }
                 }
+            })
+        .state('manage', {
+            abstract: true,
+            url: "/manage",
+            template: "<div ui-view></div>"
+        })
+            .state('manage.forgottenPassword', {
+                url: "/forgotten-password",
+                templateUrl: "partials/account/forgottenPassword.html",
+                controller: "forgottenPasswordController"
+            })
+            .state('manage.reset', {
+                url: "/reset-password/{email}?token",
+                templateUrl: "partials/account/resetPassword.html",
+                controller: "resetPasswordController"
             });
 
         var order = {
@@ -502,6 +534,7 @@ poshBoutiqueApp
 
         $rootScope.$on('$stateChangeSuccess', function () {
             ngProgressLite.done();
+            ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
         });
 
         $rootScope.$on('$stateChangeError', function () {

@@ -1,14 +1,30 @@
-﻿	Forgotten password
-	Клуб лоялен клиент
-	
-required:
+﻿	-- Add logging everywhere
 	Правила за условия и ползване
 	Таблица с размери
 	Поръчка и доставка
 	Замяна и връщане
 	Web site redesign
+	Logo and catalogue banner
+	Minify css/js
+	Buy hosting/domain
+
+	-- Check if cart.order state can be opened if the shopping cart is empty
+	-- Forgotten password
+	-- Decrease stocks quantities on placing order
+	-- Send Emails everywhere that is required
+	-- Клуб лоялен клиент
+	-- Check http warnings
+	-- Secure admin Section
+	-- Cannot open likes page if there is no likes
+	-- Handle case when article has no stocks or is not visible
+	-- Show message when item is added in cart
+	-- Increase orders count of article 
+	-- Orders history - times bug
+	-- Change google login with oAuth2 login
 
 nice to have:
+	Remove all inline styles
+	List coupones in summary page, profile orders page and order email
 	Shopping cart bugs: login window wrong state, navigate to state from url does not returns you to the first step
 	Hendle the case when you navigate to protected page and close the login screen
 	Validate state during authentication
@@ -18,6 +34,7 @@ nice to have:
 	Add localization (internationalization)
 	Multiple logins for single account
 	Do not allow the same external login fo different profiles
+	Google ads
 
 done:
 	-- handle unauthenticated response code (except load data requests) and expired tokens with separate login state + return url

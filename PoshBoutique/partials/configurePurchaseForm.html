@@ -1,41 +1,52 @@
-﻿<form class="form-horizontal" role="form" name="orderForm">
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Размер:</label>
-        <div class="col-sm-9">
-            <select ng-options="s.name for s in product.sizes" ng-model="selectedSize" class="form-control" ng-change="selectedSizeChanged()">
-                <option value="">-- Select --</option>
-            </select>
+﻿<div>
+    <form class="form-horizontal" role="form" name="orderForm" ng-hide="noQuantity">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Размер:</label>
+            <div class="col-sm-9">
+                <select ng-options="s.name for s in product.sizes" ng-model="selectedSize" class="form-control" ng-change="selectedSizeChanged()">
+                    <option value="">-- Select --</option>
+                </select>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group" ng-show="hasColors()">
-        <label class="col-sm-3 control-label">Цвят:</label>
-        <div class="col-sm-9">
-            <select ng-options="c.title for c in selectedSize.colors" ng-model="selectedColor" class="form-control" ng-disabled="hasSingleColor()" ng-change="selectedColorChanged()">
-                <option value="">-- Select --</option>
-            </select>
+        <div class="form-group" ng-show="hasColors()">
+            <label class="col-sm-3 control-label">Цвят:</label>
+            <div class="col-sm-9">
+                <select ng-options="c.title for c in selectedSize.colors" ng-model="selectedColor" class="form-control" ng-disabled="hasSingleColor()" ng-change="selectedColorChanged()">
+                    <option value="">-- Select --</option>
+                </select>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group" ng-show="availableQuantity > 0">
-        <label class="col-sm-3 control-label">Брой:</label>
-        <div class="col-sm-9">
-            <input type="number" min="0" ng-model="quantity" class="form-control" />
+        <div class="form-group" ng-show="availableQuantity > 0">
+            <label class="col-sm-3 control-label">Брой:</label>
+            <div class="col-sm-9">
+                <input type="number" min="0" ng-model="quantity" class="form-control" />
+            </div>
         </div>
-    </div>
 
-    <div class="alert alert-danger" style="margin-bottom: 15px;" ng-show="quantity > availableQuantity && selectedSize != null && (selectedColor != null || (selectedColor == null && !hasColors()))">
-        <strong>Недостатъчна наличност!</strong>
-        Не разполагаме с <strong>{{quantity}}</strong> на брой артикула с размер <strong>{{selectedSize.name}}</strong><span ng-show="selectedColor != null"> и цвят <strong>{{selectedColor.title}}</strong></span>.<br />
-    Моля опитайте с по-малко количество или се <a href="#/contact-us" class="alert-link">свържете с нас</a>.
+        <div class="alert alert-danger" style="margin-bottom: 15px;" ng-show="quantity > availableQuantity && selectedSize != null && (selectedColor != null || (selectedColor == null && !hasColors()))">
+            <strong>Недостатъчна наличност!</strong>
+            Не разполагаме с <strong>{{quantity}}</strong> на брой артикула с размер <strong>{{selectedSize.name}}</strong><span ng-show="selectedColor != null"> и цвят <strong>{{selectedColor.title}}</strong></span>.<br />
+            Моля опитайте с по-малко количество или се <a href="#/contact-us" class="alert-link">свържете с нас</a>.
+        </div>
+
+        <div class="form-group" ng-show="availableQuantity > 0 && quantity > 0 && quantity <= availableQuantity">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-info btn-block" ng-click="addToCart(true)">Купи</button>
+            </div>
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-info btn-block" ng-click="addToCart(false)">Добави</button>
+            </div>
+        </div>
+
+        <div class="alert alert-success" role="alert" ng-show="articleAddedInCart" style="margin-top:15px;">
+            <button type="button" class="close" aria-label="Close" ng-click="articleAddedInCart = false"><span aria-hidden="true">&times;</span></button>
+            Артикулът беше добавен в количката.
+        </div>
+    </form>
+    <div class="alert alert-danger" role="alert" ng-show="noQuantity">
+        <p><strong>Изчерпано количество!</strong></p>
+        <p>За повече информация, <a ui-sref="contact-us" class="alert-link">свържете се с нас</a>.</p>
+    </div>
 </div>
-
-    <div class="form-group" ng-show="availableQuantity > 0 && quantity > 0 && quantity <= availableQuantity">
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-info btn-block" ng-click="addToCart(true)">Купи</button>
-        </div>
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-info btn-block" ng-click="addToCart(false)">Добави</button>
-        </div>
-    </div>
-</form>

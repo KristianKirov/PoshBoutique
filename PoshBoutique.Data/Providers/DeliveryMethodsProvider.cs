@@ -10,20 +10,37 @@ namespace PoshBoutique.Data.Providers
 {
     public class DeliveryMethodsProvider
     {
+        private IModelTracker<DeliveryMethodModel> deliveryMethodsTracker;
+
+        public DeliveryMethodsProvider(IModelTracker<DeliveryMethodModel> deliveryMethodsTracker)
+        {
+            this.deliveryMethodsTracker = deliveryMethodsTracker;
+        }
+
+        private DeliveryMethodModel CreateDeliveryMethodModel(DeliveryMethod deliveryMethod)
+        {
+            DeliveryMethodModel model = new DeliveryMethodModel()
+            {
+                Id = deliveryMethod.Id,
+                Name = deliveryMethod.Name,
+                LogoUrl = deliveryMethod.LogoUrl,
+                Description = deliveryMethod.Description,
+                DeliveryPrice = deliveryMethod.DeliveryPrice,
+                CODTax = deliveryMethod.CODTax,
+                OrderIndex = deliveryMethod.OrderIndex
+            };
+
+            this.deliveryMethodsTracker.TrackItemCreated(model);
+
+            return model;
+        }
+
         public async Task<IEnumerable<DeliveryMethodModel>> GetAllDeliveryMethods()
         {
             using (PoshBoutiqueData dataContext = new PoshBoutiqueData())
             {
-                return await dataContext.DeliveryMethods.OrderBy(d => d.OrderIndex).ThenBy(d => d.Id).Select(d => new DeliveryMethodModel()
-                    {
-                        Id = d.Id,
-                        Name = d.Name,
-                        LogoUrl = d.LogoUrl,
-                        Description = d.Description,
-                        DeliveryPrice = d.DeliveryPrice,
-                        CODTax = d.CODTax,
-                        OrderIndex = d.OrderIndex
-                    }).ToArrayAsync();
+                DeliveryMethod[] deliveryMethods = await dataContext.DeliveryMethods.OrderBy(d => d.OrderIndex).ThenBy(d => d.Id).ToArrayAsync();
+                return deliveryMethods.Select(d => this.CreateDeliveryMethodModel(d)).ToArray();
             }
         }
 
@@ -33,16 +50,7 @@ namespace PoshBoutique.Data.Providers
             {
                 DeliveryMethod foundDeliveryMethod = await dataContext.DeliveryMethods.FindAsync(deliveryMethodId);
 
-                return new DeliveryMethodModel()
-                {
-                    Id = foundDeliveryMethod.Id,
-                    Name = foundDeliveryMethod.Name,
-                    LogoUrl = foundDeliveryMethod.LogoUrl,
-                    Description = foundDeliveryMethod.Description,
-                    DeliveryPrice = foundDeliveryMethod.DeliveryPrice,
-                    CODTax = foundDeliveryMethod.CODTax,
-                    OrderIndex = foundDeliveryMethod.OrderIndex
-                };
+                return this.CreateDeliveryMethodModel(foundDeliveryMethod);
             }
         }
     }

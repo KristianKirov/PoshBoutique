@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<script>
+			window.errorLogger = window.errorLogger || [];
+		</script>
+	</head>
+	<body>
+		<script>
+			function logError(e) {
+				var callStack = "not loaded";
+				if (window.printStackTrace) {
+					var traceArray = printStackTrace({e: e});
+					callStack = traceArray.join('\n')
+				}
+				
+				window.errorLogger = window.errorLogger || [];
+				
+				window.errorLogger.push([ "log",
+					{
+						cause: "Global",
+						message: e.toString(),
+						callStack: callStack
+					}
+				]);
+			}
+		
+			function f(asd) {
+				asd.i = 1;
+			}
+		
+			function err () {
+				var asd = undefined;
+				
+				try {
+					f(asd);
+				}
+				catch (e) {
+					debugger;
+					logError(e);
+				}
+			}
+		</script>
+		<script>
+		(function init() {
+			err();
+		})();
+		</script>
+	
+		<div>
+			<a href="javascript:err()">Error</a>
+		</div>
+		
+		
+		<script type="text/javascript">
+		(function () {
+			debugger;
+			window.scriptsToLoad = 2;
+		
+			function scriptLoaded() {
+				window.scriptsToLoad = window.scriptsToLoad - 1;
+				if (window.scriptsToLoad != 0) {
+					return;
+				}
+			
+				window.jslogger = new JSLogger();
+				var loggedErrors = window.errorLogger || [];
+
+				window.errorLogger = [];
+
+				window.errorLogger.push = function (data) {
+					debugger;
+					Array.prototype.push.call(this, data);
+
+					if (!data || !data.length || data.length <= 0) {
+						return;
+					}
+
+					var loggerFunction = window.jslogger[data.shift()];
+
+					if(!loggerFunction){
+						return;
+					}
+
+					loggerFunction.apply(window.jslogger, data);
+				};
+
+				for (var i = 0; i < loggedErrors.length; i++) {
+					window.errorLogger.push(loggedErrors[i]);
+				}
+			}
+		
+			function loadScriptAsync(protocolAgnosticUrl) {
+				var jsl=document.createElement('script');jsl.type='text/javascript';jsl.async=true;
+				jsl.src=('https:'==document.location.protocol?'https:':'http:')+protocolAgnosticUrl;
+				jsl.onload=scriptLoaded;
+				var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(jsl,s);
+			}
+			
+			loadScriptAsync("//www.poshboutique-bg.com/scripts/stacktrace.min.js");
+			loadScriptAsync("//jslogger.com/jslogger.js");
+		})();
+		</script>
+	</body>
+</html>

@@ -64,7 +64,7 @@
         <div class="col-md-12">
             <div style="background-color: rgb(239, 239, 239); border: 1px solid rgb(213, 213, 213); box-shadow: 0px 2px 8px -1px #888; margin-bottom: 15px; ">
                 <h2 class="view-content">
-                    Обща сума: <span style="white-space:nowrap;">{{cart.total().order | currency}} <small>артикули</small></span> + <span style="white-space:nowrap;">{{cart.total().shipping | currency}} <small>доставка</small></span> = {{cart.total().full | currency}}
+                    Обща сума: <span style="white-space:nowrap;">{{cart.total().order | currency}} <small>артикули</small></span> + <span style="white-space:nowrap;">{{cart.total().shipping | currency}} <small>доставка</small></span> - <span style="white-space:nowrap;">{{cart.total().couponesDiscount | currency}} <small>отстъпка</small></span> = {{cart.total().full | currency}}
                 </h2>
             </div>
         </div>

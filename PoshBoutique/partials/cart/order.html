@@ -40,6 +40,21 @@
             </tr>
         </table>
     </div>
+    <div class="table-responsive" ng-if="cart.coupones.length">
+        <h3>Отстъпки</h3>
+        <table class="table table-condensed">
+            <tr ng-repeat="coupone in cart.coupones">
+                <td>{{coupone.name}}</td>
+                <td>{{coupone.description}}</td>
+                <td>
+                    <span ng-switch="coupone.valueType">
+                        <span ng-switch-when="1">-{{coupone.value}}%</span>
+                        <span ng-switch-when="2">-{{coupone.value | currency}}</span>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="row">
         <div class="col-md-offset-6 col-md-6">
             <div class="row" style="margin:0; border-top:2px solid black;">
@@ -47,7 +62,7 @@
                     <h2>Обща сума:</h2>
                 </div>
                 <div class="col-md-6" style="padding:0;">
-                    <h2>{{cart.total().order | currency}} <small style="white-space:nowrap;">(без доставка)</small></h2>
+                    <h2>{{cart.total().orderWithDiscounts | currency}} <small style="white-space:nowrap;">(без доставка)</small></h2>
                 </div>
             </div>
         </div>

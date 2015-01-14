@@ -1,0 +1,65 @@
+﻿<h1>Изпратена поръчка</h1>
+<p>Здравейте {{FullName}},</p>
+<p>Целта на този email е да Ви уведоми, че вашата поръчка, с номер {{OrderNumber}}, беше успешно приета.</p>
+<p>Можете да следите статуса ѝ от вашия профил на адрес <a href="{{{OrdersPageUrl}}}">{{{OrdersPageUrl}}}</a></p>
+<p>За всяка промяна по статуса на поръчката ще получавате известие на този email адрес.</p>
+<p>За въпроси и контакт с нас, моля използвайте online формата на адрес <a href="{{{ContactUsFormUrl}}}">{{{ContactUsFormUrl}}}</a> или отговорете на този email.</p>
+<h2>Информация за поръчката</h2>
+<table>
+    <thead>
+        <tr>
+            <th><b>Артикул</b></th>
+            <th><b>Количество</b></th>
+            <th><b>Цена</b></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#Items}}
+        <tr>
+            <td>{{Title}}</td>
+            <td>{{Quantity}}</td>
+            <td>{{Price}}</td>
+        </tr>
+        {{/Items}}
+        <tr>
+            <td colspan="3"><b>Доставка</b></td>
+        </tr>
+        <tr>
+            <td><b>Доставчик</b></td>
+            <td colspan="2">{{DeliveryMerchant}}</td>
+        </tr>
+        <tr>
+            <td><b>Комисионна</b></td>
+            <td colspan="2">{{CommissionPercents}}%</td>
+        </tr>
+        <tr>
+            <td><b>Цена на доставка + комисионна</b></td>
+            <td colspan="2">{{ShippingPrice}}</td>
+        </tr>
+        <tr>
+            <td><b>Дължима сума</b></td>
+            <td colspan="2"><b>{{TotalPrice}}</b></td>
+        </tr>
+    </tbody>
+</table>
+<h2>Контакти</h2>
+<table>
+    <tbody>
+        <tr>
+            <td><b>Име</b></td>
+            <td>{{FullName}}</td>
+        </tr>
+        <tr>
+            <td><b>Телефон</b></td>
+            <td>{{Phone}}</td>
+        </tr>
+        <tr>
+            <td><b>Адрес за доставка</b></td>
+            <td>{{Country}}, {{District}}, {{Commune}}, {{City}} {{PostCode}}, {{AddresDetails}}</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    Благодарим Ви,<br />
+    Екипът на <a href="{{{BaseUrl}}}">{{{BaseUrl}}}</a>
+</p>
