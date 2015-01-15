@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("shoppingCartPersistanceStorage", function ($window) {
+﻿poshBoutiqueApp.factory("shoppingCartPersistanceStorage", ["$window", function ($window) {
     return {
         persistOrderedItems: function (orderedItems) {
             $window.localStorage["orderedItems"] = angular.toJson(orderedItems);
@@ -12,9 +12,9 @@
             return null;
         }
     }
-});
+}]);
 
-poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage, $state) {
+poshBoutiqueApp.factory("shoppingCart", ["shoppingCartPersistanceStorage", "$state", function (shoppingCartPersistanceStorage, $state) {
     var orderdItems = shoppingCartPersistanceStorage.getOrderedItems() || [];
 
     var getOrderedItemIndex = function (item, size, color) {
@@ -277,4 +277,4 @@ poshBoutiqueApp.factory("shoppingCart", function (shoppingCartPersistanceStorage
     };
 
     return cart;
-});
+}]);

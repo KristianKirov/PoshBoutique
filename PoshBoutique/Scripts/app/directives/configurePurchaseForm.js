@@ -6,7 +6,7 @@
             product: '='
         },
         templateUrl: 'partials/configurePurchaseForm.html',
-        controller: function ($scope, shoppingCart, $state, $timeout) {
+        controller: ["$scope", "shoppingCart", "$state", "$timeout", function ($scope, shoppingCart, $state, $timeout) {
             $scope.selectedSize = null;
             $scope.selectedColor = null;
             $scope.quantity = 0;
@@ -98,6 +98,6 @@
                     }, 5000);
                 }
             };
-        }
+        }]
     }
 });

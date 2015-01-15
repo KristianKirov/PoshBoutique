@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.controller('cartController', function ($scope, shoppingCart, $state) {
+﻿poshBoutiqueApp.controller('cartController', ["$scope", "shoppingCart", "$state", function ($scope, shoppingCart, $state) {
     $scope.currentStepIndex = -1;
     $scope.cart = shoppingCart;
     shoppingCart.clearCoupones();
@@ -50,9 +50,9 @@
     $scope.isStepActive = function (stepIndex) {
         return stepIndex <= $scope.currentStepIndex;
     };
-});
+}]);
 
-poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, ordersDataService, defaultCoupons) {
+poshBoutiqueApp.controller('cartOrderController', ["$scope", "$state", "ordersDataService", "defaultCoupons", function ($scope, $state, ordersDataService, defaultCoupons) {
     $scope.setCurrentStepIndex($state.$current.name);
 
     $scope.cart.addCoupones(defaultCoupons);
@@ -69,9 +69,9 @@ poshBoutiqueApp.controller('cartOrderController', function ($scope, $state, orde
         });
 
     $scope.isValid = false;
-});
+}]);
 
-poshBoutiqueApp.controller('cartAddressController', function ($scope, $state, addressInfo, ordersDataService, defaultCoupons) {
+poshBoutiqueApp.controller('cartAddressController', ["$scope", "$state", "addressInfo", "ordersDataService", "defaultCoupons", function ($scope, $state, addressInfo, ordersDataService, defaultCoupons) {
     $scope.setCurrentStepIndex($state.$current.name);
 
     $scope.cart.addCoupones(defaultCoupons);
@@ -85,21 +85,21 @@ poshBoutiqueApp.controller('cartAddressController', function ($scope, $state, ad
             ordersDataService.setAddressInfo($scope.cart.addressInfo);
         }
     });
-});
+}]);
 
-poshBoutiqueApp.controller('cartDeliveryController', function ($scope, $state, deliveryMethods) {
+poshBoutiqueApp.controller('cartDeliveryController', ["$scope", "$state", "deliveryMethods", function ($scope, $state, deliveryMethods) {
     $scope.setCurrentStepIndex($state.$current.name);
 
     $scope.deliveryMethods = deliveryMethods;
-});
+}]);
 
-poshBoutiqueApp.controller('cartPaymentController', function ($scope, $state, paymentMethods) {
+poshBoutiqueApp.controller('cartPaymentController', ["$scope", "$state", "paymentMethods", function ($scope, $state, paymentMethods) {
     $scope.setCurrentStepIndex($state.$current.name);
 
     $scope.paymentMethods = paymentMethods;
-});
+}]);
 
-poshBoutiqueApp.controller('cartConfirmationController', function ($scope, $state, ordersDataService, $window) {
+poshBoutiqueApp.controller('cartConfirmationController', ["$scope", "$state", "ordersDataService", "$window", function ($scope, $state, ordersDataService, $window) {
     $scope.setCurrentStepIndex($state.$current.name);
 
     $scope.postOrder = function () {
@@ -121,4 +121,4 @@ poshBoutiqueApp.controller('cartConfirmationController', function ($scope, $stat
                 //TODO: show message to user!
             });
     };
-});
+}]);

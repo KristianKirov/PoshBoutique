@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.directive('recommended', function (articlesDataService, $interval) {
+﻿poshBoutiqueApp.directive('recommended', ["articlesDataService", "$interval", function (articlesDataService, $interval) {
     return {
         restrict: 'E',
         replace: true,
@@ -28,4 +28,4 @@
             });
         }
     };
-});
+}]);

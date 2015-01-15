@@ -3,7 +3,7 @@
         restrict: 'E',
         replace: false,
         templateUrl: 'partials/emailSubscriptionForm.html',
-        controller: function ($scope, subscriptionsService, $timeout) {
+        controller: ["$scope", "subscriptionsService", "$timeout", function ($scope, subscriptionsService, $timeout) {
             $scope.subscribed = false;
             $scope.subscribe = function () {
                 $scope.error = null;
@@ -27,6 +27,6 @@
                         }
                     });
             };
-        }
+        }]
     };
 });

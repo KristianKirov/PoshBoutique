@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("authenticationStorage", function ($window) {
+﻿poshBoutiqueApp.factory("authenticationStorage", ["$window", function ($window) {
     return {
         setAccesToken: function (accessToken, persistent) {
             if (persistent) {
@@ -17,4 +17,4 @@
             $window.sessionStorage.removeItem("accessToken");
         }
     }
-});
+}]);

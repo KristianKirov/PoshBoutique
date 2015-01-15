@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("accountDataService", function ($http, $window) {
+﻿poshBoutiqueApp.factory("accountDataService", ["$http", "$window", function ($http, $window) {
     var httpsUrl = "https://" + $window.location.host;
 
        //addExternalLoginUrl = httpsUrl + "/api/account/addexternallogin",
@@ -158,4 +158,4 @@
             return $http({ method: "GET", url: profileUrl });
         }
     };
-});
+}]);

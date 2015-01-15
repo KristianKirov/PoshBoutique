@@ -8,7 +8,7 @@
             detailsSref: '@'
         },
         templateUrl: 'partials/hoverableProductItem.html',
-        controller: function ($scope, likesDataService, currentUser, authenticateModal, $rootScope) {
+        controller: ["$scope", "likesDataService", "currentUser", "authenticateModal", "$rootScope", function ($scope, likesDataService, currentUser, authenticateModal, $rootScope) {
             if (!$scope.detailsSref) {
                 $scope.detailsSref = '.view({ itemUrl: item.urlName })';
             }
@@ -30,6 +30,6 @@
                     $scope.item.isLiked = isLiked;
                 }
             });
-        }
+        }]
     };
 });

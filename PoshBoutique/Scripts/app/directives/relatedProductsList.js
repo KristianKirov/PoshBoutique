@@ -7,7 +7,7 @@
             onItemSelected: '&'
         },
         templateUrl: 'partials/relatedProductsList.html',
-        controller: function ($scope, articlesDataService) {
+        controller: ["$scope", "articlesDataService", function ($scope, articlesDataService) {
             $scope.hasRelatedArticles = false;
             articlesDataService.getRelatedArticles($scope.articleId)
                 .success(function (data) {
@@ -21,6 +21,6 @@
             $scope.invokeOnItemSelected = function () {
                 $scope.onItemSelected();
             };
-        }
+        }]
     };
 });

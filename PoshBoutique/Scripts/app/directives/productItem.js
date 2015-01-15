@@ -6,7 +6,7 @@
             item: '='
         },
         templateUrl: 'partials/productItem.html',
-        controller: function ($scope, likesDataService, currentUser, authenticateModal, $rootScope) {
+        controller: ["$scope", "likesDataService", "currentUser", "authenticateModal", "$rootScope", function ($scope, likesDataService, currentUser, authenticateModal, $rootScope) {
             $scope.toggleLike = function (item, e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -24,6 +24,6 @@
                     $scope.item.isLiked = isLiked;
                 }
             });
-        }
+        }]
     };
 });

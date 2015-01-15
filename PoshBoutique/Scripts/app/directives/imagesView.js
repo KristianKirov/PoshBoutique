@@ -6,7 +6,7 @@
             product: '='
         },
         templateUrl: 'partials/imagesView.html',
-        controller: function ($scope, $modal, likesDataService, currentUser, authenticateModal, $rootScope) {
+        controller: ["$scope", "$modal", "likesDataService", "currentUser", "authenticateModal", "$rootScope", function ($scope, $modal, likesDataService, currentUser, authenticateModal, $rootScope) {
             $scope.images = $scope.product.images;
             $scope.selectedImage = $scope.images[0];
 
@@ -60,7 +60,7 @@
                     $scope.product.isLiked = isLiked;
                 }
             });
-        },
+        }],
         link: function (scope, element, attrs) {
             var $imagesListWrapper = element.find(".images-view-picker ul")
             var imagesListWrapper = $imagesListWrapper[0];

@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("categoriesDataService", function ($http) {
+﻿poshBoutiqueApp.factory("categoriesDataService", ["$http", function ($http) {
     var cachedCategoriesTree = null;
     var initialCategoryId = null;
 
@@ -63,9 +63,9 @@
                 });
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("articlesDataService", function ($http) {
+poshBoutiqueApp.factory("articlesDataService", ["$http", function ($http) {
     return {
         getArticlesInCategory: function (categoryUrl, filter, orderBy, sortDirection) {
             return $http({
@@ -162,9 +162,9 @@ poshBoutiqueApp.factory("articlesDataService", function ($http) {
             });
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("likesDataService", function ($http, $rootScope) {
+poshBoutiqueApp.factory("likesDataService", ["$http", "$rootScope", function ($http, $rootScope) {
     return {
         likeArticle: function (articleId) {
             $rootScope.$emit('toggleLike', articleId, true);
@@ -183,9 +183,9 @@ poshBoutiqueApp.factory("likesDataService", function ($http, $rootScope) {
             });
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("subscriptionsService", function ($http) {
+poshBoutiqueApp.factory("subscriptionsService", ["$http", function ($http) {
     return {
         subscribe: function (email) {
             return $http({
@@ -195,9 +195,9 @@ poshBoutiqueApp.factory("subscriptionsService", function ($http) {
             });
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("feedbackService", function ($http) {
+poshBoutiqueApp.factory("feedbackService", ["$http", function ($http) {
     return {
         submit: function (feedbackData) {
             return $http({
@@ -207,9 +207,9 @@ poshBoutiqueApp.factory("feedbackService", function ($http) {
             });
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("collectionsDataService", function ($http) {
+poshBoutiqueApp.factory("collectionsDataService", ["$http", function ($http) {
     return {
         getAll: function () {
             return $http({
@@ -218,9 +218,9 @@ poshBoutiqueApp.factory("collectionsDataService", function ($http) {
             });
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("ordersDataService", function ($http) {
+poshBoutiqueApp.factory("ordersDataService", ["$http", function ($http) {
     return {
         validateOrder: function (orderedItems) {
             return $http({
@@ -309,4 +309,4 @@ poshBoutiqueApp.factory("ordersDataService", function ($http) {
             });
         },
     };
-});
+}]);

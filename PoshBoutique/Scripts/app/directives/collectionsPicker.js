@@ -6,7 +6,7 @@
         scope: {
             onCollectionSelected: '&'
         },
-        controller: function ($scope, collectionsDataService) {
+        controller: ["$scope", "collectionsDataService", function ($scope, collectionsDataService) {
             var selectCollection = function (collection) {
                 $scope.selectedCollection = collection;
                 if ($scope.onCollectionSelected) {
@@ -28,6 +28,6 @@
                     selectCollection(collection);
                 }
             }
-        }
+        }]
     }
 });

@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.controller('contactUsController', function ($scope, currentUser, feedbackService) {
+﻿poshBoutiqueApp.controller('contactUsController', ["$scope", "currentUser", "feedbackService", function ($scope, currentUser, feedbackService) {
     $scope.submitted = false;
     $scope.error = false;
 
@@ -18,4 +18,4 @@
                 $scope.error = true;
             });
     };
-});
+}]);

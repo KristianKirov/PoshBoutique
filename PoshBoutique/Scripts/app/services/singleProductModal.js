@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("singleProductModal", function ($modal, $state) {
+﻿poshBoutiqueApp.factory("singleProductModal", ["$modal", "$state", function ($modal, $state) {
     return {
         open: function (itemUrlName) {
             var setPreviousUrl = function () {
@@ -17,9 +17,9 @@
             $modal.open({
                 templateUrl: "partials/singleProductModal.html",
                 resolve: {
-                    product: function (articlesDataService) {
+                    product: ["articlesDataService", function (articlesDataService) {
                         return articlesDataService.getArticleByUrlName(itemUrlName);
-                    }
+                    }]
                 },
                 controller: ['$scope', 'product', function ($scope, product) {
                     $scope.product = product;
@@ -40,4 +40,4 @@
             });
         }
     };
-});
+}]);

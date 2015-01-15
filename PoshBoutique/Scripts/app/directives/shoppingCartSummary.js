@@ -3,8 +3,8 @@
         restrict: 'EA',
         replace: true,
         templateUrl: 'partials/shoppingCartSummary.html',
-        controller: function ($scope, shoppingCart) {
+        controller: ["$scope", "shoppingCart", function ($scope, shoppingCart) {
             $scope.cart = shoppingCart;
-        }
+        }]
     };
 });

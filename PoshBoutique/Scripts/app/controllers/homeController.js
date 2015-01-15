@@ -1,3 +1,3 @@
-﻿poshBoutiqueApp.controller('homeController', function ($scope) {
+﻿poshBoutiqueApp.controller('homeController', ["$scope", function ($scope) {
     $scope.data = "works";
-});
+}]);

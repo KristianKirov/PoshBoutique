@@ -30,7 +30,7 @@
 //    }
 //});
 
-poshBoutiqueApp.factory("articleUrlProvider", function ($location) {
+poshBoutiqueApp.factory("articleUrlProvider", ["$location", function ($location) {
     var separator = "/view/";
     var separatorLength = separator.length;
 
@@ -64,4 +64,4 @@ poshBoutiqueApp.factory("articleUrlProvider", function ($location) {
             return getUrlSegmentsPrivate(url).itemUrl;
         }
     }
-});
+}]);

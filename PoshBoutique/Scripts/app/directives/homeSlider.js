@@ -6,7 +6,7 @@
             changeInterval: '@'
         },
         templateUrl: 'partials/homeSlider.html',
-        controller: function ($scope) {
+        controller: ["$scope", function ($scope) {
             var placeholderElements = angular.element("html");
             placeholderElements.addClass("fullPage");
             $scope.$on("$destroy", function () {
@@ -63,6 +63,6 @@
                     }]
                 }
             ];
-        }
+        }]
     };
 });

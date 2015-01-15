@@ -3,7 +3,7 @@
         restrict: 'EA',
         replace: true,
         templateUrl: 'partials/currentUserNav.html',
-        controller: function ($scope, authenticateModal, currentUser, $state) {
+        controller: ["$scope", "authenticateModal", "currentUser", "$state", function ($scope, authenticateModal, currentUser, $state) {
             $scope.login = function () {
                 authenticateModal.open();
             };
@@ -17,6 +17,6 @@
             };
 
             $scope.currentUser = currentUser;
-        }
+        }]
     };
 });

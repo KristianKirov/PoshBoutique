@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("currentUser", function (authenticationStorage, accountDataService, $state) {
+﻿poshBoutiqueApp.factory("currentUser", ["authenticationStorage", "accountDataService", "$state", function (authenticationStorage, accountDataService, $state) {
     var user = {};
 
     var setDefaults = function (isAuthenticated) {
@@ -52,4 +52,4 @@
     };
 
     return user;
-});
+}]);

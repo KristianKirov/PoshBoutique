@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.controller('catalogueController', function ($scope, categoriesTree, articleListParams) {
+﻿poshBoutiqueApp.controller('catalogueController', ["$scope", "categoriesTree", "articleListParams", function ($scope, categoriesTree, articleListParams) {
     console.log("1: HITTTTTTTTTTTTTTT!!!!!");
 
     $scope.categories = categoriesTree;
@@ -16,4 +16,4 @@
             }
         }
     };
-});
+}]);

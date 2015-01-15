@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.directive('homeSliderFeedItem', function ($timeout) {
+﻿poshBoutiqueApp.directive('homeSliderFeedItem', ["$timeout", function ($timeout) {
     return {
         restrict: 'E',
         replace: true,
@@ -111,4 +111,4 @@
             });
         }
     };
-});
+}]);

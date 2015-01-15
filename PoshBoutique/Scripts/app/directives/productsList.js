@@ -6,7 +6,7 @@
             articleListParams: '='
         },
         templateUrl: 'partials/productsList.html',
-        controller: function ($scope) {
-        }
+        controller: ["$scope", function ($scope) {
+        }]
     };
 });

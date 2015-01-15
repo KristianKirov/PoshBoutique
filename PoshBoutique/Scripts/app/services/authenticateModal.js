@@ -1,4 +1,4 @@
-﻿poshBoutiqueApp.factory("authenticationFlow", function ($state, $stateParams, $window) {
+﻿poshBoutiqueApp.factory("authenticationFlow", ["$state", "$stateParams", "$window", function ($state, $stateParams, $window) {
     var _getReturnData = function (state, stateParams) {
         var stateData = {
             sn: state.name,
@@ -33,9 +33,9 @@
             }
         }
     };
-});
+}]);
 
-poshBoutiqueApp.factory("authenticateModal", function ($modal, authenticationFlow) {
+poshBoutiqueApp.factory("authenticateModal", ["$modal", "authenticationFlow", function ($modal, authenticationFlow) {
     return {
         open: function (returnData) {
             if (!returnData) {
@@ -46,11 +46,11 @@ poshBoutiqueApp.factory("authenticateModal", function ($modal, authenticationFlo
             $modal.open({
                 templateUrl: "partials/authenticateModal.html",
                 resolve: {
-                    externalLogins: function (accountDataService) {
+                    externalLogins: ["accountDataService", function (accountDataService) {
                         return accountDataService.getExternalLogins(returnData, true);
-                    }
+                    }]
                 },
-                controller: function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser, $state, $window) {
+                controller: ["$scope", "externalLogins", "accountDataService", "authenticationStorage", "currentUser", "$state", "$window", function ($scope, externalLogins, accountDataService, authenticationStorage, currentUser, $state, $window) {
                     $scope.login = {};
                     $scope.register = {};
 
@@ -128,8 +128,8 @@ poshBoutiqueApp.factory("authenticateModal", function ($modal, authenticationFlo
                     $scope.loginWithProvider = function (publicProvider) {
                         $window.location = publicProvider.url;
                     };
-                }
+                }]
             });
         }
     }
-});
+}]);

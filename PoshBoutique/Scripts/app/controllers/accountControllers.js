@@ -1,12 +1,12 @@
-﻿poshBoutiqueApp.controller('accountController', function ($scope, currentUser, accountDataService) {
+﻿poshBoutiqueApp.controller('accountController', ["$scope", "currentUser", "accountDataService", function ($scope, currentUser, accountDataService) {
     $scope.user = currentUser;
     accountDataService.getProfile().
         success(function (profile) {
             $scope.profile = profile;
         });
-});
+}]);
 
-poshBoutiqueApp.controller('accountEditController', function ($scope, manageInfo, addressInfo, ordersDataService, accountDataService, $timeout, $window) {
+poshBoutiqueApp.controller('accountEditController', ["$scope", "manageInfo", "addressInfo", "ordersDataService", "accountDataService", "$timeout", "$window", function ($scope, manageInfo, addressInfo, ordersDataService, accountDataService, $timeout, $window) {
     $scope.changePasswordModel = {};
     $scope.setPasswordModel = {};
     $scope.addressInfo = addressInfo;
@@ -152,9 +152,9 @@ poshBoutiqueApp.controller('accountEditController', function ($scope, manageInfo
     };
 
     //todo: --can remove logins, --add login, --set password, --change password, --remove login (remove password)
-});
+}]);
 
-poshBoutiqueApp.controller('accountOrdersController', function ($scope, userOrders, ordersDataService) {
+poshBoutiqueApp.controller('accountOrdersController', ["$scope", "userOrders", "ordersDataService", function ($scope, userOrders, ordersDataService) {
     $scope.userOrders = userOrders;
 
     $scope.orderClicked = function (clickedOrder) {
@@ -172,9 +172,9 @@ poshBoutiqueApp.controller('accountOrdersController', function ($scope, userOrde
                 });
         }
     }
-});
+}]);
 
-poshBoutiqueApp.controller('forgottenPasswordController', function ($scope, accountDataService) {
+poshBoutiqueApp.controller('forgottenPasswordController', ["$scope", "accountDataService", function ($scope, accountDataService) {
     debugger;
     $scope.sendResetPasswordMail = function () {
         if ($scope.forgottenPasswordForm.$invalid) {
@@ -194,9 +194,9 @@ poshBoutiqueApp.controller('forgottenPasswordController', function ($scope, acco
                 $scope.errorOnSend = true;
             });
     };
-});
+}]);
 
-poshBoutiqueApp.controller('resetPasswordController', function ($scope, $stateParams, accountDataService, currentUser, $state) {
+poshBoutiqueApp.controller('resetPasswordController', ["$scope", "$stateParams", "accountDataService", "currentUser", "$state", function ($scope, $stateParams, accountDataService, currentUser, $state) {
     $scope.email = $stateParams.email;
 
     $scope.resetPassword = function () {
@@ -225,4 +225,4 @@ poshBoutiqueApp.controller('resetPasswordController', function ($scope, $statePa
                 $scope.errorOnResetPassword = true;
             });
     };
-});
+}]);

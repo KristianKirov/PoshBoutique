@@ -1,0 +1,1 @@
+for /f %%f in ('dir /b /s *.js') do ng-annotate -a %%f -o %%f
